@@ -1,0 +1,50 @@
+[package]
+name = "MBERC20PaymentTerminal"
+version = "3.0.0-rc5"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2018"
+
+[dependencies]
+ink_primitives = { version = "3.0.0-rc3", path = "../ink/crates/primitives", default-features = false }
+ink_metadata = { version = "3.0.0-rc3", path = "../ink/crates/metadata", default-features = false, features = ["derive"], optional = true }
+ink_env = { version = "3.0.0-rc3", path = "../ink/crates/env", default-features = false }
+ink_storage = { version = "3.0.0-rc3", path = "../ink/crates/storage", default-features = false }
+ink_lang = { version = "3.0.0-rc3", path = "../ink/crates/lang", default-features = false }
+MBSingleTokenPaymentTerminalStore = { version = "0.1.0", path = "../MBSingleTokenPaymentTerminalStore", default-features = false, features = ["ink-as-dependency"] }
+MBPrices = { version = "0.1.0", path = "../MBPrices", default-features = false, features = ["ink-as-dependency"] }
+MBToken = { version = "0.1.0", path = "../MBToken", default-features = false, features = ["ink-as-dependency"] }
+MBProjects = { version = "0.1.0", path = "../MBProjects", default-features = false, features = ["ink-as-dependency"] }
+ink_prelude = { version = "3.0.0-rc3", path = "../ink/crates/prelude", default-features = false }
+
+scale = { package = "parity-scale-codec", version = "2.1", default-features = false, features = ["derive"] }
+scale-info = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+
+[lib]
+name = "MBERC20PaymentTerminal"
+path = "lib.rs"
+crate-type = [
+    "cdylib",
+    "rlib"
+]
+
+[features]
+default = ["std"]
+std = [
+    "ink_primitives/std",
+    "ink_metadata",
+    "ink_metadata/std",
+    "ink_env/std",
+    "ink_storage/std",
+    "ink_lang/std",
+    "ink_prelude/std",
+    "scale/std",
+    "scale-info",
+    "scale-info/std",
+    "MBSingleTokenPaymentTerminalStore/std",
+    "MBPrices/std",
+    "MBToken/std",
+    "MBProjects/std",
+]
+ink-as-dependency = []
+[profile.release]
+overflow-checks = false
