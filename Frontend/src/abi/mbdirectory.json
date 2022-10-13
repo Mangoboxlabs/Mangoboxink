@@ -1,0 +1,990 @@
+{
+  "source": {
+    "hash": "0x34a7e1a91bf2a861a37cf863de6937ab18998255e8cfc39c52c35242bd1828df",
+    "language": "ink! 3.0.0-rc5",
+    "compiler": "rustc 1.61.0-nightly"
+  },
+  "contract": {
+    "name": "MBDirectory",
+    "version": "0.1.0",
+    "authors": [
+      "Parity Technologies <admin@parity.io>"
+    ]
+  },
+  "V1": {
+    "spec": {
+      "constructors": [
+        {
+          "args": [
+            {
+              "name": "_projects",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_fundingCycleStore",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            }
+          ],
+          "docs": [],
+          "name": [
+            "new"
+          ],
+          "selector": "0x9bae9d5e"
+        }
+      ],
+      "docs": [],
+      "events": [],
+      "messages": [
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            }
+          ],
+          "docs": [
+            "\n           @notice\n           For each project ID, the terminals that are currently managing its funds.\n\n           @param _projectId The ID of the project to get terminals of.\n\n           @return An array of terminal addresses.\n         "
+          ],
+          "mutates": false,
+          "name": [
+            "terminalsOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "Vec"
+            ],
+            "type": 9
+          },
+          "selector": "0x630ae7df"
+        },
+        {
+          "args": [
+            {
+              "name": "_token",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        The primary terminal that is managing funds for a project for a specified token.\n\n        @dev\n        The zero address is returned if a terminal isn't found for the specified token.\n\n        @param _projectId The ID of the project to get a terminal for.\n        @param _token The token the terminal accepts.\n\n        @return The primary terminal for the project for the specified token.\n      "
+          ],
+          "mutates": false,
+          "name": [
+            "primaryTerminalOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "AccountId"
+            ],
+            "type": 0
+          },
+          "selector": "0x2efa1ded"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            },
+            {
+              "name": "_terminal",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            }
+          ],
+          "docs": [
+            "\n            @notice\n            Whether or not a specified terminal is a terminal of the specified project.\n\n            @param _projectId The ID of the project to check within.\n            @param _terminal The address of the terminal to check for.\n\n            @return A flag indicating whether or not the specified terminal is a terminal of the specified project.\n          "
+          ],
+          "mutates": false,
+          "name": [
+            "isTerminalOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "bool"
+            ],
+            "type": 15
+          },
+          "selector": "0xe6d5af50"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            },
+            {
+              "name": "_controller",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            }
+          ],
+          "docs": [
+            "\n         @notice\n         Update the controller that manages how terminals interact with the ecosystem.\n\n         @param _projectId The ID of the project to set a new controller for.\n         @param _controller The new controller to set.\n       "
+          ],
+          "mutates": true,
+          "name": [
+            "setControllerOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "bool"
+            ],
+            "type": 15
+          },
+          "selector": "0x9d3f584f"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            },
+            {
+              "name": "_terminals",
+              "type": {
+                "displayName": [
+                  "Vec"
+                ],
+                "type": 9
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Set a project's terminals.\n\n        @param _projectId The ID of the project having terminals set.\n        @param _terminals The terminal to set.\n      "
+          ],
+          "mutates": true,
+          "name": [
+            "setTerminalsOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "bool"
+            ],
+            "type": 15
+          },
+          "selector": "0xd0f345c9"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            },
+            {
+              "name": "_token",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_terminal",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Project's can set which terminal should be their primary for a particular token.\n        This is useful in case a project has several terminals connected for a particular token.\n\n        @param _projectId The ID of the project for which a primary token is being set.\n        @param _token The token to set the primary terminal of.\n        @param _terminal The terminal to make primary.\n      "
+          ],
+          "mutates": true,
+          "name": [
+            "setPrimaryTerminalOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "bool"
+            ],
+            "type": 15
+          },
+          "selector": "0x9acf346e"
+        }
+      ]
+    },
+    "storage": {
+      "struct": {
+        "fields": [
+          {
+            "layout": {
+              "cell": {
+                "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                "ty": 0
+              }
+            },
+            "name": "projects"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0200000001000000000000000000000000000000000000000000000000000000",
+                                            "ty": 5
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0300000000000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0300000001000000000000000000000000000000000000000000000000000000",
+                            "ty": 8
+                          }
+                        },
+                        "offset": "0x0200000001000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "_terminalsOf"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0300000001000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0400000001000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0400000002000000000000000000000000000000000000000000000000000000",
+                                            "ty": 10
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0500000001000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0500000002000000000000000000000000000000000000000000000000000000",
+                            "ty": 12
+                          }
+                        },
+                        "offset": "0x0400000002000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "_primaryTerminalOf"
+          },
+          {
+            "layout": {
+              "cell": {
+                "key": "0x0500000002000000000000000000000000000000000000000000000000000000",
+                "ty": 0
+              }
+            },
+            "name": "fundingCycleStore"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0600000002000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0700000002000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0700000003000000000000000000000000000000000000000000000000000000",
+                                            "ty": 5
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0800000002000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0800000003000000000000000000000000000000000000000000000000000000",
+                            "ty": 12
+                          }
+                        },
+                        "offset": "0x0700000003000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "controllerOf"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0800000003000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0900000003000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0900000004000000000000000000000000000000000000000000000000000000",
+                                            "ty": 13
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0a00000003000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0a00000004000000000000000000000000000000000000000000000000000000",
+                            "ty": 14
+                          }
+                        },
+                        "offset": "0x0900000004000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "isAllowedToSetFirstController"
+          }
+        ]
+      }
+    },
+    "types": [
+      {
+        "id": 0,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "type": 1,
+                  "typeName": "[u8; 32]"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_env",
+            "types",
+            "AccountId"
+          ]
+        }
+      },
+      {
+        "id": 1,
+        "type": {
+          "def": {
+            "array": {
+              "len": 32,
+              "type": 2
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": {
+          "def": {
+            "primitive": "u8"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "last_vacant",
+                  "type": 4,
+                  "typeName": "Index"
+                },
+                {
+                  "name": "len",
+                  "type": 4,
+                  "typeName": "u32"
+                },
+                {
+                  "name": "len_entries",
+                  "type": 4,
+                  "typeName": "u32"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Header"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "type": {
+          "def": {
+            "primitive": "u32"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 7,
+                      "typeName": "VacantEntry"
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Vacant"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 6,
+                      "typeName": "T"
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Occupied"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 6
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Entry"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "type": {
+          "def": {
+            "primitive": "u64"
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "next",
+                  "type": 4,
+                  "typeName": "Index"
+                },
+                {
+                  "name": "prev",
+                  "type": 4,
+                  "typeName": "Index"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "VacantEntry"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "value",
+                  "type": 9,
+                  "typeName": "V"
+                },
+                {
+                  "name": "key_index",
+                  "type": 4,
+                  "typeName": "KeyIndex"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "V",
+              "type": 9
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "hashmap",
+            "ValueEntry"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "type": {
+          "def": {
+            "sequence": {
+              "type": 0
+            }
+          }
+        }
+      },
+      {
+        "id": 10,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 7,
+                      "typeName": "VacantEntry"
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Vacant"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 11,
+                      "typeName": "T"
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Occupied"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 11
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Entry"
+          ]
+        }
+      },
+      {
+        "id": 11,
+        "type": {
+          "def": {
+            "tuple": [
+              6,
+              0
+            ]
+          }
+        }
+      },
+      {
+        "id": 12,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "value",
+                  "type": 0,
+                  "typeName": "V"
+                },
+                {
+                  "name": "key_index",
+                  "type": 4,
+                  "typeName": "KeyIndex"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "V",
+              "type": 0
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "hashmap",
+            "ValueEntry"
+          ]
+        }
+      },
+      {
+        "id": 13,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 7,
+                      "typeName": "VacantEntry"
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Vacant"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 0,
+                      "typeName": "T"
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Occupied"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 0
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Entry"
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "value",
+                  "type": 15,
+                  "typeName": "V"
+                },
+                {
+                  "name": "key_index",
+                  "type": 4,
+                  "typeName": "KeyIndex"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "V",
+              "type": 15
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "hashmap",
+            "ValueEntry"
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "type": {
+          "def": {
+            "primitive": "bool"
+          }
+        }
+      }
+    ]
+  }
+}
