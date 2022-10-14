@@ -19,8 +19,7 @@ const dealResult = (result,msg,timeMemory)=>{
                         try {
                             const mod = dispatchError.asModule;
                             console.log(mod,mod.index,mod.error)
-                            let error = null
-                            error = data.registry.findMetaError(new Uint8Array([mod.index, mod.error]));
+                            const error = data.registry.findMetaError(new Uint8Array([mod.index.toNumber(), mod.error.toNumber()]));
 
                             console.log("error:", error.name);
                             if(window.messageBox.indexOf(timeMemory) > -1){

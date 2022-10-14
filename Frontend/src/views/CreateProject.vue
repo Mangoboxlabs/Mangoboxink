@@ -1,14 +1,14 @@
 <template>
   <div class="CreateProject daoContentBg">
-    <div class="mangobox-button" @click="approve">
-      approve
-    </div>
-    <div class="mangobox-button" @click="ownerOf">
-      Read
-    </div>
-    <div class="mangobox-button" @click="launchProjectFor">
-      launchProjectFor
-    </div>
+<!--    <div class="mangobox-button" @click="mint">-->
+<!--      mint-->
+<!--    </div>-->
+<!--    <div class="mangobox-button" @click="ownerOf">-->
+<!--      Read-->
+<!--    </div>-->
+<!--    <div class="mangobox-button" @click="launchProjectFor">-->
+<!--      launchProjectFor-->
+<!--    </div>-->
     <div class="CreateProject-content">
       <h2>Creat your projects</h2>
       <div class="progress-box">
@@ -212,7 +212,7 @@
           Once launched, your first funding cycle can't be changed. You can reconfigure upcoming
           funding cycles according to the project's reconfiguration rules.
         </div>
-        <button class="mangobox-button" >
+        <button class="mangobox-button"  @click="launchProjectFor">
           DEPLOY
         </button>
       </div>
@@ -235,8 +235,8 @@ export default {
     }
   },
   methods:{
-    approve(){
-      this.$store.dispatch("MBProjects/approve")
+    mint(){
+      this.$store.dispatch("MBProjects/mint")
     },
     ownerOf(){
       this.$store.dispatch("MBProjects/ownerOf")

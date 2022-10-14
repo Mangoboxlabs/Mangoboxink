@@ -23,7 +23,7 @@
           </svg>
         </div>
 
-        <button class="mangobox-button">
+        <button class="mangobox-button" @click="$router.push({path:'/CreateProject'})">
           Creat your project
         </button>
       </div>
@@ -63,6 +63,16 @@ export default {
     return {
       activeIndex: 0
     }
+  },
+  created() {
+    this.getOwnerProjects()
+  },
+  methods: {
+    getOwnerProjects() {
+      this.$store.dispatch("MBController/getOwnerProjects", this.$store.state.app.account).then(res => {
+        console.log(res)
+      })
+    }
   }
 }
 </script>
@@ -81,6 +91,7 @@ export default {
     .nav-list {
       display: flex;
       user-select: none;
+
       .nav-item {
         font-size: 16px;
         font-family: Roboto-Bold, Roboto;

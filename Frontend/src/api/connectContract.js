@@ -47,9 +47,13 @@ const ConnectContract = async (api,type,address) =>{
             address:'5ExDF1h8shSgpFoTDTZFt6q8H9HCwvwtpvXLBntyCsbRaoo3',
             abi: require('../abi/MBFundingCycleStore.json')
         },
+        MBController:{
+            address:'5FT38C9gwrxik3rhPdJwVk4XWYFaD6BKPXWfzzbwCUjQeWcE',
+            abi:require('../abi/MBController.json')
+        },
         mbcontroller:{
             address:'5FT38C9gwrxik3rhPdJwVk4XWYFaD6BKPXWfzzbwCUjQeWcE',
-            abi:require('../abi/mbcontroller.json')
+            abi:require('../abi/MBController.json')
         }
     }
 

@@ -36,6 +36,12 @@ export default {
   name: 'HomeView',
   components: {
 
+  },
+  created(){
+    console.log(1)
+    this.$store.dispatch("MBController/getOwnerProjects", this.$store.state.app.account).then(res=>{
+      console.log(res)
+    })
   }
 }
 </script>
