@@ -120,7 +120,7 @@ mod mb_SingleTokenPaymentTerminalStore {
                 self._overflowDuring(
                     _terminal,
                     _projectId,
-                    100,// todo _terminal.currency()
+                    100,
                 );
         }
         /**
@@ -187,6 +187,16 @@ mod mb_SingleTokenPaymentTerminalStore {
             _balanceOf = _balanceOf + _amount;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
             return (fundingCycle, 0, AccountId::default(), _memo);
+        }
+        /// @notice
+        /// get the balance of the project
+        #[ink(message)]
+        pub fn getBalanceOf(
+            &self,
+            _account:AccountId,
+            _projectId:u64,
+        ) ->u128 {
+            self.balanceOf.get(&(_account, _projectId)).unwrap_or(&0).clone()
         }
         /**
     @notice

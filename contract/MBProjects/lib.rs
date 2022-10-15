@@ -182,6 +182,16 @@ mod mb_projects {
             self.metadata_content_of.insert((project_id, 0), _metadata);
             project_id
         }
+        /// Returns the metadata of the token.
+        #[ink(message)]
+        pub fn get_meta_content(&self,_project_id:u64) -> String {
+            self.metadata_content_of.get(&(_project_id,0)).unwrap_or(&String::from("undefined")).clone()
+        }
+        /// Returns the count of the projects.
+        #[ink(message)]
+        pub fn get_project_count(&self) -> u64 {
+            self.count
+        }
 
         /// Returns the balance of the owner.
         ///
