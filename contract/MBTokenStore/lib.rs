@@ -124,8 +124,7 @@ mod mbTokenStore {
         ) -> AccountId {
             let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
             assert!(_token == AccountId::default(),"PROJECT_ALREADY_HAS_TOKEN");
-            let version:u128 = 1;
-            let salt = version.to_le_bytes();
+            let salt = _projectId.to_le_bytes();
             let instance_params = MBToken::new(_name,_symbol)
                 .endowment(CONTRACT_INIT_BALANCE)
                 .code_hash(self.tokenHash)
