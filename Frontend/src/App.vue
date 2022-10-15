@@ -1,0 +1,211 @@
+<template>
+  <div id="app">
+    <div class="message-box">
+      <div v-for="(item,index)  in messageList" :class="{'error': item.type=='error','success':item.type=='success'}" :key="index" class="message animate__animated  animate__backInRight" >
+        {{ item.message }}
+      </div>
+    </div>
+    <MangoboxReader v-show="$route.path!='/Details'"></MangoboxReader>
+    <router-view class="main-content"/>
+    <MangoboxFooter></MangoboxFooter>
+  </div>
+</template>
+<script>
+import MangoboxReader from "./components/mangobox-header"
+import MangoboxFooter from "./components/mangobox-footer"
+export default {
+  components:{
+    MangoboxReader,
+    MangoboxFooter
+  },
+  data(){
+    return{
+      messageList:[]
+    }
+  },
+  mounted() {
+    let _this = this
+    this.$store.dispatch("app/getWeb3")
+    this.$eventBus.$on('message', (message) => {
+      _this.messageList.push(message)
+      setTimeout(()=>{
+        _this.messageList.shift()
+      },3000)
+    })
+
+  }
+}
+</script>
+<style lang="scss">
+.message-box{
+  position: fixed;
+  right: 20px;
+  top: 60px;
+  z-index: 10;
+  .message{
+    width: 300px;
+    padding: 10px;
+    min-height: 60px;
+    word-break: break-word;
+    color: #999;
+    box-shadow: 0 0 3px #eee;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 16px;
+    &.error{
+      background: #fd5454;
+      color: #fff;
+    }
+    &.success{
+      background: #9fd948;
+      color: #fff;
+    }
+  }
+}
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  --primary-bg-color:linear-gradient(225deg, #54D500 0%, #2AAA00 100%);
+  --primary-light: #8abdff;
+  --primary: #54D500;
+  --primary-dark: #2AAA00;
+
+  --white: #FFFFFF;
+  --greyLight-1: #E4EBF5;
+  --greyLight-2: #c8d0e7;
+  --greyLight-3: #bec8e4;
+  --greyDark: #9baacf;
+
+
+  ::v-deep el-radio{
+    .intro{
+      opacity: 0.5;
+      margin: 10px 0;
+    }
+  }
+
+  .main-content{
+    flex-grow: 5;
+  }
+  .row{
+    display: flex;
+  }
+  div{
+    box-sizing: border-box;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+    font-size: 14px;
+  }
+  .daoContentBg{
+    flex: 1;
+  }
+  .content-box {
+    box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.05);
+
+    border-radius: 20px;
+    width: 1200px;
+    margin: 10px auto;
+    background: #fff;
+    padding-bottom: 20px;
+  }
+
+  .box-nav {
+    display: flex;
+    padding: 0 20px;
+    border-bottom: 1px solid #eee;
+
+    .item {
+      user-select: none;
+      width: 150px;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      cursor: pointer;
+
+      &.active {
+        color: #F96AAF;
+        border-bottom: 1px solid #F96AAF;
+      }
+    }
+  }
+  .mangobox-button{
+    background: var(--primary-bg-color);
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    color: #fff;
+    font-size: 18px;
+    position: relative;
+    background-size: 200%;
+    transition: 0.3s;
+    &:active{
+      transform: translate(2px,2px);
+    }
+    &:hover{
+      background-position: 100%;
+    }
+  }
+  .switch {
+    grid-column: 1/2;
+    display: grid;
+    grid-template-columns: repeat(2, min-content);
+    grid-gap: 3rem;
+    justify-self: center;
+  }
+  .switch input {
+    display: none;
+  }
+  .switch__1, .switch__2 {
+    width: 5rem;
+  }
+  .switch__1 label, .switch__2 label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 2rem;
+    box-shadow: 0.3rem 0.3rem 0.6rem var(--greyLight-2), -0.2rem -0.2rem 0.5rem var(--white);
+    background: rgba(255, 255, 255, 0);
+    position: relative;
+    cursor: pointer;
+    border-radius: 1.2rem;
+  }
+
+  .flex-box{
+    display: flex;
+    margin: 10px 0;
+  }
+  .switch__1 label::after, .switch__2 label::after {
+    content: "";
+    position: absolute;
+    left: 0.4rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--greyDark);
+    transition: all 0.4s ease;
+  }
+  .switch__1 label::before, .switch__2 label::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(330deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+    opacity: 0;
+    transition: all 0.4s ease;
+  }
+  .switch input:checked ~ label::before {
+    opacity: 1;
+  }
+  .switch input:checked ~ label::after {
+    left: 57%;
+    background: var(--greyLight-1);
+  }
+
+}
+
+</style>

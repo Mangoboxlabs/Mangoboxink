@@ -1,0 +1,1034 @@
+{
+  "source": {
+    "hash": "0xb8dfcc1793ca71a1c83f65705c0bb10a7c1e76fbeb891a4d48649c350fb58bad",
+    "language": "ink! 3.0.0-rc5",
+    "compiler": "rustc 1.61.0-nightly"
+  },
+  "contract": {
+    "name": "MBSingleTokenPaymentTerminalStore",
+    "version": "0.1.0",
+    "authors": [
+      "Parity Technologies <admin@parity.io>"
+    ]
+  },
+  "V1": {
+    "spec": {
+      "constructors": [
+        {
+          "args": [
+            {
+              "name": "_prices",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_directory",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_fundingCycleStore",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            }
+          ],
+          "docs": [],
+          "name": [
+            "new"
+          ],
+          "selector": "0x9bae9d5e"
+        }
+      ],
+      "docs": [],
+      "events": [],
+      "messages": [
+        {
+          "args": [
+            {
+              "name": "_terminal",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Gets the current overflowed amount in a terminal for a specified project.\n        @param _terminal The terminal for which the overflow is being calculated.\n        @param _projectId The ID of the project to get overflow for.\n\n        @return The current amount of overflow that project has in the specified terminal.\n      "
+          ],
+          "mutates": false,
+          "name": [
+            "currentOverflowOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 10
+          },
+          "selector": "0xcabdad56"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_decimals",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_currency",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            }
+          ],
+          "docs": [
+            "\n    @notice\n    Gets the current overflowed amount for a specified project across all terminals.\n\n    @param _projectId The ID of the project to get total overflow for.\n    @param _decimals The number of decimals that the fixed point overflow should include.\n    @param _currency The currency that the total overflow should be in terms of.\n\n    @return The current total amount of overflow that project has across all terminals.\n  "
+          ],
+          "mutates": false,
+          "name": [
+            "currentTotalOverflowOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 10
+          },
+          "selector": "0xaf754c56"
+        },
+        {
+          "args": [
+            {
+              "name": "_payer",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_amount",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            },
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_baseWeightCurrency",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_beneficiary",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_memo",
+              "type": {
+                "displayName": [
+                  "String"
+                ],
+                "type": 13
+              }
+            },
+            {
+              "name": "_metadata",
+              "type": {
+                "displayName": [
+                  "String"
+                ],
+                "type": 13
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Records newly contributed tokens to a project.\n        @param _payer The original address that sent the payment to the terminal.\n        @param _amount The amount of tokens being paid. Includes the token being paid, the value, the number of decimals included, and the currency of the amount.\n        @param _projectId The ID of the project being paid.\n        @param _baseWeightCurrency The currency to base token issuance on.\n        @param _beneficiary The specified address that should be the beneficiary of anything that results from the payment.\n        @param _memo A memo to pass along to the emitted event, and passed along to the funding cycle's data source.\n        @param _metadata Bytes to send along to the data source, if one is provided.\n\n        @return fundingCycle The project's funding cycle during which payment was made.\n        @return tokenCount The number of project tokens that were minted, as a fixed point number with 18 decimals.\n        @return delegate A delegate contract to use for subsequent calls.\n        @return memo A memo that should be passed along to the emitted event.\n      "
+          ],
+          "mutates": true,
+          "name": [
+            "recordPaymentFrom"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [],
+            "type": 14
+          },
+          "selector": "0x4c640f3f"
+        },
+        {
+          "args": [
+            {
+              "name": "_holder",
+              "type": {
+                "displayName": [
+                  "AccountId"
+                ],
+                "type": 0
+              }
+            },
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_tokenCount",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            },
+            {
+              "name": "_memo",
+              "type": {
+                "displayName": [
+                  "String"
+                ],
+                "type": 13
+              }
+            }
+          ],
+          "docs": [
+            "\n    @notice\n    Records newly redeemed tokens of a project.\n\n    @param _holder The account that is having its tokens redeemed.\n    @param _projectId The ID of the project to which the tokens being redeemed belong.\n    @param _tokenCount The number of project tokens to redeem, as a fixed point number with 18 decimals.\n    @param _memo A memo to pass along to the emitted event.\n\n    @return fundingCycle The funding cycle during which the redemption was made.\n    @return reclaimAmount The amount of terminal tokens reclaimed, as a fixed point number with 18 decimals.\n    @return delegate A delegate contract to use for subsequent calls.\n    @return memo A memo that should be passed along to the emitted event.\n  "
+          ],
+          "mutates": true,
+          "name": [
+            "recordRedemptionFor"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [],
+            "type": 14
+          },
+          "selector": "0xd3a8b1c9"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_amount",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            },
+            {
+              "name": "_currency",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Records newly distributed funds for a project.\n\n        @dev\n        The msg.sender must be an IJBSingleTokenPaymentTerminal.\n\n        @param _projectId The ID of the project that is having funds distributed.\n        @param _amount The amount to use from the distribution limit, as a fixed point number.\n        @param _currency The currency of the `_amount`. This must match the project's current funding cycle's currency.\n\n        @return fundingCycle The funding cycle during which the distribution was made.\n        @return distributedAmount The amount of terminal tokens distributed, as a fixed point number with the same amount of decimals as its relative terminal.\n      "
+          ],
+          "mutates": true,
+          "name": [
+            "recordDistributionFor"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 10
+          },
+          "selector": "0x74ffbee3"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_amount",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            },
+            {
+              "name": "_currency",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            }
+          ],
+          "docs": [
+            "\n   @notice\n   Records newly used allowance funds of a project.\n\n\n   @param _projectId The ID of the project to use the allowance of.\n   @param _amount The amount to use from the allowance, as a fixed point number.\n   @param _currency The currency of the `_amount`. Must match the currency of the overflow allowance.\n\n   @return fundingCycle The funding cycle during which the overflow allowance is being used.\n   @return usedAmount The amount of terminal tokens used, as a fixed point number with the same amount of decimals as its relative terminal.\n "
+          ],
+          "mutates": true,
+          "name": [
+            "recordUsedAllowanceOf"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 10
+          },
+          "selector": "0xd6de40b5"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 7
+              }
+            },
+            {
+              "name": "_amount",
+              "type": {
+                "displayName": [
+                  "u128"
+                ],
+                "type": 10
+              }
+            }
+          ],
+          "docs": [
+            "\n        @notice\n        Records newly added funds for the project.\n\n        @param _projectId The ID of the project to which the funds being added belong.\n        @param _amount The amount of terminal tokens added, as a fixed point number with the same amount of decimals as its relative terminal.\n      "
+          ],
+          "mutates": true,
+          "name": [
+            "recordAddedBalanceFor"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "bool"
+            ],
+            "type": 16
+          },
+          "selector": "0x04c9f983"
+        }
+      ]
+    },
+    "storage": {
+      "struct": {
+        "fields": [
+          {
+            "layout": {
+              "cell": {
+                "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
+                "ty": 0
+              }
+            },
+            "name": "directory"
+          },
+          {
+            "layout": {
+              "cell": {
+                "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
+                "ty": 0
+              }
+            },
+            "name": "fundingCycleStore"
+          },
+          {
+            "layout": {
+              "cell": {
+                "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
+                "ty": 0
+              }
+            },
+            "name": "prices"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0300000000000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0400000000000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0400000001000000000000000000000000000000000000000000000000000000",
+                                            "ty": 5
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0500000000000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0500000001000000000000000000000000000000000000000000000000000000",
+                            "ty": 9
+                          }
+                        },
+                        "offset": "0x0400000001000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "balanceOf"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0500000001000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0600000001000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0600000002000000000000000000000000000000000000000000000000000000",
+                                            "ty": 11
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0700000001000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0700000002000000000000000000000000000000000000000000000000000000",
+                            "ty": 9
+                          }
+                        },
+                        "offset": "0x0600000002000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "usedDistributionLimitOf"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0700000002000000000000000000000000000000000000000000000000000000",
+                                "ty": 3
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0800000002000000000000000000000000000000000000000000000000000000",
+                                        "ty": 4
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0800000003000000000000000000000000000000000000000000000000000000",
+                                            "ty": 11
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0900000002000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0900000003000000000000000000000000000000000000000000000000000000",
+                            "ty": 9
+                          }
+                        },
+                        "offset": "0x0800000003000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "usedOverflowAllowanceOf"
+          }
+        ]
+      }
+    },
+    "types": [
+      {
+        "id": 0,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "type": 1,
+                  "typeName": "[u8; 32]"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_env",
+            "types",
+            "AccountId"
+          ]
+        }
+      },
+      {
+        "id": 1,
+        "type": {
+          "def": {
+            "array": {
+              "len": 32,
+              "type": 2
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "type": {
+          "def": {
+            "primitive": "u8"
+          }
+        }
+      },
+      {
+        "id": 3,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "last_vacant",
+                  "type": 4,
+                  "typeName": "Index"
+                },
+                {
+                  "name": "len",
+                  "type": 4,
+                  "typeName": "u32"
+                },
+                {
+                  "name": "len_entries",
+                  "type": 4,
+                  "typeName": "u32"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Header"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "type": {
+          "def": {
+            "primitive": "u32"
+          }
+        }
+      },
+      {
+        "id": 5,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 8,
+                      "typeName": "VacantEntry"
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Vacant"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 6,
+                      "typeName": "T"
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Occupied"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 6
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Entry"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "type": {
+          "def": {
+            "tuple": [
+              0,
+              7
+            ]
+          }
+        }
+      },
+      {
+        "id": 7,
+        "type": {
+          "def": {
+            "primitive": "u64"
+          }
+        }
+      },
+      {
+        "id": 8,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "next",
+                  "type": 4,
+                  "typeName": "Index"
+                },
+                {
+                  "name": "prev",
+                  "type": 4,
+                  "typeName": "Index"
+                }
+              ]
+            }
+          },
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "VacantEntry"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "value",
+                  "type": 10,
+                  "typeName": "V"
+                },
+                {
+                  "name": "key_index",
+                  "type": 4,
+                  "typeName": "KeyIndex"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "V",
+              "type": 10
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "hashmap",
+            "ValueEntry"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "type": {
+          "def": {
+            "primitive": "u128"
+          }
+        }
+      },
+      {
+        "id": 11,
+        "type": {
+          "def": {
+            "variant": {
+              "variants": [
+                {
+                  "fields": [
+                    {
+                      "type": 8,
+                      "typeName": "VacantEntry"
+                    }
+                  ],
+                  "index": 0,
+                  "name": "Vacant"
+                },
+                {
+                  "fields": [
+                    {
+                      "type": 12,
+                      "typeName": "T"
+                    }
+                  ],
+                  "index": 1,
+                  "name": "Occupied"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "T",
+              "type": 12
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "stash",
+            "Entry"
+          ]
+        }
+      },
+      {
+        "id": 12,
+        "type": {
+          "def": {
+            "tuple": [
+              0,
+              7,
+              7
+            ]
+          }
+        }
+      },
+      {
+        "id": 13,
+        "type": {
+          "def": {
+            "primitive": "str"
+          }
+        }
+      },
+      {
+        "id": 14,
+        "type": {
+          "def": {
+            "tuple": [
+              15,
+              10,
+              0,
+              13
+            ]
+          }
+        }
+      },
+      {
+        "id": 15,
+        "type": {
+          "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "number",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "configuration",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "basedOn",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "start",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "duration",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "weight",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "discountRate",
+                  "type": 7,
+                  "typeName": "u64"
+                },
+                {
+                  "name": "ballot",
+                  "type": 0,
+                  "typeName": "AccountId"
+                },
+                {
+                  "name": "metadata",
+                  "type": 7,
+                  "typeName": "u64"
+                }
+              ]
+            }
+          },
+          "path": [
+            "MBSingleTokenPaymentTerminalStore",
+            "mb_SingleTokenPaymentTerminalStore",
+            "MBFundingCycle"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "type": {
+          "def": {
+            "primitive": "bool"
+          }
+        }
+      }
+    ]
+  }
+}
