@@ -36,7 +36,7 @@ const ConnectContract = async (api,type,address) =>{
             abi:require('../abi/MBPrices.json')
         },
         MBTokenStore: {
-            address:'5CPzXwK8U7xjoU56S3HjBCArPTLCc7KCVcyAhaDntkz5LsDx',
+            address:'5DyQtzR89WGjAchokxH5Ntc2mxC9ruaUGi4nKYZCSq6VUMg1',
             abi:require('../abi/MBTokenStore.json')
         },
         MBProjects: {
@@ -48,11 +48,11 @@ const ConnectContract = async (api,type,address) =>{
             abi: require('../abi/MBFundingCycleStore.json')
         },
         MBController:{
-            address:'5GuDNJ8FCGCxWEtzX2QPhzdFPjcW4tDAXv2no5dJBSsvJwas',
+            address:'5CcoJkt3SVmwmRy45Kp54U2hausgLbsKaYucqujeTGGyGop8',
             abi:require('../abi/MBController.json')
         },
         mbcontroller:{
-            address:'5GuDNJ8FCGCxWEtzX2QPhzdFPjcW4tDAXv2no5dJBSsvJwas',
+            address:'5CcoJkt3SVmwmRy45Kp54U2hausgLbsKaYucqujeTGGyGop8',
             abi:require('../abi/MBController.json')
         }
     }

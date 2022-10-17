@@ -4,7 +4,7 @@
       <h2>Trending projects</h2>
       <div class="dao-list">
 
-        <div class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in HomeArr" :key="index">
+        <div v-show ="item&&item.name&&item.name.length>0" class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in homeArr" :key="index">
           <div class="logo">
             <img :src="item.icon" alt=""/>
           </div>
@@ -35,15 +35,27 @@ export default {
   components: {},
   data() {
     return {
-      HomeArr: [],
       moment:moment
+    }
+  },
+  computed:{
+    homeArr(){
+      let tempArr = this.$store.state.app.homeArr
+      tempArr.sort((a,b)=>{
+        if(new Date(a.createTime).getTime() && new Date(b.createTime).getTime()){
+          return new Date(a.createTime).getTime() -  new Date(b.createTime).getTime()
+        }else{
+          return -1
+        }
+      })
+      return tempArr
     }
   },
   methods: {
     upload() {
       uploadJson({
-        icon: 'https://avatars.githubusercontent.com/u/94897284?v=4',
-        name: 'mangobox',
+        icon: 'https://pbs.twimg.com/media/FfMpbIYXoAI13AZ?format=jpg&name=240x240',
+        name: 'flexhome',
         createTime: new Date()
       }).then(res => {
         console.log(res.data.IpfsHash)
@@ -55,17 +67,21 @@ export default {
     },
     getData(){
       // get IdArr => get hash => get json
-      this.$store.dispatch("MBController/getOwnerProjects", this.$store.state.app.account).then(res => {
-        console.log(res)
-        res.forEach(id => {
-          this.getMetaContent(id).then(async res => {
+      this.$store.dispatch("MBProjects/getProjectCount", this.$store.state.app.account).then(length => {
+        let tempArr = []
+
+        for(let i=1;i<=length;i++){
+          this.getMetaContent(i).then(async res => {
             const jsonRes = await getIpfs(res)
-            this.HomeArr.push({
-              ...jsonRes.data,
-              id:id
+            tempArr.push({
+              id:i,
+              ...jsonRes.data
             })
+            if(i >= length){
+              this.$store.commit("app/SET_HOMEARR",tempArr)
+            }
           })
-        })
+        }
 
       })
     }
@@ -90,7 +106,7 @@ export default {
 
     .dao-list {
       display: flex;
-
+      flex-wrap: wrap;
       .dao-item {
         display: flex;
         background: #fff;
@@ -99,6 +115,7 @@ export default {
         padding: 10px;
         cursor: pointer;
         margin-right: 20px;
+        margin-top: 20px;
         .logo {
           width: 70px;
           img{

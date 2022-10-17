@@ -4,7 +4,8 @@ const state = {
     web3:{},
     isConnected:false,
     balance:0,
-    account:""
+    account:"",
+    homeArr:[]
 }
 const mutations = {
     SET_WEB3(state,web3){
@@ -17,6 +18,9 @@ const mutations = {
     },
     SET_BALANCE(state, balance){
         state.balance = balance
+    },
+    SET_HOMEARR(state,homeArr){
+        state.homeArr = homeArr
     }
 }
 const actions = {

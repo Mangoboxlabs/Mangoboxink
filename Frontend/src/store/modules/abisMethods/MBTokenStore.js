@@ -6,7 +6,7 @@ import Accounts from "@/api/Account.js";
 
 const value = 0;
 const queryGasLimit = -1;
-const gasLimit = 3000n * 1000000n;
+const gasLimit = 3000n * 100000000n;
 const storageDepositLimit = null;
 
 
@@ -30,6 +30,7 @@ const actions = {
 
     },
     async balanceOf({rootState}, {_holder, _projectId}) {
+        console.log( _holder, _projectId)
         await judgeContract(rootState.app.web3)
         const AccountId = await Accounts.accountAddress();
         let data = await state.contract.query.balanceOf(AccountId, {value, queryGasLimit}, _holder, _projectId)
@@ -67,6 +68,28 @@ const actions = {
             //params
             _holder, _projectId, _amount, _preferClaimedTokens
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
+            console.log(result,rootState.app.web3)
+            if (result.isInBlock || result.isFinalized) {
+                result.events
+                    // find/filter for failed events
+                    .filter(({ event }) =>
+                        rootState.app.web3.events.system.ExtrinsicFailed.is(event)
+                    )
+                    // we know that data for system.ExtrinsicFailed is
+                    // (DispatchError, DispatchInfo)
+                    .forEach(({ event: { data: [error, info] } }) => {
+                        if (error.isModule) {
+                            // for module errors, we have the section indexed, lookup
+                            const decoded = state.contract.registry.findMetaError(error.asModule);
+                            const { docs, method, section } = decoded;
+
+                            console.log(`${section}.${method}: ${docs.join(' ')}`);
+                        } else {
+                            // Other, CannotLookup, BadOrigin, no extra info
+                            console.log(error.toString());
+                        }
+                    });
+            }
             if (result.status.isInBlock) {
                 console.log('in a block');
             } else if (result.status.isFinalized) {

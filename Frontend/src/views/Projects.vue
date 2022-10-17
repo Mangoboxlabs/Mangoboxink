@@ -2,18 +2,20 @@
   <div class="ProjectsView">
     <div class="content-header">
       <div class="nav-list">
-
-        <div class="nav-item" @click="activeIndex=1" :class="{'active':activeIndex==1}">
-          My ProjectsView
-        </div>
-        <div class="nav-item" @click="activeIndex=2" :class="{'active':activeIndex==2}" style="padding: 0 20px">
+        <div class="nav-item" @click="activeIndex=1" :class="{'active':activeIndex==1}" style="padding: 0 20px">
           All
         </div>
+        <div class="nav-item" @click="activeIndex=2" :class="{'active':activeIndex==2}">
+          My ProjectsView
+        </div>
+
       </div>
       <div class="right">
-        <div class="search-box">
-          <input type="text" placeholder="Search"/>
-          <svg t="1663312917552" class="icon" viewBox="0 0 1024 1024" version="1.1"
+        <div class="search-box" >
+          <input type="text" placeholder="Search" v-model="searchContent"/>
+          <svg
+              @click="dealSearch"
+              t="1663312917552" class="icon" viewBox="0 0 1024 1024" version="1.1"
                xmlns="http://www.w3.org/2000/svg" p-id="2342" width="32" height="32">
             <path
                 d="M685.6 660.336l155.152 155.168a16 16 0 0 1 0 22.624l-11.312 11.328a16 16 0 0 1-22.624 0l-158.528-158.544a289.792 289.792 0 0 1-165.152 51.36C322.336 742.256 192 611.904 192 451.12 192 290.336 322.336 160 483.136 160c160.784 0 291.12 130.336 291.12 291.136 0 82.112-33.984 156.272-88.672 209.2z m-202.464 33.92c134.272 0 243.12-108.848 243.12-243.12C726.256 316.848 617.408 208 483.136 208 348.848 208 240 316.848 240 451.136c0 134.272 108.848 243.12 243.136 243.12z"
@@ -26,44 +28,47 @@
         </button>
       </div>
     </div>
-    <div class="ProjectsView-content my" v-show="activeIndex==1">
+    <div class="ProjectsView-content my" v-show="activeIndex==2">
       <h2> My ProjectsView</h2>
       <div class="dao-list">
 
-        <div class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in myProject" :key="index">
-          <div class="logo">
-            <img :src="item.icon" alt=""/>
-          </div>
-          <div class="right">
-            <div class="name">
-              {{item.name}}
+        <div  v-show ="item&&item.name&&item.name.length>0&&item.name.includes(searchContent)" class="dao-item"  @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in myProject" :key="index">
+            <div class="logo">
+              <img :src="item.icon" alt=""/>
             </div>
-            <div class="time">
-              {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
+            <div class="right">
+              <div class="name">
+                {{item.name}}
+              </div>
+              <div class="time">
+                {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
+              </div>
             </div>
-          </div>
+
         </div>
       </div>
       <div class="more mangobox-button">
         More trending ProjectsView
       </div>
     </div>
-    <div class="ProjectsView-content my" v-show="activeIndex==2">
+    <div class="ProjectsView-content my" v-show="activeIndex==1">
       <h2> My ProjectsView</h2>
       <div class="dao-list">
 
-        <div class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in allProject" :key="index">
-          <div class="logo">
-            <img :src="item.icon" alt=""/>
-          </div>
-          <div class="right">
-            <div class="name">
-              {{item.name}}
+        <div v-show ="item&&item.name&&item.name.length>0&&item.name.includes(searchContent)"
+            class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in homeArr" :key="index">
+            <div class="logo">
+              <img :src="item.icon" alt=""/>
             </div>
-            <div class="time">
-              {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
+            <div class="right">
+              <div class="name">
+                {{item.name}}
+              </div>
+              <div class="time">
+                {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
+              </div>
             </div>
-          </div>
+
         </div>
       </div>
       <div class="more mangobox-button">
@@ -83,7 +88,21 @@ export default {
       moment:moment,
       activeIndex: 1,
       myProject:[],
-      allProject:[]
+      searchContent:""
+    }
+  },
+  computed:{
+
+    homeArr(){
+      let tempArr = this.$store.state.app.homeArr
+      tempArr.sort((a,b)=>{
+        if(new Date(a.createTime).getTime() && new Date(b.createTime).getTime()){
+          return new Date(a.createTime).getTime() -  new Date(b.createTime).getTime()
+        }else{
+          return -1
+        }
+      })
+      return tempArr
     }
   },
   created() {
@@ -91,6 +110,9 @@ export default {
     this.getMyProject()
   },
   methods: {
+    dealSearch(){
+
+    },
     getMetaContent(id) {
       return this.$store.dispatch("MBProjects/getMetaContent", id)
     },
@@ -113,15 +135,20 @@ export default {
     },
     getAllProject(){
       this.$store.dispatch("MBProjects/getProjectCount", this.$store.state.app.account).then(length => {
+        let tempArr = []
+
         for(let i=1;i<=length;i++){
-            this.getMetaContent(i).then(async res => {
-              const jsonRes = await getIpfs(res)
-              console.log(jsonRes.data)
-              this.allProject.push({
-                id:i,
-                ...jsonRes.data
-              })
+          this.getMetaContent(i).then(async res => {
+            const jsonRes = await getIpfs(res)
+            console.log(jsonRes.data)
+            tempArr.push({
+              id:i,
+              ...jsonRes.data
             })
+            if(i>= length){
+              this.$store.commit("app/SET_HOMEARR",tempArr)
+            }
+          })
         }
 
       })
@@ -213,7 +240,7 @@ export default {
 
     .dao-list {
       display: flex;
-
+      flex-wrap: wrap;
       .dao-item {
         display: flex;
         background: #fff;
@@ -222,6 +249,7 @@ export default {
         padding: 10px;
         cursor: pointer;
         margin-right: 20px;
+        margin: 20px 20px 0 0 ;
         .logo {
           width: 70px;
           img{

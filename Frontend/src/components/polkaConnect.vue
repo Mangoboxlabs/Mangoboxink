@@ -1,7 +1,7 @@
 <template>
   <div class="polkaConnect ">
     <button @click="showWallet" v-show="account.length>1" class="mangobox-button button-connect">
-      {{ account.substr(0, 6) + '...' + account.substr(39, 3) }}
+      {{ account.substr(0, 6) + '...' + account.substr(account.length-3, 3) }}
     </button>
 
     <button size="mini" @click="showWallet" v-show="account.length<1" class="mangobox-button button-connect">
@@ -54,8 +54,14 @@ export default {
     let accountList = await Accounts.accountList();
     this.accountList = accountList.allAccounts
     console.log(accountList)
-    this.$store.commit("app/SET_ACCOUNT", accountList.allAccounts[0].address)
-    sessionStorage.setItem('currentAccount', accountList.allAccounts[0].address);
+    if(accountList.allAccounts&&accountList.allAccounts.length>0){
+      this.$store.commit("app/SET_ACCOUNT", accountList.allAccounts[0].address)
+      sessionStorage.setItem('currentAccount', accountList.allAccounts[0].address);
+    }else{
+      this.$store.commit("app/SET_ACCOUNT", "")
+      sessionStorage.setItem('currentAccount', "");
+    }
+
   },
   methods: {
     loginOut() {

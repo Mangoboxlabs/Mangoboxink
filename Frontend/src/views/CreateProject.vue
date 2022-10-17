@@ -1,14 +1,6 @@
 <template>
   <div class="CreateProject daoContentBg">
-<!--    <div class="mangobox-button" @click="mint">-->
-<!--      mint-->
-<!--    </div>-->
-<!--    <div class="mangobox-button" @click="ownerOf">-->
-<!--      Read-->
-<!--    </div>-->
-<!--    <div class="mangobox-button" @click="launchProjectFor">-->
-<!--      launchProjectFor-->
-<!--    </div>-->
+
     <div class="CreateProject-content">
       <h2>Creat your projects</h2>
       <div class="progress-box">
@@ -35,56 +27,57 @@
       <div class="step-box" v-show="activeStep===0">
         <div class="input-box">
           <div class="name">
-            Project name
+            Project name <strong style="color: #ff0000">*</strong>
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.name"/>
         </div>
         <div class="input-box">
-          <div class="name">
+          <div class="name" >
             Project description
           </div>
-          <textarea name="" cols="50" rows="5"></textarea>
+          <textarea name="" v-model="ipfsObj.description" cols="50" rows="5"></textarea>
         </div>
         <div class="input-box">
           <div class="name">
             Logo
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.icon"/>
         </div>
         <div class="input-box">
           <div class="name">
             Website
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.webside"/>
         </div>
         <div class="input-box">
           <div class="name">
             Twitter handle
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.twitter"/>
         </div>
         <div class="input-box">
           <div class="name">
             Discord
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.discord"/>
         </div>
         <div class="input-box">
           <div class="name">
             Pay button text
           </div>
-          <input type="text"/>
+          <input type="text" v-model="ipfsObj.payButton"/>
         </div>
         <div class="input-box">
           <div class="name">
             Pay disclosure
           </div>
-          <textarea name="" cols="50" rows="5"></textarea>
+          <textarea name="" v-model="ipfsObj.payDisclosure" cols="50" rows="5"></textarea>
         </div>
         <div class="intro" style="opacity: 0.5;">
           Disclose any details to your contributors before they pay your project.
         </div>
-        <button class="mangobox-button" @click="activeStep++">
+
+        <button class="mangobox-button" @click="checkAndUpload">
           SAVE
         </button>
       </div>
@@ -194,6 +187,7 @@
               show-input>
           </el-slider>
         </div>
+
         <button class="mangobox-button" @click="activeStep++">
           SAVE
         </button>
@@ -212,6 +206,9 @@
           Once launched, your first funding cycle can't be changed. You can reconfigure upcoming
           funding cycles according to the project's reconfiguration rules.
         </div>
+        <div class="mangobox-button" @click="activeStep--" style="width: 200px">
+          BACK
+        </div>
         <button class="mangobox-button"  @click="launchProjectFor">
           DEPLOY
         </button>
@@ -224,17 +221,44 @@
 
 <script>
 
+import { uploadJson} from "../utils/ipfsApi";
+
 export default {
   name: "CreateProject",
   data() {
     return {
+      //form
+      ipfsObj:{
+
+      },
+      //end form
       reservedTokens:0,
       payouts: 0,
       fundingCycleduration: null,
-      activeStep: 0
+      activeStep: 0,
+      ipfsStr:"",//uploadipfs json address
+
     }
   },
   methods:{
+    async checkAndUpload(){
+
+      if(!this.ipfsObj.name){
+        this.$eventBus.$emit('message', {
+          message: "Please Input Name",
+          type: "error"
+        })
+        return
+      }
+      const res = await uploadJson({
+        ...this.ipfsObj,
+        createTime: new Date()
+      })
+      this.ipfsStr = res.data.IpfsHash
+      console.log(this.ipfsStr )
+      this.activeStep++
+    },
+
     mint(){
       this.$store.dispatch("MBProjects/mint")
     },
@@ -242,7 +266,53 @@ export default {
       this.$store.dispatch("MBProjects/ownerOf")
     },
     launchProjectFor(){
-      this.$store.dispatch("mbcontroller/launchProjectFor").then(res=>{
+      /*//params
+             AccountId,
+            "asd",
+            {
+                duration: 0,
+                weight: 0,
+                discountRate: 0,
+                ballot:AccountId
+            },
+            0,
+            0,
+            [],
+            [{
+                terminal:AccountId,
+                token:AccountId,
+                distributionLimit:0,
+                distributionLimitCurrency:0,
+                overflowAllowance:0,
+                overflowAllowanceCurrency:0
+            }],
+            [AccountId],
+            ""
+       */
+
+      this.$store.dispatch("MBController/launchProjectFor",{
+        _owner:this.$store.state.app.account,
+        _projectMetadata:this.ipfsStr,
+        _data:{
+          duration: 0,
+          weight: 0,
+          discountRate: 0,
+          ballot:this.$store.state.app.account
+        },
+        _metadata:0,
+        _mustStartAtOrAfter:0,
+        _groupedSplits:[],
+        _fundAccessConstraints: [{
+          terminal:this.$store.state.app.account,
+          token:this.$store.state.app.account,
+          distributionLimit:0,
+          distributionLimitCurrency:0,
+          overflowAllowance:0,
+          overflowAllowanceCurrency:0
+        }],
+        _terminals: ["5Gx2WFYjXC8yv5z2hSpEASobNVQ45d5gccGjRd6AgPMM7qqC"],
+        _memo:""
+      }).then(res=>{
         console.log(res)
         this.$router.push('/')
       })

@@ -6,7 +6,7 @@ import Accounts from "@/api/Account.js";
 
 const value = 0;
 const queryGasLimit = -1;
-const gasLimit = 3000n * 1000000n;
+const gasLimit = 3000n * 100000000n;
 const storageDepositLimit = null;
 
 
@@ -21,7 +21,17 @@ const state = {
 }
 const mutations = {};
 const actions = {
-    async launchProjectFor({rootState}, _owner, _projectMetadata, _data, _metadata, _mustStartAtOrAfter, _groupedSplits, _fundAccessConstraints, _terminals, _memo) {
+    async launchProjectFor({rootState}, {
+        _owner,
+        _projectMetadata,
+        _data,
+        _metadata,
+        _mustStartAtOrAfter,
+        _groupedSplits,
+        _fundAccessConstraints,
+        _terminals,
+        _memo
+    }) {
         await judgeContract(rootState.app.web3)
         const injector = await Accounts.accountInjector();
         const AccountId = await Accounts.accountAddress();
@@ -35,6 +45,27 @@ const actions = {
                 console.log('in a block');
             } else if (result.status.isFinalized) {
                 console.log('finalized');
+            }
+            if (result.isInBlock || result.isFinalized) {
+                result.events
+                    // find/filter for failed events
+                    .filter(({ event }) =>
+                        rootState.app.web3.events.system.ExtrinsicFailed.is(event)
+                    )
+                    // we know that data for system.ExtrinsicFailed is
+                    // (DispatchError, DispatchInfo)
+                    .forEach(({ event: { data: [error, info] } }) => {
+                        if (error.isModule) {
+                            // for module errors, we have the section indexed, lookup
+                            const decoded = state.contract.registry.findMetaError(error.asModule);
+                            const { docs, method, section } = decoded;
+
+                            console.log(`${section}.${method}: ${docs.join(' ')}`);
+                        } else {
+                            // Other, CannotLookup, BadOrigin, no extra info
+                            console.log(error.toString());
+                        }
+                    });
             }
         });
 

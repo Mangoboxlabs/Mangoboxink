@@ -3,14 +3,14 @@
 		import connectContract from "@/api/connectContract"
         import { formatResult} from "@/utils/formatUtils"
         import Accounts from "@/api/Account.js";
-      
-        
+
+
         const value = 0;
         const queryGasLimit = -1;
-        const gasLimit = 3000n * 1000000n;
+        const gasLimit = 3000n * 100000000n;
         const storageDepositLimit = null;
 
-	
+
 		async function  judgeContract(web3){
             if(!state.contract){
                 state.contract = await connectContract(web3, 'MBFundingCycleStore')
@@ -20,14 +20,14 @@
             contract:null
         }
 		const mutations = {};
-	 const actions = { 
+	 const actions = {
 async get ({rootState}, _projectId,_configuration){
 				    await judgeContract(rootState.app.web3)
 				    const AccountId = await Accounts.accountAddress();
                      let data = await state.contract.query.get(AccountId, {value, queryGasLimit},_projectId,_configuration)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async latestConfiguredOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
@@ -35,7 +35,7 @@ async latestConfiguredOf ({rootState}, _projectId){
                      let data = await state.contract.query.latestConfiguredOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async queuedOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
@@ -43,7 +43,7 @@ async queuedOf ({rootState}, _projectId){
                      let data = await state.contract.query.queuedOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async currentOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
@@ -51,7 +51,7 @@ async currentOf ({rootState}, _projectId){
                      let data = await state.contract.query.currentOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async currentBallotStateOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
@@ -59,7 +59,7 @@ async currentBallotStateOf ({rootState}, _projectId){
                      let data = await state.contract.query.currentBallotStateOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async configureFor ({rootState}, _projectId,_weight,_metadata,_mustStartAtOrAfter){
                         await judgeContract(rootState.app.web3)
@@ -77,7 +77,7 @@ async configureFor ({rootState}, _projectId,_weight,_metadata,_mustStartAtOrAfte
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 }
 			export default {
@@ -86,4 +86,3 @@ async configureFor ({rootState}, _projectId,_weight,_metadata,_mustStartAtOrAfte
 			state,
 			actions
 		}
-	

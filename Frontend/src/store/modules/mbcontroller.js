@@ -1,10 +1,11 @@
+/* eslint-disable*/
 import connectContract from "../../api/connectContract"
 import {formatResult,dealResult} from "@/utils/formatUtils"
 import Accounts from "../../api/Account.js";
 const state = {
     contract:null
 }
-const gasLimit = 3000n * 1000000n;
+const gasLimit = 3000n * 100000000n;
 const storageDepositLimit = null;
 
 async function  judgeContract(web3){
@@ -51,6 +52,27 @@ const actions = {
             ).signAndSend(AccountId, { signer: injector.signer }, (result) => {
             console.error(result)
             dealResult(result,"",timeMemory)
+            if (result.isInBlock || result.isFinalized) {
+                result.events
+                    // find/filter for failed events
+                    .filter(({ event }) =>
+                        rootState.app.web3.events.system.ExtrinsicFailed.is(event)
+                    )
+                    // we know that data for system.ExtrinsicFailed is
+                    // (DispatchError, DispatchInfo)
+                    .forEach(({ event: { data: [error, info] } }) => {
+                        if (error.isModule) {
+                            // for module errors, we have the section indexed, lookup
+                            const decoded = state.contract.registry.findMetaError(error.asModule);
+                            const { docs, method, section } = decoded;
+
+                            console.log(`${section}.${method}: ${docs.join(' ')}`);
+                        } else {
+                            // Other, CannotLookup, BadOrigin, no extra info
+                            console.log(error.toString());
+                        }
+                    });
+            }
         })
         data = formatResult(data);
 

@@ -3,14 +3,14 @@
 		import connectContract from "@/api/connectContract"
         import { formatResult} from "@/utils/formatUtils"
         import Accounts from "@/api/Account.js";
-      
-        
+
+
         const value = 0;
         const queryGasLimit = -1;
-        const gasLimit = 3000n * 1000000n;
+        const gasLimit = 3000n * 100000000n;
         const storageDepositLimit = null;
 
-	
+
 		async function  judgeContract(web3){
             if(!state.contract){
                 state.contract = await connectContract(web3, 'MBPrices')
@@ -20,14 +20,14 @@
             contract:null
         }
 		const mutations = {};
-	 const actions = { 
+	 const actions = {
 async priceFor ({rootState}, _currency,_base,_decimals){
 				    await judgeContract(rootState.app.web3)
 				    const AccountId = await Accounts.accountAddress();
                      let data = await state.contract.query.priceFor(AccountId, {value, queryGasLimit},_currency,_base,_decimals)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async addFeedFor ({rootState}, _currency,_base,_feed){
                         await judgeContract(rootState.app.web3)
@@ -45,7 +45,7 @@ async addFeedFor ({rootState}, _currency,_base,_feed){
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 }
 			export default {
@@ -54,4 +54,3 @@ async addFeedFor ({rootState}, _currency,_base,_feed){
 			state,
 			actions
 		}
-	

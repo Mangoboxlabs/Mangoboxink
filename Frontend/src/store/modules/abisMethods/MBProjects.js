@@ -6,7 +6,7 @@ import Accounts from "@/api/Account.js";
 
 const value = 0;
 const queryGasLimit = -1;
-const gasLimit = 3000n * 1000000n;
+const gasLimit = 3000n * 100000000n;
 const storageDepositLimit = null;
 
 
@@ -40,7 +40,6 @@ const actions = {
 
     },
     async getMetaContent({rootState}, _project_id) {
-        console.log(_project_id+ 111111111111)
         await judgeContract(rootState.app.web3)
         const AccountId = await Accounts.accountAddress();
         let data = await state.contract.query.getMetaContent(AccountId, {value, queryGasLimit}, _project_id)
