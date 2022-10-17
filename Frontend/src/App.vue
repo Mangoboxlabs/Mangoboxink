@@ -2,7 +2,11 @@
   <div id="app">
     <div class="message-box">
       <div v-for="(item,index)  in messageList" :class="{'error': item.type=='error','success':item.type=='success'}" :key="index" class="message animate__animated  animate__backInRight" >
-        {{ item.message }}
+        <img v-show="item.type=='success'" src="./imgs/success.png" alt="">
+        <img v-show="item.type=='error'" src="./imgs/error.png" alt="">
+        <p>
+          {{ item.message }}
+        </p>
       </div>
     </div>
     <MangoboxReader v-show="$route.path!='/Details'"></MangoboxReader>
@@ -43,8 +47,9 @@ export default {
   top: 60px;
   z-index: 10;
   .message{
+
     width: 300px;
-    padding: 10px;
+    padding: 10px 10px 0 40px;
     min-height: 60px;
     word-break: break-word;
     color: #999;
@@ -53,12 +58,19 @@ export default {
     border-radius: 10px;
     background: #fff;
     font-size: 16px;
+    position: relative;
+    img{
+      width: 20px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+    }
     &.error{
-      background: #fd5454;
+      background: #f66b2f;
       color: #fff;
     }
     &.success{
-      background: #9fd948;
+      background: #2AAA00;
       color: #fff;
     }
   }

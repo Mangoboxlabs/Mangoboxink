@@ -20,11 +20,11 @@ const ConnectContract = async (api,type,address) =>{
             abi:require('../abi/mbdirectory.json')
         },
         MBERC20PaymentTerminal:{
-            address:'5HF3u2qVyH5svp3tMoBszEtsHMEBaYx3mtA1nS6pyhva75PH',
+            address:'5Gx2WFYjXC8yv5z2hSpEASobNVQ45d5gccGjRd6AgPMM7qqC',
             abi:require('../abi/MBERC20PaymentTerminal.json')
         },
         MBSingleTokenPaymentTerminalStore: {
-            address:'5Dss9szPEqk9RJYqKSMKL1cYLkgxio6RWQbvQnfSXNixTHK7',
+            address:'5FP3znY5SuthDe6xNE7oMyV5TPXdCsV6RBCNRRdCfRFdGuuy',
             abi:require('../abi/MBSingleTokenPaymentTerminalStore.json')
         },
         MBSplitsStore: {
@@ -40,7 +40,7 @@ const ConnectContract = async (api,type,address) =>{
             abi:require('../abi/MBTokenStore.json')
         },
         MBProjects: {
-            address:'5G4Ujh8PvnMa2bh1HBeAqFtM5bfubDf5rKH6UYT1Jjsd6yR1',
+            address:'5CLiYJnNrEeh6xdTtegSLvV3LapG91PvNoByUK946XqsChte',
             abi:require('../abi/MBProjects.json')
         },
         MBFundingCycleStore: {
@@ -48,11 +48,11 @@ const ConnectContract = async (api,type,address) =>{
             abi: require('../abi/MBFundingCycleStore.json')
         },
         MBController:{
-            address:'5FT38C9gwrxik3rhPdJwVk4XWYFaD6BKPXWfzzbwCUjQeWcE',
+            address:'5GuDNJ8FCGCxWEtzX2QPhzdFPjcW4tDAXv2no5dJBSsvJwas',
             abi:require('../abi/MBController.json')
         },
         mbcontroller:{
-            address:'5FT38C9gwrxik3rhPdJwVk4XWYFaD6BKPXWfzzbwCUjQeWcE',
+            address:'5GuDNJ8FCGCxWEtzX2QPhzdFPjcW4tDAXv2no5dJBSsvJwas',
             abi:require('../abi/MBController.json')
         }
     }

@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x75a222ad6929baa8fa37b604a532d896436273683550e7bad7ac27d4a2a76c3d",
+    "hash": "0xa02f01ef617f52fef1a2826c144de60de548d61c634f9139065194eee00833b9",
     "language": "ink! 3.0.0-rc5",
     "compiler": "rustc 1.61.0-nightly"
   },
@@ -189,6 +189,52 @@
             "type": 3
           },
           "selector": "0xb536207f"
+        },
+        {
+          "args": [
+            {
+              "name": "_project_id",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 3
+              }
+            }
+          ],
+          "docs": [
+            " Returns the metadata of the token."
+          ],
+          "mutates": false,
+          "name": [
+            "get_meta_content"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "String"
+            ],
+            "type": 18
+          },
+          "selector": "0xa1b1ba93"
+        },
+        {
+          "args": [],
+          "docs": [
+            " Returns the count of the projects."
+          ],
+          "mutates": false,
+          "name": [
+            "get_project_count"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u64"
+            ],
+            "type": 3
+          },
+          "selector": "0x5e97f98d"
         },
         {
           "args": [

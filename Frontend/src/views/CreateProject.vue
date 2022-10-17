@@ -242,7 +242,11 @@ export default {
       this.$store.dispatch("MBProjects/ownerOf")
     },
     launchProjectFor(){
-      this.$store.dispatch("mbcontroller/launchProjectFor")
+      this.$store.dispatch("mbcontroller/launchProjectFor").then(res=>{
+        console.log(res)
+        this.$router.push('/')
+      })
+
     }
   }
 }

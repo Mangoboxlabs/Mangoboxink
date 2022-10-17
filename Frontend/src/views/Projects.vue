@@ -2,13 +2,11 @@
   <div class="ProjectsView">
     <div class="content-header">
       <div class="nav-list">
-        <div class="nav-item" @click="activeIndex=0" :class="{'active':activeIndex==0}">
-          Trending
-        </div>
+
         <div class="nav-item" @click="activeIndex=1" :class="{'active':activeIndex==1}">
           My ProjectsView
         </div>
-        <div class="nav-item" @click="activeIndex=2" :class="{'active':activeIndex==2}">
+        <div class="nav-item" @click="activeIndex=2" :class="{'active':activeIndex==2}" style="padding: 0 20px">
           All
         </div>
       </div>
@@ -28,23 +26,42 @@
         </button>
       </div>
     </div>
-    <div class="ProjectsView-content trending">
-      <h2> ProjectsView</h2>
+    <div class="ProjectsView-content my" v-show="activeIndex==1">
+      <h2> My ProjectsView</h2>
       <div class="dao-list">
 
-        <div class="dao-item" @click="$router.push({path:'/Details'})">
+        <div class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in myProject" :key="index">
           <div class="logo">
-            <img src="" alt=""/>
+            <img :src="item.icon" alt=""/>
           </div>
           <div class="right">
             <div class="name">
-              MangoBox
+              {{item.name}}
             </div>
             <div class="time">
-              Last 7days <span>+10%</span>
+              {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
             </div>
-            <div class="payments">
-              28payments
+          </div>
+        </div>
+      </div>
+      <div class="more mangobox-button">
+        More trending ProjectsView
+      </div>
+    </div>
+    <div class="ProjectsView-content my" v-show="activeIndex==2">
+      <h2> My ProjectsView</h2>
+      <div class="dao-list">
+
+        <div class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in allProject" :key="index">
+          <div class="logo">
+            <img :src="item.icon" alt=""/>
+          </div>
+          <div class="right">
+            <div class="name">
+              {{item.name}}
+            </div>
+            <div class="time">
+              {{ moment(item.createTime).format('MMMM Do YYYY, h:mm:ss a')}}
             </div>
           </div>
         </div>
@@ -57,20 +74,56 @@
 </template>
 
 <script>
+import {getIpfs} from "../utils/ipfsApi";
+import moment from "moment"
 export default {
   name: "ProjectsView",
   data() {
     return {
-      activeIndex: 0
+      moment:moment,
+      activeIndex: 1,
+      myProject:[],
+      allProject:[]
     }
   },
   created() {
-    this.getOwnerProjects()
+    this.getAllProject()
+    this.getMyProject()
   },
   methods: {
-    getOwnerProjects() {
+    getMetaContent(id) {
+      return this.$store.dispatch("MBProjects/getMetaContent", id)
+    },
+    getMyProject(){
+      // get IdArr => get hash => get json
       this.$store.dispatch("MBController/getOwnerProjects", this.$store.state.app.account).then(res => {
         console.log(res)
+        res.forEach(id => {
+          this.getMetaContent(id).then(async res => {
+            const jsonRes = await getIpfs(res)
+            console.log(jsonRes.data)
+            this.myProject.push({
+              id:id,
+              ...jsonRes.data
+            })
+          })
+        })
+
+      })
+    },
+    getAllProject(){
+      this.$store.dispatch("MBProjects/getProjectCount", this.$store.state.app.account).then(length => {
+        for(let i=1;i<=length;i++){
+            this.getMetaContent(i).then(async res => {
+              const jsonRes = await getIpfs(res)
+              console.log(jsonRes.data)
+              this.allProject.push({
+                id:i,
+                ...jsonRes.data
+              })
+            })
+        }
+
       })
     }
   }
@@ -162,16 +215,18 @@ export default {
       display: flex;
 
       .dao-item {
-
         display: flex;
         background: #fff;
         border-radius: 10px;
         box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.05);
         padding: 10px;
         cursor: pointer;
-
+        margin-right: 20px;
         .logo {
           width: 70px;
+          img{
+            width: 90%;
+          }
         }
 
         .right {
