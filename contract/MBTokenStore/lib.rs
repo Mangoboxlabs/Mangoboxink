@@ -106,9 +106,6 @@ mod mbTokenStore {
             @dev
             Deploys a project's ERC-20 token contract.
 
-            @dev
-            Only a project's current controller can issue its token.
-
             @param _projectId The ID of the project being issued tokens.
             @param _name The ERC-20's name.
             @param _symbol The ERC-20's symbol.
@@ -135,6 +132,19 @@ mod mbTokenStore {
             self.tokenOf.insert(_projectId,contract_addr);
             self.projectOf.insert(contract_addr,_projectId);
             contract_addr
+        }
+        /**
+         @notice
+           Get the token address by project id
+           @param _projectId The ID of the project being issued tokens.
+           @return token The token address.
+      */
+        #[ink(message)]
+        pub fn getProjectTokenAddress(
+            &self,
+            _projectId:u64
+        ) ->AccountId {
+            self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone()
         }
         /**
            @notice
