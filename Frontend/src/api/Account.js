@@ -3,7 +3,8 @@ import {
     web3Enable,
     web3FromAddress
 } from '@polkadot/extension-dapp';
-
+import {eventBus} from "../utils/eventBus"
+let showErr = false
 const accountList = async () => {
     const allInjected = await web3Enable('MangoBox');
 
@@ -41,7 +42,21 @@ const accountAddress = async () =>{
         accountAddress = Accounts[0].address;
     } else {
         let accounts = await accountList
-        accountAddress = accounts.allAccounts[0].address;
+        if(accounts&&accounts.allAccounts&&accounts.allAccounts.length>0){
+            accountAddress = accounts.allAccounts[0].address;
+        }else{
+            if(!showErr){
+                showErr = true
+                eventBus.$emit('message', {
+                    type: "error",
+                    message: "Please connect"
+                })
+                setTimeout(()=>{
+                    showErr = false
+                },1000)
+            }
+
+        }
 
     }
     return accountAddress;

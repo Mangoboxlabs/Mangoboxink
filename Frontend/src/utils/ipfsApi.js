@@ -49,7 +49,8 @@ function Utf8ArrayToStr(array) {
 }
 
 export async function getIpfs(strHash){
-    if(strHash&&strHash.length>5){
+    console.log(strHash)
+    if(strHash&&strHash.length>5&&typeof strHash == "string"){
         let result = await axios.get(`https://cloudflare-ipfs.com/ipfs/${strHash}#x-ipfs-companion-no-redirect`,{})
 
         return result

@@ -20,7 +20,7 @@ const ConnectContract = async (api,type,address) =>{
             abi:require('../abi/mbdirectory.json')
         },
         MBERC20PaymentTerminal:{
-            address:'5Gx2WFYjXC8yv5z2hSpEASobNVQ45d5gccGjRd6AgPMM7qqC',
+            address:'5H45kLN77gcaPrYofqXNMuX1zSVSpgfzAHjjUfntaT1rt9iL',
             abi:require('../abi/MBERC20PaymentTerminal.json')
         },
         MBSingleTokenPaymentTerminalStore: {
