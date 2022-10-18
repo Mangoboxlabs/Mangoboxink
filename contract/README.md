@@ -1,24 +1,52 @@
 # RainbowDAO-Protocol-ink-Phase-2
 ## Contract introduction
-- dao_base: This contract is used to set and read the basic information of Dao.
-- dao_category:This contract is used to control the type of Dao. Various types can be set here, such as alliance, mother child and independence.
-- dao_factory:This is the factory contract of Dao, which is used to generate all kinds of Dao
-- dao_manager:At this time, the contract of Dao is only used to manage all kinds of things of Dao. And initialize various other peripheral contracts. It can be said that this is the core of Dao.
-- dao_proposal:This is the governance contract of Dao, which is used to vote and manage the size of Dao transactions.
-- dao_setting:This is the basic setting contract of Dao, which controls the joining restrictions of various Dao.
-- dao_users:It controls the departments and members of the whole Dao.
-- dao_vault:This is the vault of Dao, which controls the token transfer and record of Dao.
-- template_manager: The template of Dao is controlled here, which can be selected when generating Dao.
+- MBTokenStore: Manages token minting and burning for all projects.
+- MBFundingCycleStore:Manages funding cycle configurations and scheduling.
+- MBProjects:Manages and tracks ownership over projects, which are represented as ERC-721 tokens.The protocol uses this to enforce permissions needed to access several project-oriented transactions.
+- MBSplitsStore:Stores information about how arbitrary distributions should be split. The surface contracts currently use these to split up payout distributions and reserved token distributions.
+- MBPrices:Manages and normalizes price feeds of various currencies.
+- MBOperatorStore:Stores operator permissions for all addresses. Addresses can give permissions to any other address to take specific indexed actions on their behalf, while confining the permissions to an arbitrary number of domain namespaces.
+- MBDirectory:Keeps a reference of which terminal contracts each project is currently accepting funds through, and which controller contract is managing each project's tokens and funding cycles.
+- MBController:Stitches together funding cycles and project tokens, allowing for restricted control, accounting, and token management.
+- MBSingleTokenPaymentTerminalStore: Manages accounting data on behalf of payment terminals that manage balances of only one token type.
+- MBERC20PaymentTerminal:Manages the inflows and outflows of an ERC-20 token.
+- MBToken:An ERC-20 token that can be used by a project in the `MBTokenStore`.
+
 
 
 
 ## Installing
+### Before you begin
+```
+sudo apt install build-essential
+```
 
+At a minimum, you need the following packages before you install Rust:
+
+```
+clang curl git make
+```
+### Install required packages and Rust
+```
+sudo apt install --assume-yes git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
+```
+
+Download the rustup installation program and use it to install Rust by running the following command:
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+Update your current shell to include Cargo by running the following command:
+```
+source $HOME/.cargo/env
+```
 Please make sure that you have these prerequisites installed on your computer:
 
 ```bash
+rustup default stable
+rustup update
+rustup update nightly
 rustup component add rust-src --toolchain nightly
-rustup target add wasm32-unknown-unknown --toolchain stable
+rustup target add wasm32-unknown-unknown --toolchain nightly
 ```
 
 Then you have to install ink! command line utility which will make setting up Substrate smart contract projects easier:
@@ -38,8 +66,8 @@ npm install -g binaryen
 First of all you need to clone the repository, run:
 
 ```bash
-git clone https://github.com/RainbowcityFoundation/RainbowDAO-Protocol-Ink-milestone_2.git
-cd RainbowDAO-Protocol-Ink-milestone_2
+git clone https://github.com/Mangoboxlabs/Mangoboxink.git
+cd Mangoboxink/contract
 ```
 
 Then, You can enter any folder and enter the following command.
