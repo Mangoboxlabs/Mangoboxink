@@ -6,7 +6,7 @@ import Accounts from "@/api/Account.js";
 
 const value = 0;
 const queryGasLimit = -1;
-const gasLimit = 3000n * 1000000n;
+const gasLimit = 3000n * 100000000n;
 const storageDepositLimit = null;
 
 

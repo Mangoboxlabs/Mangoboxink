@@ -174,10 +174,11 @@ export default {
       })
     },
     balanceOf() {
+
       this.$store.dispatch("MBTokenStore/balanceOf", {
-        _holder: this.$store.state.app.account, _projectId: this.projectId
+        _holder: "5DyQtzR89WGjAchokxH5Ntc2mxC9ruaUGi4nKYZCSq6VUMg1", _projectId: this.projectId
       }).then(res => {
-        console.log(res)
+        this.volume = res
       })
     },
     issueTokenFor() {
@@ -187,13 +188,14 @@ export default {
     },
     mintFor() {
       this.$store.dispatch("MBTokenStore/mintFor", {
-        _holder: this.$store.state.app.account, _projectId: this.projectId, _amount: 100000, _preferClaimedTokens: false
+        _holder: "5DyQtzR89WGjAchokxH5Ntc2mxC9ruaUGi4nKYZCSq6VUMg1", _projectId: this.projectId, _amount: 100000000000, _preferClaimedTokens: false
       })
     }
   },
   created() {
-    console.log(this.$route.query)
     this.projectId = this.$route.query.id
+    console.log(    this.projectId
+    )
     this.getBalanceOf(this.projectId).then(res => {
       this.volume = res
     })
@@ -1667,7 +1669,6 @@ export default {
       autoFit: true,
       height: 500,
     });
-    chart.data(data)
     chart.scale({
       Date: {
         tickCount: 10

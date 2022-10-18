@@ -3,14 +3,14 @@
 		import connectContract from "@/api/connectContract"
         import { formatResult} from "@/utils/formatUtils"
         import Accounts from "@/api/Account.js";
-      
-        
+
+
         const value = 0;
         const queryGasLimit = -1;
-        const gasLimit = 3000n * 1000000n;
+        const gasLimit = 3000n * 100000000n;
         const storageDepositLimit = null;
 
-	
+
 		async function  judgeContract(web3){
             if(!state.contract){
                 state.contract = await connectContract(web3, 'MBERC20PaymentTerminal')
@@ -20,14 +20,14 @@
             contract:null
         }
 		const mutations = {};
-	 const actions = { 
+	 const actions = {
 async currentEthOverflowOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
 				    const AccountId = await Accounts.accountAddress();
                      let data = await state.contract.query.currentEthOverflowOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async heldFeesOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
@@ -35,7 +35,7 @@ async heldFeesOf ({rootState}, _projectId){
                      let data = await state.contract.query.heldFeesOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async pay ({rootState}, _projectId,_amount,_token,_beneficiary,_minReturnedTokens,_preferClaimedTokens,_memo,_metadata){
                         await judgeContract(rootState.app.web3)
@@ -53,7 +53,7 @@ async pay ({rootState}, _projectId,_amount,_token,_beneficiary,_minReturnedToken
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async redeemTokensOf ({rootState}, _holder,_projectId,_tokenCount,_token,_minReturnedTokens,_beneficiary,_memo){
                         await judgeContract(rootState.app.web3)
@@ -71,7 +71,7 @@ async redeemTokensOf ({rootState}, _holder,_projectId,_tokenCount,_token,_minRet
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async distributePayoutsOf ({rootState}, _projectId,_amount,_currency,_token,_minReturnedTokens,_memo){
                         await judgeContract(rootState.app.web3)
@@ -89,7 +89,7 @@ async distributePayoutsOf ({rootState}, _projectId,_amount,_currency,_token,_min
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async useAllowanceOf ({rootState}, _projectId,_amount,_currency,_token,_minReturnedTokens,_beneficiary,_memo){
                         await judgeContract(rootState.app.web3)
@@ -107,7 +107,7 @@ async useAllowanceOf ({rootState}, _projectId,_amount,_currency,_token,_minRetur
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async addToBalanceOf ({rootState}, _projectId,_amount,_token,_memo,_metadata){
                         await judgeContract(rootState.app.web3)
@@ -125,7 +125,7 @@ async addToBalanceOf ({rootState}, _projectId,_amount,_token,_memo,_metadata){
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 }
 			export default {
@@ -134,4 +134,3 @@ async addToBalanceOf ({rootState}, _projectId,_amount,_token,_memo,_metadata){
 			state,
 			actions
 		}
-	

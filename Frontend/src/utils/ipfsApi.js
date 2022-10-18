@@ -49,10 +49,14 @@ function Utf8ArrayToStr(array) {
 }
 
 export async function getIpfs(strHash){
+    if(strHash&&strHash.length>5){
+        let result = await axios.get(`https://cloudflare-ipfs.com/ipfs/${strHash}#x-ipfs-companion-no-redirect`,{})
 
-    let result = await axios.get(`https://cloudflare-ipfs.com/ipfs/${strHash}#x-ipfs-companion-no-redirect`,{})
+        return result
+    }else{
+        return false
+    }
 
-    return result
 }
 export async function uploadJson(jsonData){
      let result = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', jsonData, {

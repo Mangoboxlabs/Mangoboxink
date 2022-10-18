@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0xdc2085ab56f771d24a4d97a7d84b852449c6609e0d1fc35a232bd0a60c75e63e",
+    "hash": "0x639cba0780e63b5a57477bab0e697e466ac6c9bc75934f4fcc74ff692b4c3bd0",
     "language": "ink! 3.0.0-rc5",
     "compiler": "rustc 1.61.0-nightly"
   },
@@ -141,7 +141,7 @@
             }
           ],
           "docs": [
-            "\n          @notice\n            Issues a project's ERC-20 tokens that'll be used when claiming tokens.\n\n            @dev\n            Deploys a project's ERC-20 token contract.\n\n            @dev\n            Only a project's current controller can issue its token.\n\n            @param _projectId The ID of the project being issued tokens.\n            @param _name The ERC-20's name.\n            @param _symbol The ERC-20's symbol.\n\n            @return token The token that was issued.\n       "
+            "\n          @notice\n            Issues a project's ERC-20 tokens that'll be used when claiming tokens.\n\n            @dev\n            Deploys a project's ERC-20 token contract.\n\n            @param _projectId The ID of the project being issued tokens.\n            @param _name The ERC-20's name.\n            @param _symbol The ERC-20's symbol.\n\n            @return token The token that was issued.\n       "
           ],
           "mutates": true,
           "name": [
@@ -155,6 +155,34 @@
             "type": 0
           },
           "selector": "0x58884c3c"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 6
+              }
+            }
+          ],
+          "docs": [
+            "\n         @notice\n           Get the token address by project id\n           @param _projectId The ID of the project being issued tokens.\n           @return token The token address.\n      "
+          ],
+          "mutates": false,
+          "name": [
+            "getProjectTokenAddress"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "AccountId"
+            ],
+            "type": 0
+          },
+          "selector": "0xf856b1e0"
         },
         {
           "args": [

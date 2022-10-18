@@ -3,14 +3,14 @@
 		import connectContract from "@/api/connectContract"
         import { formatResult} from "@/utils/formatUtils"
         import Accounts from "@/api/Account.js";
-      
-        
+
+
         const value = 0;
         const queryGasLimit = -1;
-        const gasLimit = 3000n * 1000000n;
+        const gasLimit = 3000n * 100000000n;
         const storageDepositLimit = null;
 
-	
+
 		async function  judgeContract(web3){
             if(!state.contract){
                 state.contract = await connectContract(web3, 'MBDirectory')
@@ -20,14 +20,14 @@
             contract:null
         }
 		const mutations = {};
-	 const actions = { 
+	 const actions = {
 async terminalsOf ({rootState}, _projectId){
 				    await judgeContract(rootState.app.web3)
 				    const AccountId = await Accounts.accountAddress();
                      let data = await state.contract.query.terminalsOf(AccountId, {value, queryGasLimit},_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async primaryTerminalOf ({rootState}, _token,_projectId){
 				    await judgeContract(rootState.app.web3)
@@ -35,7 +35,7 @@ async primaryTerminalOf ({rootState}, _token,_projectId){
                      let data = await state.contract.query.primaryTerminalOf(AccountId, {value, queryGasLimit},_token,_projectId)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async isTerminalOf ({rootState}, _projectId,_terminal){
 				    await judgeContract(rootState.app.web3)
@@ -43,7 +43,7 @@ async isTerminalOf ({rootState}, _projectId,_terminal){
                      let data = await state.contract.query.isTerminalOf(AccountId, {value, queryGasLimit},_projectId,_terminal)
                     data = formatResult(data);
                     return data
-				
+
 			},
 async setControllerOf ({rootState}, _projectId,_controller){
                         await judgeContract(rootState.app.web3)
@@ -61,7 +61,7 @@ async setControllerOf ({rootState}, _projectId,_controller){
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async setTerminalsOf ({rootState}, _projectId,_terminals){
                         await judgeContract(rootState.app.web3)
@@ -79,7 +79,7 @@ async setTerminalsOf ({rootState}, _projectId,_terminals){
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 async setPrimaryTerminalOf ({rootState}, _projectId,_token,_terminal){
                         await judgeContract(rootState.app.web3)
@@ -97,7 +97,7 @@ async setPrimaryTerminalOf ({rootState}, _projectId,_token,_terminal){
                         console.log('finalized');
                     }
                 });
-				
+
 			},
 }
 			export default {
@@ -106,4 +106,3 @@ async setPrimaryTerminalOf ({rootState}, _projectId,_token,_terminal){
 			state,
 			actions
 		}
-	
