@@ -11,6 +11,7 @@ mod MBERC20PaymentTerminal {
     use MBSingleTokenPaymentTerminalStore::MBSingleTokenPaymentTerminalStore;
     use MBPrices::MBPrices;
     use MBToken::MBToken;
+    use MBTokenStore::MBTokenStore;
     use MBProjects::MBProjects;
     use ink_prelude::vec::Vec;
     use alloc::string::String;
@@ -57,9 +58,26 @@ mod MBERC20PaymentTerminal {
          decimals:u128,
          currency:u128
     }
+    #[derive(Debug,scale::Encode, scale::Decode, Clone, SpreadLayout, PackedLayout)]
+    #[cfg_attr(
+    feature = "std",
+    derive(scale_info::TypeInfo, ink_storage::traits::StorageLayout)
+    )]
+    /**
+      @member value The amount of tokens that was paid, as a fixed point number.
+      @member decimals The number of decimals included in the value fixed point number.
+      @member currency The expected currency of the value.
+    */
+    pub struct MBPayRecord {
+        value:u128,
+        payer:AccountId,
+        time:u64
+    }
     #[ink(storage)]
     pub struct MBERC20PaymentTerminal {
         _heldFeesOf:StorageHashMap<u64, Vec<MBFee>>,
+        payRecords:StorageHashMap<u64, Vec<MBPayRecord>>,
+        claimAmount:StorageHashMap<u64, u128>,
         isFeelessAddress:StorageHashMap<AccountId, bool>,
         projects:AccountId,
         directory:AccountId,
@@ -68,6 +86,7 @@ mod MBERC20PaymentTerminal {
         store:AccountId,
         feeGauge:AccountId,
         token:AccountId,
+        tokenStore:AccountId,
         baseWeightCurrency:u64,
         payoutSplitsGroup:u128,
         decimals:u128,
@@ -83,9 +102,12 @@ mod MBERC20PaymentTerminal {
             _prices:AccountId,
             _store:AccountId,
             _token:AccountId,
+            _tokenStore:AccountId,
         ) -> Self {
             Self {
                 _heldFeesOf:Default::default(),
+                payRecords:Default::default(),
+                claimAmount:Default::default(),
                 isFeelessAddress:Default::default(),
                 projects:_projects,
                 directory:_directory,
@@ -94,6 +116,7 @@ mod MBERC20PaymentTerminal {
                 store:_store,
                 feeGauge:Default::default(),
                 token:_token,
+                tokenStore:_tokenStore,
                 baseWeightCurrency:0,
                 payoutSplitsGroup:0,
                 decimals:0,
@@ -265,6 +288,60 @@ mod MBERC20PaymentTerminal {
             return self._useAllowanceOf(_projectId, _amount, _currency, _minReturnedTokens, _beneficiary, _memo);
         }
         /**
+          @notice
+          Get pay records by projects
+          @param _projectId The ID of the project to which the funds received belong.
+        */
+        #[ink(message)]
+        pub fn getPayRecords(
+            &self,
+            _projectId:u64
+        ) ->Vec<MBPayRecord> {
+            self.payRecords.get(&_projectId).unwrap_or(&Vec::new()).clone()
+        }
+        /**
+        @notice
+        Get pay amount by projects
+        @param _projectId The ID of the project to which the funds received belong.
+      */
+        #[ink(message)]
+        pub fn getPayAmount(
+            &self,
+            _projectId:u64
+        )->u128{
+            let payRecord = self.getPayRecords(_projectId);
+            let mut amount = 0;
+            for i in payRecord.iter() {
+                amount+=i.value
+            }
+            amount
+        }
+        /**
+           @notice
+           Get distributeAmount  by projects
+           @param _projectId The ID of the project to which the funds received belong.
+         */
+        #[ink(message)]
+        pub fn distributeAmount(
+            &self,
+            _projectId:u64
+        )->u128{
+            return self.getPayAmount(_projectId) - self.claimAmount.get(&_projectId).unwrap_or(&0).clone()
+        }
+        #[ink(message)]
+        pub fn claimDistributeAmount(
+            &mut self,
+            _projectId:u64,
+            _amount:u128
+        )->bool{
+            assert!(_amount <= self.distributeAmount(_projectId),"Not enough");
+            let mut amount = self.claimAmount.get(&_projectId).unwrap_or(&0).clone();
+            amount+=_amount;
+            self.claimAmount.insert(_projectId,amount);
+            self._transferFrom(Self::env().account_id(),Self::env().caller(), _amount);
+            true
+        }
+        /**
         @notice
         Receives funds belonging to the specified project.
 
@@ -400,6 +477,10 @@ mod MBERC20PaymentTerminal {
             _memo:String,
         )-> u128{
             if self.store == AccountId::default() { return 0}
+            if _tokenCount > 0 {
+                let mut tokenStore:MBTokenStore = ink_env::call::FromAccountId::from_account_id(self.tokenStore);
+                let _ret = tokenStore.burnFrom(_holder, _projectId, _tokenCount, false);
+            }
             let mut store_instance: MBSingleTokenPaymentTerminalStore = ink_env::call::FromAccountId::from_account_id(self.store);
            let (_fundingCycle, reclaimAmount, _delegate, _memo) = store_instance.recordRedemptionFor(
                 _holder,
@@ -407,7 +488,7 @@ mod MBERC20PaymentTerminal {
                 _tokenCount,
                 _memo,
             );
-            self._transferFrom(Self::env().account_id(), _beneficiary, reclaimAmount);
+            // self._transferFrom(Self::env().account_id(), _beneficiary, reclaimAmount);
             return  reclaimAmount;
         }
         /**
@@ -458,7 +539,14 @@ mod MBERC20PaymentTerminal {
             _memo:String,
             _metadata:String
         )  {
-
+            let mut records = self.payRecords.get(&_projectId).unwrap_or(&Vec::new()).clone();
+            let record = MBPayRecord{
+                value:_amount,
+                payer:_payer,
+                time:Self::env().block_timestamp()
+            };
+            records.push(record);
+            self.payRecords.insert(_projectId,records);
             let mut store_instance: MBSingleTokenPaymentTerminalStore = ink_env::call::FromAccountId::from_account_id(self.store);
             store_instance.recordPaymentFrom(
                 _payer,
@@ -469,6 +557,10 @@ mod MBERC20PaymentTerminal {
                 _memo,
                 _metadata
             );
+            if _amount > 0 {
+                let mut tokenStore:MBTokenStore = ink_env::call::FromAccountId::from_account_id(self.tokenStore);
+                tokenStore.mintFor(_beneficiary, _projectId, _amount, _preferClaimedTokens);
+            }
         }
     }
 
