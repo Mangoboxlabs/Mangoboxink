@@ -64,13 +64,13 @@ const actions = {
             //params
             _projectId, _amount, _token, _beneficiary, _minReturnedTokens, _preferClaimedTokens, _memo, _metadata
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            dealResult(result, rootState.app.web3, state.contract)
+            dealResult(result, rootState.app.web3, state.contract, "pay")
         }).catch(err=>{
             reportErr(err)
         });
 
     },
-    async redeemTokensOf({rootState}, _holder, _projectId, _tokenCount, _token, _minReturnedTokens, _beneficiary, _memo) {
+    async redeemTokensOf({rootState}, {_holder, _projectId, _tokenCount, _token, _minReturnedTokens, _beneficiary, _memo}) {
         await judgeContract(rootState.app.web3)
         const injector = await Accounts.accountInjector();
         const AccountId = await Accounts.accountAddress();
@@ -80,13 +80,10 @@ const actions = {
             //params
             _holder, _projectId, _tokenCount, _token, _minReturnedTokens, _beneficiary, _memo
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            if (result.status.isInBlock) {
-                console.log('in a block');
-            } else if (result.status.isFinalized) {
-                console.log('finalized');
-            }
+            dealResult(result, rootState.app.web3, state.contract, "Burn")
+        }).catch(err=>{
+            reportErr(err)
         });
-
     },
     async distributePayoutsOf({rootState}, _projectId, _amount, _currency, _token, _minReturnedTokens, _memo) {
         await judgeContract(rootState.app.web3)

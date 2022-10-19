@@ -22,6 +22,17 @@ const state = {
 }
 const mutations = {};
 const actions = {
+    async getProjectTokenAddress({rootState}, _projectId) {
+        await judgeContract(rootState.app.web3)
+        const AccountId = await Accounts.accountAddress();
+        let data = await state.contract.query.getProjectTokenAddress(AccountId, {value, queryGasLimit}, _projectId)
+        data = formatResult(data);
+        if(data=="5C4hrfjw9DjXZTzV3MwzrrAr9P1MJhSrvWGWqi1eSuyUpnhM"){
+            data = undefined
+        }
+        return data
+
+    },
     async totalSupplyOf({rootState}, _projectId) {
         await judgeContract(rootState.app.web3)
         const AccountId = await Accounts.accountAddress();
@@ -49,7 +60,7 @@ const actions = {
             //params
             _projectId, _name, _symbol
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            dealResult(result, rootState.app.web3, state.contract)
+            dealResult(result, rootState.app.web3, state.contract, "issueFor")
         }).catch(err=>{
             reportErr(err)
         });
@@ -67,13 +78,13 @@ const actions = {
             //params
             _holder, _projectId, _amount, _preferClaimedTokens
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            dealResult(result, rootState.app.web3, state.contract)
+            dealResult(result, rootState.app.web3, state.contract, "mintFor")
         }).catch(err=>{
             reportErr(err)
         });
 
     },
-    async claimFor({rootState}, _projectId, _holder, _amount) {
+    async claimFor({rootState}, {_projectId, _holder, _amount}) {
         await judgeContract(rootState.app.web3)
         const injector = await Accounts.accountInjector();
         const AccountId = await Accounts.accountAddress();
@@ -83,7 +94,7 @@ const actions = {
             //params
             _projectId, _holder, _amount
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            dealResult(result, rootState.app.web3, state.contract)
+            dealResult(result, rootState.app.web3, state.contract,"Claim")
         }).catch(err=>{
             reportErr(err)
         });

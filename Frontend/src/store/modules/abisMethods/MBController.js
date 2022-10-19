@@ -41,7 +41,7 @@ const actions = {
             //params
             _owner, _projectMetadata, _data, _metadata, _mustStartAtOrAfter, _groupedSplits, _fundAccessConstraints, _terminals, _memo
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            dealResult(result, rootState.app.web3, state.contract)
+            dealResult(result, rootState.app.web3, state.contract, "Create")
         }).catch(err=>{
             reportErr(err)
         });

@@ -6,12 +6,12 @@ export function reportErr(err){
         message:err
     })
 }
-export function dealResult(result,web3,contract){
+export function dealResult(result,web3,contract,message){
     if (result.isInBlock || result.isFinalized) {
         console.log(result)
         if(result.isCompleted){
             eventBus.$emit('message', {
-                message: "Create success",
+                message: message + " success",
                 type: "success"
             })
         }

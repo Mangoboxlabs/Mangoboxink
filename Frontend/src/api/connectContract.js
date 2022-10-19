@@ -20,11 +20,11 @@ const ConnectContract = async (api,type,address) =>{
             abi:require('../abi/mbdirectory.json')
         },
         MBERC20PaymentTerminal:{
-            address:'5H45kLN77gcaPrYofqXNMuX1zSVSpgfzAHjjUfntaT1rt9iL',
+            address:'5EtyUxw17itJYGd9inLdVPvj4veN5FzS6SV4t8qY1nPe4LqE',
             abi:require('../abi/MBERC20PaymentTerminal.json')
         },
         MBSingleTokenPaymentTerminalStore: {
-            address:'5FP3znY5SuthDe6xNE7oMyV5TPXdCsV6RBCNRRdCfRFdGuuy',
+            address:'5FKX8VsjaGYNLynH3wdiP5i3TK3vcmYNPPtS2A6LdMjwxEWq',
             abi:require('../abi/MBSingleTokenPaymentTerminalStore.json')
         },
         MBSplitsStore: {
@@ -57,7 +57,7 @@ const ConnectContract = async (api,type,address) =>{
         }
     }
 
-    if(abiMap[type].address){
+    if(!address&&abiMap[type].address){
         address = abiMap[type].address
     }
     return new ContractPromise(api, abiMap[type].abi, address);

@@ -63,10 +63,10 @@ const actions = {
         return data
 
     },
-    async owner_of({rootState}, id) {
+    async ownerOf({rootState}, id) {
         await judgeContract(rootState.app.web3)
         const AccountId = await Accounts.accountAddress();
-        let data = await state.contract.query.owner_of(AccountId, {value, queryGasLimit}, id)
+        let data = await state.contract.query.ownerOf(AccountId, {value, queryGasLimit}, id)
         data = formatResult(data);
         return data
 
