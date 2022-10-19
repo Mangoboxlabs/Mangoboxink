@@ -5,9 +5,13 @@ const state = {
     isConnected:false,
     balance:0,
     account:"",
-    homeArr:[]
+    homeArr:[],
+    isLoading:false,
 }
 const mutations = {
+    SET_LOADINDING(state,loading){
+        state.isLoading = loading
+    },
     SET_WEB3(state,web3){
         state.web3 = web3
         state.isConnected = true

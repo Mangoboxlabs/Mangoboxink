@@ -1,6 +1,7 @@
 /* eslint-disable */
 import connectContract from "@/api/connectContract"
 import {formatResult} from "@/utils/formatUtils"
+import {dealResult,reportErr} from "@/utils/dealResult"
 import Accounts from "@/api/Account.js";
 
 
@@ -48,11 +49,9 @@ const actions = {
             //params
             _projectId, _name, _symbol
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            if (result.status.isInBlock) {
-                console.log('in a block');
-            } else if (result.status.isFinalized) {
-                console.log('finalized');
-            }
+            dealResult(result, rootState.app.web3, state.contract)
+        }).catch(err=>{
+            reportErr(err)
         });
 
     },
@@ -63,38 +62,14 @@ const actions = {
         console.log(AccountId)
         const timeMemory = new Date().getTime()
         window.messageBox.push(timeMemory)
-        console.log(    _holder, _projectId, _amount, _preferClaimedTokens)
+
         await state.contract.tx.mintFor({storageDepositLimit, gasLimit},
             //params
             _holder, _projectId, _amount, _preferClaimedTokens
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            console.log(result,rootState.app.web3)
-            if (result.isInBlock || result.isFinalized) {
-                result.events
-                    // find/filter for failed events
-                    .filter(({ event }) =>
-                        rootState.app.web3.events.system.ExtrinsicFailed.is(event)
-                    )
-                    // we know that data for system.ExtrinsicFailed is
-                    // (DispatchError, DispatchInfo)
-                    .forEach(({ event: { data: [error, info] } }) => {
-                        if (error.isModule) {
-                            // for module errors, we have the section indexed, lookup
-                            const decoded = state.contract.registry.findMetaError(error.asModule);
-                            const { docs, method, section } = decoded;
-
-                            console.log(`${section}.${method}: ${docs.join(' ')}`);
-                        } else {
-                            // Other, CannotLookup, BadOrigin, no extra info
-                            console.log(error.toString());
-                        }
-                    });
-            }
-            if (result.status.isInBlock) {
-                console.log('in a block');
-            } else if (result.status.isFinalized) {
-                console.log('finalized');
-            }
+            dealResult(result, rootState.app.web3, state.contract)
+        }).catch(err=>{
+            reportErr(err)
         });
 
     },
@@ -108,11 +83,9 @@ const actions = {
             //params
             _projectId, _holder, _amount
         ).signAndSend(AccountId, {signer: injector.signer}, result => {
-            if (result.status.isInBlock) {
-                console.log('in a block');
-            } else if (result.status.isFinalized) {
-                console.log('finalized');
-            }
+            dealResult(result, rootState.app.web3, state.contract)
+        }).catch(err=>{
+            reportErr(err)
         });
 
     },

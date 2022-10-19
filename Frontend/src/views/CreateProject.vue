@@ -4,19 +4,19 @@
     <div class="CreateProject-content">
       <h2>Creat your projects</h2>
       <div class="progress-box">
-        <div class="progress-item">
+        <div class="progress-item" @click="activeStep=0">
           <div :class="activeStep>=0?'active':''" class="index">1</div>
           <div class="name">
             Project details
           </div>
         </div>
-        <div class="progress-item">
+        <div class="progress-item" @click="activeStep=1">
           <div :class="activeStep>=1?'active':''" class="index">2</div>
           <div class="name">
             Funding cycle
           </div>
         </div>
-        <div class="progress-item">
+        <div class="progress-item" @click="activeStep=2">
           <div :class="activeStep>=2?'active':''" class="index">3</div>
           <div class="name">
             Review and deploy
@@ -88,18 +88,18 @@
         <div class="flex-box">
           <div class="switch">
             <div class="switch__1">
-              <input id="switch-1" type="checkbox">
+              <input id="switch-1" type="checkbox" v-model="autoFundingCycles">
               <label for="switch-1"></label>
             </div>
           </div>
           Automate funding cycles
         </div>
-        <div class="input-box">
+        <div class="input-box" v-show = "!autoFundingCycles">
           <div class="name">
             Funding cycle duration
           </div>
           <div class="flex-box">
-            <input type="text">
+            <input type="text" v-mode="durationDay">
             <el-select v-model="fundingCycleduration" placeholder="Days">
               <el-option
                   label="5"
@@ -107,33 +107,33 @@
               </el-option>
             </el-select>
           </div>
-          <h3>
-            Payouts
-          </h3>
-          <div class="intro">
-            Choose how you would like to configure your payouts.
-          </div>
-          <div>
-            <el-radio v-model="payouts" label="1">
-              <strong>Amounts</strong>
-              <div class="intro">
-               <p>
-                 Distribute a specific amount of funds to entities each funding cycle.
-               </p>
-               <p>
-                 Your distribution limit will equal the sum of all payout amounts.
-               </p>
-              </div>
-            </el-radio>
-          </div>
-          <div>
-            <el-radio v-model="payouts" label="2">Percentages
-              <div class="intro">
-                <p>Distribute a percentage of all funds received to entities.</p>
-                <p> Your distribution limit will be infinite.</p>
-              </div>
-            </el-radio>
-          </div>
+        </div>
+        <h2>
+          Payouts
+        </h2>
+        <div class="intro">
+          Choose how you would like to configure your payouts.
+        </div>
+        <div>
+          <el-radio v-model="payouts" label="1">
+            <strong>Amounts</strong>
+            <div class="intro">
+              <p>
+                Distribute a specific amount of funds to entities each funding cycle.
+              </p>
+              <p>
+                Your distribution limit will equal the sum of all payout amounts.
+              </p>
+            </div>
+          </el-radio>
+        </div>
+        <div>
+          <el-radio v-model="payouts" label="2">Percentages
+            <div class="intro">
+              <p>Distribute a percentage of all funds received to entities.</p>
+              <p> Your distribution limit will be infinite.</p>
+            </div>
+          </el-radio>
         </div>
         <div class="add-payout-btn">
           Add payout
@@ -143,50 +143,37 @@
         </h3>
         <div class="input-box">
           <div class="name">
-            Funding cycle duration
+            Time interval between
           </div>
           <label>
-            <input type="text"/>
+            <input type="text" v-model="mustStartAtOrAfter"/>
           </label>
         </div>
+
+
         <div class="slider-box">
-          <div class="flex-box">
-            <div class="switch">
-              <div class="switch__2">
-                <input id="switch-2" type="checkbox">
-                <label for="switch-2"></label>
-              </div>
-            </div>
-            <strong>
-              Reserved tokens
-            </strong>
-          </div>
+          <strong class="name">
+            Initial mint rate
+          </strong>
 
           <el-slider
               style="width: 500px"
-              v-model="reservedTokens"
+              v-model="weight"
               show-input>
           </el-slider>
         </div>
-        <div class="slider-box">
-          <div class="flex-box">
-            <div class="switch">
-              <div class="switch__3">
-                <input id="switch-3" type="checkbox">
-                <label for="switch-3"></label>
-              </div>
-            </div>
-            <strong>
-              Reserved tokens
-            </strong>
-          </div>
 
+        <div class="slider-box">
+          <strong class="name">
+            Discount Rate
+          </strong>
           <el-slider
               style="width: 500px"
-              v-model="reservedTokens"
+              v-model="discountRate"
               show-input>
           </el-slider>
         </div>
+
 
         <button class="mangobox-button" @click="activeStep++">
           SAVE
@@ -199,16 +186,105 @@
         <div class="intro">
           Project details can be edited at any time.
         </div>
+        <div class="project-detail">
+          <div class="detail-item">
+            <div class="name">
+              Name
+            </div>
+            <div class="value">
+              {{ipfsObj.name?ipfsObj.name:'-'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Logo
+            </div>
+            <img :src="ipfsObj.icon" alt="">
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Webside
+            </div>
+            <div class="value">
+              {{ipfsObj.webside?ipfsObj.webside:'-'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Pay button text
+            </div>
+            <div class="value">
+              {{ipfsObj.payButton?ipfsObj.payButton:'-'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Twitter
+            </div>
+            <div class="value">
+              {{ipfsObj.twitter?ipfsObj.twitter:'-'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Discord
+            </div>
+            <div class="value">
+              {{ipfsObj.discord?ipfsObj.discord:'-'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Pay disclosure
+            </div>
+            <div class="value">
+              {{ipfsObj.payDisclosure?ipfsObj.payDisclosure:'-'}}
+            </div>
+          </div>
+        </div>
+
         <h3 class="step-item-title">
-          Funding cycle detail
+          Funding cycle details
         </h3>
         <div class="intro">
           Once launched, your first funding cycle can't be changed. You can reconfigure upcoming
           funding cycles according to the project's reconfiguration rules.
         </div>
-        <div class="mangobox-button" @click="activeStep--" style="width: 200px">
-          BACK
+        <div class="funding-cycle-detail">
+          <div class="detail-item">
+            <div class="name">
+              Duration
+            </div>
+            <div class="value">
+              {{durationDay?durationDay:'auto'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Initial mint rate
+            </div>
+            <div class="value">
+              {{weight?weight:'auto'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Discount Rate
+            </div>
+            <div class="value">
+              {{discountRate?discountRate:'0'}}
+            </div>
+          </div>
+          <div class="detail-item">
+            <div class="name">
+              Start After
+            </div>
+            <div class="value">
+              {{mustStartAtOrAfter?mustStartAtOrAfter:'0'}}
+            </div>
+          </div>
         </div>
+
         <button class="mangobox-button"  @click="launchProjectFor">
           DEPLOY
         </button>
@@ -235,11 +311,17 @@ export default {
       reservedTokens:0,
       payouts: 0,
       fundingCycleduration: null,
-      activeStep: 0,
+      activeStep:1,
       ipfsStr:"",//uploadipfs json address
+      autoFundingCycles:false,
+      durationDay:0,
+      mustStartAtOrAfter:undefined,
+      weight:0,
+      discountRate:0,
 
     }
   },
+
   methods:{
     async checkAndUpload(){
 
@@ -250,12 +332,7 @@ export default {
         })
         return
       }
-      const res = await uploadJson({
-        ...this.ipfsObj,
-        createTime: new Date()
-      })
-      this.ipfsStr = res.data.IpfsHash
-      console.log(this.ipfsStr )
+
       this.activeStep++
     },
 
@@ -265,31 +342,14 @@ export default {
     ownerOf(){
       this.$store.dispatch("MBProjects/ownerOf")
     },
-    launchProjectFor(){
-      /*//params
-             AccountId,
-            "asd",
-            {
-                duration: 0,
-                weight: 0,
-                discountRate: 0,
-                ballot:AccountId
-            },
-            0,
-            0,
-            [],
-            [{
-                terminal:AccountId,
-                token:AccountId,
-                distributionLimit:0,
-                distributionLimitCurrency:0,
-                overflowAllowance:0,
-                overflowAllowanceCurrency:0
-            }],
-            [AccountId],
-            ""
-       */
-
+    async launchProjectFor(){
+      this.$store.commit("app/SET_LOADINDING",true)
+      const res = await uploadJson({
+        ...this.ipfsObj,
+        createTime: new Date()
+      })
+      this.ipfsStr = res.data.IpfsHash
+      console.log(this.ipfsStr )
       this.$store.dispatch("MBController/launchProjectFor",{
         _owner:this.$store.state.app.account,
         _projectMetadata:this.ipfsStr,
@@ -300,7 +360,7 @@ export default {
           ballot:this.$store.state.app.account
         },
         _metadata:0,
-        _mustStartAtOrAfter:0,
+        _mustStartAtOrAfter: this.mustStartAtOrAfter,
         _groupedSplits:[],
         _fundAccessConstraints: [{
           terminal:this.$store.state.app.account,
@@ -312,12 +372,23 @@ export default {
         }],
         _terminals: ["5Gx2WFYjXC8yv5z2hSpEASobNVQ45d5gccGjRd6AgPMM7qqC"],
         _memo:""
-      }).then(res=>{
-        console.log(res)
-        this.$router.push('/')
+      }).then(()=>{
+        this.$store.commit("app/SET_LOADINDING",false)
+      }).catch(()=>{
+        this.$store.commit("app/SET_LOADINDING",false)
       })
 
     }
+  },
+  created() {
+    this.$eventBus.$on('message', (message) => {
+      if(message.type == 'success'){
+        this.$router.push('/')
+      }
+    })
+  },
+  beforeDestroy() {
+    this.$eventBus.$on('message', ()=>{})
   }
 }
 </script>
@@ -352,7 +423,7 @@ export default {
       display: flex;
       margin-right: 30px;
       align-items: center;
-
+      cursor: pointer;
       .index {
         width: 30px;
         height: 30px;
@@ -439,6 +510,25 @@ export default {
 
     p {
       width: 500px;
+    }
+  }
+
+  .funding-cycle-detail,.project-detail{
+    display: flex;
+    flex-wrap: wrap;
+    .detail-item{
+      margin-right: 80px;
+      .name{
+        font-size: 18px;
+        font-family: Roboto-Medium, Roboto;
+        font-weight: bold;
+        color: #2AAB00;
+        line-height: 50px;
+      }
+      img{
+        width: 50px;
+        height: 50px;
+      }
     }
   }
 }

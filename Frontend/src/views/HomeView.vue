@@ -4,7 +4,7 @@
       <h2>Trending projects</h2>
       <div class="dao-list">
 
-        <div v-show ="item&&item.name&&item.name.length>0" class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in homeArr" :key="index">
+        <div v-show ="item&&item.name&&item.name.length>0 " class="dao-item" @click="$router.push({path:'/Details',query:item})" v-for="(item,index) in homeArr" :key="index">
           <div class="logo">
             <img :src="item.icon" alt=""/>
           </div>
@@ -19,23 +19,24 @@
         </div>
       </div>
 
-      <div class="more mangobox-button" @click="upload">
-        More trending projects
-      </div>
+<!--      <div class="more mangobox-button" @click="homeArr>maxCount?maxCount+=12:''">-->
+<!--        More trending projects-->
+<!--      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 
-import {getIpfs, uploadJson} from "../utils/ipfsApi"
+import {getIpfs} from "../utils/ipfsApi"
 import moment from "moment"
 export default {
   name: 'HomeView',
   components: {},
   data() {
     return {
-      moment:moment
+      moment:moment,
+      maxCount:12
     }
   },
   computed:{
@@ -52,16 +53,6 @@ export default {
     }
   },
   methods: {
-    upload() {
-      uploadJson({
-        icon: 'https://pbs.twimg.com/media/FfMpbIYXoAI13AZ?format=jpg&name=240x240',
-        name: 'flexhome',
-        createTime: new Date()
-      }).then(res => {
-        console.log(res.data.IpfsHash)
-        getIpfs(res.data.IpfsHash)
-      })
-    },
     getMetaContent(id) {
       return this.$store.dispatch("MBProjects/getMetaContent", id)
     },
@@ -89,7 +80,9 @@ export default {
   created() {
     this.getData()
     setTimeout(()=>{
-      this.getData()
+      if(this.homeArr.length<=0){
+        this.getData()
+      }
     },3000)
 
   }
@@ -107,6 +100,7 @@ export default {
     .dao-list {
       display: flex;
       flex-wrap: wrap;
+      padding-bottom: 50px;
       .dao-item {
         display: flex;
         background: #fff;

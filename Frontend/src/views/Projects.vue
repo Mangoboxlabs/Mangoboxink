@@ -47,9 +47,9 @@
 
         </div>
       </div>
-      <div class="more mangobox-button">
-        More trending ProjectsView
-      </div>
+<!--      <div class="more mangobox-button">-->
+<!--        More trending ProjectsView-->
+<!--      </div>-->
     </div>
     <div class="ProjectsView-content my" v-show="activeIndex==1">
       <h2> My ProjectsView</h2>
@@ -71,9 +71,9 @@
 
         </div>
       </div>
-      <div class="more mangobox-button">
-        More trending ProjectsView
-      </div>
+<!--      <div class="more mangobox-button" @click="homeArr>maxCount?maxCount+=12:''">-->
+<!--        More trending ProjectsView-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -88,7 +88,8 @@ export default {
       moment:moment,
       activeIndex: 1,
       myProject:[],
-      searchContent:""
+      searchContent:"",
+      maxCount:2
     }
   },
   computed:{
@@ -122,12 +123,13 @@ export default {
         console.log(res)
         res.forEach(id => {
           this.getMetaContent(id).then(async res => {
-            const jsonRes = await getIpfs(res)
-            console.log(jsonRes.data)
-            this.myProject.push({
-              id:id,
-              ...jsonRes.data
-            })
+            if(res){
+              const jsonRes = await getIpfs(res)
+              this.myProject.push({
+                id:id,
+                ...jsonRes.data
+              })
+            }
           })
         })
 
