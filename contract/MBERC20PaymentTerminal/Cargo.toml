@@ -14,6 +14,7 @@ MBSingleTokenPaymentTerminalStore = { version = "0.1.0", path = "../MBSingleToke
 MBPrices = { version = "0.1.0", path = "../MBPrices", default-features = false, features = ["ink-as-dependency"] }
 MBToken = { version = "0.1.0", path = "../MBToken", default-features = false, features = ["ink-as-dependency"] }
 MBProjects = { version = "0.1.0", path = "../MBProjects", default-features = false, features = ["ink-as-dependency"] }
+MBTokenStore = { version = "0.1.0", path = "../MBTokenStore", default-features = false, features = ["ink-as-dependency"] }
 ink_prelude = { version = "3.0.0-rc3", path = "../ink/crates/prelude", default-features = false }
 
 scale = { package = "parity-scale-codec", version = "2.1", default-features = false, features = ["derive"] }
@@ -41,6 +42,7 @@ std = [
     "scale-info",
     "scale-info/std",
     "MBSingleTokenPaymentTerminalStore/std",
+    "MBTokenStore/std",
     "MBPrices/std",
     "MBToken/std",
     "MBProjects/std",
