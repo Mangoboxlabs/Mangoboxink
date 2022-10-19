@@ -77,6 +77,7 @@ mod MBERC20PaymentTerminal {
     pub struct MBERC20PaymentTerminal {
         _heldFeesOf:StorageHashMap<u64, Vec<MBFee>>,
         payRecords:StorageHashMap<u64, Vec<MBPayRecord>>,
+        claimAmount:StorageHashMap<u64, u128>,
         isFeelessAddress:StorageHashMap<AccountId, bool>,
         projects:AccountId,
         directory:AccountId,
@@ -106,6 +107,7 @@ mod MBERC20PaymentTerminal {
             Self {
                 _heldFeesOf:Default::default(),
                 payRecords:Default::default(),
+                claimAmount:Default::default(),
                 isFeelessAddress:Default::default(),
                 projects:_projects,
                 directory:_directory,
@@ -296,6 +298,48 @@ mod MBERC20PaymentTerminal {
             _projectId:u64
         ) ->Vec<MBPayRecord> {
             self.payRecords.get(&_projectId).unwrap_or(&Vec::new()).clone()
+        }
+        /**
+        @notice
+        Get pay amount by projects
+        @param _projectId The ID of the project to which the funds received belong.
+      */
+        #[ink(message)]
+        pub fn getPayAmount(
+            &self,
+            _projectId:u64
+        )->u128{
+            let payRecord = self.getPayRecords(_projectId);
+            let mut amount = 0;
+            for i in payRecord.iter() {
+                amount+=i.value
+            }
+            amount
+        }
+        /**
+           @notice
+           Get distributeAmount  by projects
+           @param _projectId The ID of the project to which the funds received belong.
+         */
+        #[ink(message)]
+        pub fn distributeAmount(
+            &self,
+            _projectId:u64
+        )->u128{
+            return self.getPayAmount(_projectId) - self.claimAmount.get(&_projectId).unwrap_or(&0).clone()
+        }
+        #[ink(message)]
+        pub fn claimDistributeAmount(
+            &mut self,
+            _projectId:u64,
+            _amount:u128
+        )->bool{
+            assert!(_amount <= self.distributeAmount(_projectId),"Not enough");
+            let mut amount = self.claimAmount.get(&_projectId).unwrap_or(&0).clone();
+            amount+=_amount;
+            self.claimAmount.insert(_projectId,amount);
+            self._transferFrom(Self::env().account_id(),Self::env().caller(), _amount);
+            true
         }
         /**
         @notice
