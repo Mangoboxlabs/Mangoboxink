@@ -46,13 +46,14 @@
             </div>
 
         </div>
+        <img style="margin: 10px auto" src="../imgs/no-data.png" alt="" v-show="myProject.length==0">
       </div>
 <!--      <div class="more mangobox-button">-->
 <!--        More trending ProjectsView-->
 <!--      </div>-->
     </div>
     <div class="ProjectsView-content my" v-show="activeIndex==1">
-      <h2> My ProjectsView</h2>
+      <h2> All ProjectsView</h2>
       <div class="dao-list">
 
         <div v-show ="item&&item.name&&item.name.length>0&&item.name.includes(searchContent)"
@@ -70,6 +71,7 @@
             </div>
 
         </div>
+        <img style="margin: 10px auto" src="../imgs/no-data.png" alt="" v-show="homeArr.length==0">
       </div>
 <!--      <div class="more mangobox-button" @click="homeArr>maxCount?maxCount+=12:''">-->
 <!--        More trending ProjectsView-->

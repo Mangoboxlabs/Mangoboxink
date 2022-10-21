@@ -41,31 +41,41 @@
           <div class="name">
             Logo
           </div>
-          <input type="text" v-model="ipfsObj.icon"/>
+<!--          <el-upload-->
+<!--              class="avatar-uploader"-->
+<!--              action="https://api.pinata.cloud/pinning/pinFileToIPFS"-->
+<!--              :on-change="handleChange"-->
+<!--              :show-file-list="false"-->
+<!--              :on-success="handleAvatarSuccess"-->
+<!--              :before-upload="beforeAvatarUpload">-->
+<!--            <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--            <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--          </el-upload>-->
+          <input type="text" v-model="ipfsObj.icon" placeholder="please input icon url"/>
         </div>
         <div class="input-box">
           <div class="name">
             Website
           </div>
-          <input type="text" v-model="ipfsObj.webside"/>
+          <input type="text" v-model="ipfsObj.webside" placeholder="project webside"/>
         </div>
         <div class="input-box">
           <div class="name">
             Twitter handle
           </div>
-          <input type="text" v-model="ipfsObj.twitter"/>
+          <input type="text" v-model="ipfsObj.twitter" placeholder="project twitter"/>
         </div>
         <div class="input-box">
           <div class="name">
             Discord
           </div>
-          <input type="text" v-model="ipfsObj.discord"/>
+          <input type="text" v-model="ipfsObj.discord" placeholder="project discord"/>
         </div>
         <div class="input-box">
           <div class="name">
             Pay button text
           </div>
-          <input type="text" v-model="ipfsObj.payButton"/>
+          <input type="text" v-model="ipfsObj.payButton" placeholder="Custom Button"/>
         </div>
         <div class="input-box">
           <div class="name">
@@ -99,11 +109,23 @@
             Funding cycle duration
           </div>
           <div class="flex-box">
-            <input type="text" v-mode="durationDay">
-            <el-select v-model="fundingCycleduration" placeholder="Days">
+            <input type="text" v-model="durationDay" placeholder="duration(day)">
+            <el-select v-model="durationDay" placeholder="Days">
+              <el-option
+                  label="Never expire"
+                  value="0">
+              </el-option>
               <el-option
                   label="5"
-                  value="0">
+                  value="5">
+              </el-option>
+              <el-option
+                  label="15"
+                  value="15">
+              </el-option>
+              <el-option
+                  label="30"
+                  value="30">
               </el-option>
             </el-select>
           </div>
@@ -196,9 +218,11 @@
             </div>
           </div>
           <div class="detail-item">
+
             <div class="name">
               Logo
             </div>
+
             <img :src="ipfsObj.icon" alt="">
           </div>
           <div class="detail-item">
@@ -256,7 +280,7 @@
               Duration
             </div>
             <div class="value">
-              {{durationDay?durationDay:'auto'}}
+              {{durationDay?durationDay + 'day':'auto'}}
             </div>
           </div>
           <div class="detail-item">
@@ -297,12 +321,12 @@
 
 <script>
 
-import { uploadJson} from "../utils/ipfsApi";
-
+import { uploadJson, uploadFile} from "../utils/ipfsApi";
 export default {
   name: "CreateProject",
   data() {
     return {
+      imageUrl: '',
       //form
       ipfsObj:{
 
@@ -310,11 +334,10 @@ export default {
       //end form
       reservedTokens:0,
       payouts: 0,
-      fundingCycleduration: null,
-      activeStep:1,
+      activeStep:0,
       ipfsStr:"",//uploadipfs json address
       autoFundingCycles:false,
-      durationDay:0,
+      durationDay:undefined,
       mustStartAtOrAfter:undefined,
       weight:0,
       discountRate:0,
@@ -323,8 +346,19 @@ export default {
   },
 
   methods:{
-    async checkAndUpload(){
+    handleChange(file){
+      console.log(file)
+      uploadFile(file).then(res=>{
+        console.log(res)
+      })
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload() {
 
+    },
+    async checkAndUpload(){
       if(!this.ipfsObj.name){
         this.$eventBus.$emit('message', {
           message: "Please Input Name",
@@ -349,13 +383,13 @@ export default {
         createTime: new Date()
       })
       this.ipfsStr = res.data.IpfsHash
-      console.log(this.ipfsStr )
+
       this.$store.dispatch("MBController/launchProjectFor",{
         _owner:this.$store.state.app.account,
         _projectMetadata:this.ipfsStr,
         _data:{
-          duration: 0,
-          weight: 0,
+          duration: this.durationDay?(this.durationDay * 86400).toString():0,
+          weight: (this.weight * 10**18).toString(),
           discountRate: 0,
           ballot:this.$store.state.app.account
         },
@@ -370,11 +404,15 @@ export default {
           overflowAllowance:0,
           overflowAllowanceCurrency:0
         }],
-        _terminals: ["5Gx2WFYjXC8yv5z2hSpEASobNVQ45d5gccGjRd6AgPMM7qqC"],
+        _terminals: [],
         _memo:""
       }).then(()=>{
         this.$store.commit("app/SET_LOADINDING",false)
-      }).catch(()=>{
+      }).catch((err)=>{
+        this.$eventBus.$emit('message', {
+          message: err,
+          type: "error"
+        })
         this.$store.commit("app/SET_LOADINDING",false)
       })
 
@@ -382,7 +420,7 @@ export default {
   },
   created() {
     this.$eventBus.$on('message', (message) => {
-      if(message.type == 'success'){
+      if(message.type == 'success' && message.message == "Create success"){
         this.$router.push('/')
       }
     })
@@ -394,6 +432,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 .CreateProject-content {
   width: 1200px;
   margin: 30px auto;

@@ -41,6 +41,9 @@
              @click="isShowCreate=true" style="margin-top: 30px;padding: 10px 0">
           Create Token
         </div>
+        <h2 class="not-begun" v-show="!tokenAddress && tokenOwner!=$store.state.app.account">
+          Fund-raising has not begun
+        </h2>
         <div class="token-panel" v-show="tokenAddress">
           <h4 class="sub-title">
             Tokens
@@ -106,7 +109,7 @@
         </div>
 
       </div>
-      <div class="right-content">
+      <div class="right-content" v-show="tokenAddress">
         <div class="row" style="position: relative">
           <div class="input-box">
             <input type="text" v-model="amount">
@@ -1991,7 +1994,11 @@ export default {
         padding: 6px 20px;
       }
     }
-
+    .not-begun{
+      font-size: 26px;
+      text-align: center;
+      padding: 10px 0;
+    }
     .left-content, .right-content {
       width: 45%;
 

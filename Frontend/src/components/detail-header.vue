@@ -20,7 +20,7 @@
       <img class="icon" :src="projectObj.icon" alt="">
       <div class="right-content">
         <h1 class="name">
-          {{projectObj.name}}
+          {{ projectObj.name }}
         </h1>
         <div class="row">
           <div class="id">
@@ -28,11 +28,13 @@
             <strong>#{{ projectObj.id }}</strong>
           </div>
           <div class="webside">
-            {{ projectObj.webside }}
+            <a :href="projectObj.webside " target="_blank">
+              {{ projectObj.webside }}
+            </a>
           </div>
           <div class="twitter" v-show="projectObj.twitter">
-            <a :href="projectObj.twitter"> <img src="../imgs/twitter.png" alt="">
-              {{ projectObj.twitter?projectObj.twitter.replace("https://twitter.com/",""):"" }}</a>
+            <a :href="projectObj.twitter" target="_blank"> <img src="../imgs/twitter.png" alt="">
+            {{ projectObj.twitter ? projectObj.twitter.replace("https://twitter.com/", "") : "" }}</a>
           </div>
         </div>
         <div class="description">
@@ -50,8 +52,8 @@ import polkaConnect from "@/components/polkaConnect";
 
 export default {
   name: "detail-header",
-  props:{
-    "projectObj":Object
+  props: {
+    "projectObj": Object
   },
   components: {
     polkaConnect
@@ -146,34 +148,48 @@ export default {
     width: 1200px;
     margin: 0 auto;
     display: flex;
-    .right-content{
+
+    .right-content {
       padding: 10px 0 0 20px;
-      .id{
+
+      .id {
         color: #666;
       }
-      .webside{
+
+      .webside {
         padding: 0 10px;
         color: #FF7238;
+
+        a {
+          color: #FF7238 !important;
+        }
         margin: 0 10px;
       }
-      .twitter{
+
+      .twitter {
         padding: 0 10px;
-        color: #2AAA00;
+
         margin: 0 10px;
         display: flex;
         align-items: center;
-        img{
+
+        a {
+          color: #2aaa00 !important;
+        }
+
+        img {
           margin-right: 10px;
           width: 20px;
           height: 20px;
         }
       }
-      .description{
+
+      .description {
         padding: 10px 0;
       }
     }
 
-    .icon{
+    .icon {
       width: 180px;
       margin-top: 10px;
     }
