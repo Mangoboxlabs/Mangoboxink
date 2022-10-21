@@ -1,4 +1,4 @@
-# RainbowDAO-Protocol-ink-Phase-2
+# MongoBox-Protocol-ink
 ## Contract introduction
 - MBTokenStore: Manages token minting and burning for all projects.
 - MBFundingCycleStore:Manages funding cycle configurations and scheduling.
