@@ -188,7 +188,7 @@ mod mb_SingleTokenPaymentTerminalStore {
             let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
             _balanceOf = _balanceOf + _amount;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
-            return (fundingCycle, _amount * _weight as u128 / 1000000000000000000, AccountId::default(), _memo);
+            return (fundingCycle, _amount * _weight  / 1000000000000000000, AccountId::default(), _memo);
         }
         /// @notice
         /// get the balance of the project

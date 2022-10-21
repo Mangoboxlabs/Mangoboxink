@@ -6,6 +6,7 @@ use ink_lang as ink;
 
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(dead_code)]
 #[ink::contract]
 mod mb_controller {
     use MBProjects::MBProjects;
@@ -48,7 +49,7 @@ mod mb_controller {
     */
     pub struct MBFundingCycleData {
         duration: u64,
-        weight: u64,
+        weight: u128,
         discountRate: u64,
         ballot: AccountId,
     }

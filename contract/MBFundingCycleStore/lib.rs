@@ -77,10 +77,10 @@ mod mb_fundingCycleStore {
         ///  Stores the metadata for each funding cycle configuration, packed into one storage slot.
         _metadataOf:StorageHashMap<(u64, u64), u64>,
         ///  Stores the properties added by the mechanism to manage and schedule each funding cycle, packed into one storage slot.
-        _packedIntrinsicPropertiesOf:StorageHashMap<(u64, u64), u64>,
+        _packedIntrinsicPropertiesOf:StorageHashMap<(u64, u64), u128>,
         ///The ID of the project that each token belongs to.
         latestConfigurationOf:StorageHashMap<u64,u64>,
-        projectsWeight:StorageHashMap<u64,u64>,
+        projectsWeight:StorageHashMap<u64,u128>,
     }
 
     impl MBFundingCycleStore {
@@ -227,7 +227,7 @@ mod mb_fundingCycleStore {
         pub fn getProjectsWeight(
             &self,
             _projectId:u64,
-        ) ->u64 {
+        ) ->u128 {
             self.projectsWeight.get(&_projectId).unwrap_or(&0).clone()
         }
 
@@ -240,7 +240,7 @@ mod mb_fundingCycleStore {
         pub fn getChangeAmount(
             &self,
             _projectId:u64,
-        ) ->u64 {
+        ) ->u128 {
             return self.getProjectsWeight(_projectId) / 1000000000000000000
         }
         /**
@@ -280,7 +280,7 @@ mod mb_fundingCycleStore {
         pub fn configureFor(
             &mut self,
             _projectId:u64,
-            _weight:u64,
+            _weight:u128,
             _metadata:u64,
             _mustStartAtOrAfter:u64
         ) -> MBFundingCycle {
@@ -299,7 +299,7 @@ mod mb_fundingCycleStore {
             &mut self,
             _projectId:u64,
             _configuration:u64,
-            _weight:u64,
+            _weight:u128,
             _mustStartAtOrAfter:u64
         ){
             let _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
@@ -310,7 +310,7 @@ mod mb_fundingCycleStore {
             &mut self,
             _projectId:u64,
             _configuration:u64,
-            _weight:u64,
+            _weight:u128,
             _mustStartAtOrAfter:u64,
             _baseFundingCycle:MBFundingCycle
         ){
@@ -329,14 +329,12 @@ mod mb_fundingCycleStore {
             &mut self,
             _projectId:u64,
             _configuration:u64,
-            _weight:u64,
-            _number:u64,
+            _weight:u128,
+            _number:u128,
             _basedOn:u64,
             _start:u64
         ){
             let mut packed = _weight;
-            packed |= _basedOn << 8;
-            packed |= _start << 14;
             packed |= _number << 20;
             self._packedIntrinsicPropertiesOf.insert((_projectId,_configuration),packed);
         }
