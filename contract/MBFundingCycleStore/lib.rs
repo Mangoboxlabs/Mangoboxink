@@ -80,6 +80,7 @@ mod mb_fundingCycleStore {
         _packedIntrinsicPropertiesOf:StorageHashMap<(u64, u64), u64>,
         ///The ID of the project that each token belongs to.
         latestConfigurationOf:StorageHashMap<u64,u64>,
+        projectsWeight:StorageHashMap<u64,u64>,
     }
 
     impl MBFundingCycleStore {
@@ -90,7 +91,8 @@ mod mb_fundingCycleStore {
                 _packedUserPropertiesOf:Default::default(),
                 _metadataOf:Default::default(),
                 _packedIntrinsicPropertiesOf:Default::default(),
-                latestConfigurationOf:Default::default()
+                latestConfigurationOf:Default::default(),
+                projectsWeight:Default::default()
             }
         }
                 /**
@@ -217,6 +219,31 @@ mod mb_fundingCycleStore {
 
         }
         /**
+         @notice
+         GetProjectsWeight
+         @param _projectId The ID of the project to check the ballot state of.
+       */
+        #[ink(message)]
+        pub fn getProjectsWeight(
+            &self,
+            _projectId:u64,
+        ) ->u64 {
+            self.projectsWeight.get(&_projectId).unwrap_or(&0).clone()
+        }
+
+        /**
+         @notice
+         Get 1 USD to token amount
+         @param _projectId The ID of the project to check the ballot state of.
+       */
+        #[ink(message)]
+        pub fn getChangeAmount(
+            &self,
+            _projectId:u64,
+        ) ->u64 {
+            return self.getProjectsWeight(_projectId) / 1000000000000000000
+        }
+        /**
            @notice
            The current ballot state of the project.
 
@@ -258,6 +285,7 @@ mod mb_fundingCycleStore {
             _mustStartAtOrAfter:u64
         ) -> MBFundingCycle {
             let _configuration = self.env().block_timestamp();
+            self.projectsWeight.insert(_projectId,_weight);
             self._configureIntrinsicPropertiesFor(
                 _projectId,
                 _configuration,

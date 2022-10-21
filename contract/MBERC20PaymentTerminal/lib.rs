@@ -341,6 +341,9 @@ mod MBERC20PaymentTerminal {
             self._transferFrom(Self::env().account_id(),Self::env().caller(), _amount);
             true
         }
+
+
+
         /**
         @notice
         Receives funds belonging to the specified project.
@@ -548,7 +551,7 @@ mod MBERC20PaymentTerminal {
             records.push(record);
             self.payRecords.insert(_projectId,records);
             let mut store_instance: MBSingleTokenPaymentTerminalStore = ink_env::call::FromAccountId::from_account_id(self.store);
-            store_instance.recordPaymentFrom(
+            let (_fundingCycle,amount,_address,_memos) = store_instance.recordPaymentFrom(
                 _payer,
                 _amount,
                 _projectId,
@@ -559,7 +562,7 @@ mod MBERC20PaymentTerminal {
             );
             if _amount > 0 {
                 let mut tokenStore:MBTokenStore = ink_env::call::FromAccountId::from_account_id(self.tokenStore);
-                tokenStore.mintFor(_beneficiary, _projectId, _amount, _preferClaimedTokens);
+                tokenStore.mintFor(_beneficiary, _projectId, amount, _preferClaimedTokens);
             }
         }
     }
