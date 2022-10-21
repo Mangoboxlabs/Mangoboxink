@@ -16,13 +16,30 @@
         </li>
       </ul>
     </div>
-    <div class="home-content">
-      <p>
-        MangoBOX is a platform that empowers DAOs to fundraise from their community by setting up/managing an
-        end-to-end fundraising process and issuing tokens to community members.
-      </p>
+    <div class="detail-content">
+      <img class="icon" :src="projectObj.icon" alt="">
+      <div class="right-content">
+        <h1 class="name">
+          {{projectObj.name}}
+        </h1>
+        <div class="row">
+          <div class="id">
+            <strong>Project</strong>
+            <strong>#{{ projectObj.id }}</strong>
+          </div>
+          <div class="webside">
+            {{ projectObj.webside }}
+          </div>
+          <div class="twitter" v-show="projectObj.twitter">
+            <a :href="projectObj.twitter"> <img src="../imgs/twitter.png" alt="">
+              {{ projectObj.twitter?projectObj.twitter.replace("https://twitter.com/",""):"" }}</a>
+          </div>
+        </div>
+        <div class="description">
+          {{ projectObj.description }}
+        </div>
+      </div>
 
-      <button @click="$router.push({path:'/CreateProject'})" class="mangobox-button">Creat your project</button>
 
     </div>
   </div>
@@ -33,6 +50,9 @@ import polkaConnect from "@/components/polkaConnect";
 
 export default {
   name: "detail-header",
+  props:{
+    "projectObj":Object
+  },
   components: {
     polkaConnect
   },
@@ -41,7 +61,7 @@ export default {
   },
   computed: {
     headerHeight() {
-      return this.$route.path === '/' ? 300 : 60
+      return this.$route.path === '/' ? 300 : 300
     }
   },
 
@@ -50,7 +70,7 @@ export default {
 
 <style lang="scss" scoped>
 .detail-header {
-  background: url("../imgs/header_bg.png");
+  background: url("../imgs/detail_header_bg.png");
   background-size: 100%;
   font-weight: bold;
   position: relative;
@@ -122,24 +142,42 @@ export default {
     }
   }
 
-  .home-content {
+  .detail-content {
     width: 1200px;
     margin: 0 auto;
-
-    a {
-      text-decoration: none;
+    display: flex;
+    .right-content{
+      padding: 10px 0 0 20px;
+      .id{
+        color: #666;
+      }
+      .webside{
+        padding: 0 10px;
+        color: #FF7238;
+        margin: 0 10px;
+      }
+      .twitter{
+        padding: 0 10px;
+        color: #2AAA00;
+        margin: 0 10px;
+        display: flex;
+        align-items: center;
+        img{
+          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+      .description{
+        padding: 10px 0;
+      }
     }
 
-    p {
-      margin-top: 30px;
-      width: 600px;
-      text-align: justify;
+    .icon{
+      width: 180px;
+      margin-top: 10px;
     }
 
-    button {
-      margin-top: 30px;
-      padding: 10px 20px;
-    }
   }
 }
 </style>
