@@ -76,7 +76,6 @@ export default {
     color: #999;
     box-shadow: 0 0 3px #eee;
     overflow: hidden;
-    border-radius: 10px;
     background: #fff;
     font-size: 16px;
     position: relative;

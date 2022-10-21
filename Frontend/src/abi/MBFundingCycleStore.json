@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x3fb90a56a5a99792011e7a11620ef491830d17309882e0e8a8b09235386ae7df",
+    "hash": "0x61c4c1723672b6f01addc066a60b0ffa2cd93750836a3e50eb8119954ae84908",
     "language": "ink! 3.0.0-rc5",
     "compiler": "rustc 1.61.0-nightly"
   },
@@ -59,7 +59,7 @@
             "displayName": [
               "MBFundingCycle"
             ],
-            "type": 8
+            "type": 10
           },
           "selector": "0x2f865bd9"
         },
@@ -85,7 +85,7 @@
           "payable": false,
           "returnType": {
             "displayName": [],
-            "type": 12
+            "type": 14
           },
           "selector": "0x6e674f0d"
         },
@@ -113,7 +113,7 @@
             "displayName": [
               "MBFundingCycle"
             ],
-            "type": 8
+            "type": 10
           },
           "selector": "0x5040bb97"
         },
@@ -141,9 +141,65 @@
             "displayName": [
               "MBFundingCycle"
             ],
-            "type": 8
+            "type": 10
           },
           "selector": "0xf0fbd6a0"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 4
+              }
+            }
+          ],
+          "docs": [
+            "\n         @notice\n         GetProjectsWeight\n         @param _projectId The ID of the project to check the ballot state of.\n       "
+          ],
+          "mutates": false,
+          "name": [
+            "getProjectsWeight"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 8
+          },
+          "selector": "0x8ed4b71b"
+        },
+        {
+          "args": [
+            {
+              "name": "_projectId",
+              "type": {
+                "displayName": [
+                  "u64"
+                ],
+                "type": 4
+              }
+            }
+          ],
+          "docs": [
+            "\n         @notice\n         Get 1 USD to token amount\n         @param _projectId The ID of the project to check the ballot state of.\n       "
+          ],
+          "mutates": false,
+          "name": [
+            "getChangeAmount"
+          ],
+          "payable": false,
+          "returnType": {
+            "displayName": [
+              "u128"
+            ],
+            "type": 8
+          },
+          "selector": "0x09d8f7b4"
         },
         {
           "args": [
@@ -169,7 +225,7 @@
             "displayName": [
               "MBBallotState"
             ],
-            "type": 13
+            "type": 15
           },
           "selector": "0x5f812749"
         },
@@ -188,9 +244,9 @@
               "name": "_weight",
               "type": {
                 "displayName": [
-                  "u64"
+                  "u128"
                 ],
-                "type": 4
+                "type": 8
               }
             },
             {
@@ -224,7 +280,7 @@
             "displayName": [
               "MBFundingCycle"
             ],
-            "type": 8
+            "type": 10
           },
           "selector": "0xc8fc0fdd"
         }
@@ -455,7 +511,7 @@
                         "layout": {
                           "cell": {
                             "key": "0x0600000003000000000000000000000000000000000000000000000000000000",
-                            "ty": 6
+                            "ty": 7
                           }
                         },
                         "offset": "0x0500000003000000000000000000000000000000000000000000000000000000",
@@ -510,7 +566,7 @@
                                         "layout": {
                                           "cell": {
                                             "key": "0x0700000004000000000000000000000000000000000000000000000000000000",
-                                            "ty": 7
+                                            "ty": 9
                                           }
                                         },
                                         "len": 4294967295,
@@ -552,6 +608,86 @@
               }
             },
             "name": "latestConfigurationOf"
+          },
+          {
+            "layout": {
+              "struct": {
+                "fields": [
+                  {
+                    "layout": {
+                      "struct": {
+                        "fields": [
+                          {
+                            "layout": {
+                              "cell": {
+                                "key": "0x0800000004000000000000000000000000000000000000000000000000000000",
+                                "ty": 0
+                              }
+                            },
+                            "name": "header"
+                          },
+                          {
+                            "layout": {
+                              "struct": {
+                                "fields": [
+                                  {
+                                    "layout": {
+                                      "cell": {
+                                        "key": "0x0900000004000000000000000000000000000000000000000000000000000000",
+                                        "ty": 1
+                                      }
+                                    },
+                                    "name": "len"
+                                  },
+                                  {
+                                    "layout": {
+                                      "array": {
+                                        "cellsPerElem": 1,
+                                        "layout": {
+                                          "cell": {
+                                            "key": "0x0900000005000000000000000000000000000000000000000000000000000000",
+                                            "ty": 9
+                                          }
+                                        },
+                                        "len": 4294967295,
+                                        "offset": "0x0a00000004000000000000000000000000000000000000000000000000000000"
+                                      }
+                                    },
+                                    "name": "elems"
+                                  }
+                                ]
+                              }
+                            },
+                            "name": "entries"
+                          }
+                        ]
+                      }
+                    },
+                    "name": "keys"
+                  },
+                  {
+                    "layout": {
+                      "hash": {
+                        "layout": {
+                          "cell": {
+                            "key": "0x0a00000005000000000000000000000000000000000000000000000000000000",
+                            "ty": 7
+                          }
+                        },
+                        "offset": "0x0900000005000000000000000000000000000000000000000000000000000000",
+                        "strategy": {
+                          "hasher": "Blake2x256",
+                          "postfix": "",
+                          "prefix": "0x696e6b20686173686d6170"
+                        }
+                      }
+                    },
+                    "name": "values"
+                  }
+                ]
+              }
+            },
+            "name": "projectsWeight"
           }
         ]
       }
@@ -723,6 +859,47 @@
         "id": 7,
         "type": {
           "def": {
+            "composite": {
+              "fields": [
+                {
+                  "name": "value",
+                  "type": 8,
+                  "typeName": "V"
+                },
+                {
+                  "name": "key_index",
+                  "type": 1,
+                  "typeName": "KeyIndex"
+                }
+              ]
+            }
+          },
+          "params": [
+            {
+              "name": "V",
+              "type": 8
+            }
+          ],
+          "path": [
+            "ink_storage",
+            "collections",
+            "hashmap",
+            "ValueEntry"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "type": {
+          "def": {
+            "primitive": "u128"
+          }
+        }
+      },
+      {
+        "id": 9,
+        "type": {
+          "def": {
             "variant": {
               "variants": [
                 {
@@ -763,7 +940,7 @@
         }
       },
       {
-        "id": 8,
+        "id": 10,
         "type": {
           "def": {
             "composite": {
@@ -805,7 +982,7 @@
                 },
                 {
                   "name": "ballot",
-                  "type": 9,
+                  "type": 11,
                   "typeName": "AccountId"
                 },
                 {
@@ -824,13 +1001,13 @@
         }
       },
       {
-        "id": 9,
+        "id": 11,
         "type": {
           "def": {
             "composite": {
               "fields": [
                 {
-                  "type": 10,
+                  "type": 12,
                   "typeName": "[u8; 32]"
                 }
               ]
@@ -844,18 +1021,18 @@
         }
       },
       {
-        "id": 10,
+        "id": 12,
         "type": {
           "def": {
             "array": {
               "len": 32,
-              "type": 11
+              "type": 13
             }
           }
         }
       },
       {
-        "id": 11,
+        "id": 13,
         "type": {
           "def": {
             "primitive": "u8"
@@ -863,18 +1040,18 @@
         }
       },
       {
-        "id": 12,
+        "id": 14,
         "type": {
           "def": {
             "tuple": [
-              8,
-              13
+              10,
+              15
             ]
           }
         }
       },
       {
-        "id": 13,
+        "id": 15,
         "type": {
           "def": {
             "variant": {

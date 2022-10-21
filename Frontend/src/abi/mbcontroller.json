@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0x638bbb29ac3cf1b9d40a7b19e0322ad8be3eb6c5923aaf29b985f59c82f5fdae",
+    "hash": "0x2b27e4fe68c89ba0945846ac4b477d5bddbb3ff9ec4b80627c7c0c461f68cd1b",
     "language": "ink! 3.0.0-rc5",
     "compiler": "rustc 1.61.0-nightly"
   },
@@ -847,8 +847,8 @@
                 },
                 {
                   "name": "weight",
-                  "type": 6,
-                  "typeName": "u64"
+                  "type": 9,
+                  "typeName": "u128"
                 },
                 {
                   "name": "discountRate",
