@@ -144,7 +144,6 @@ export default {
         for(let i=1;i<=length;i++){
           this.getMetaContent(i).then(async res => {
             const jsonRes = await getIpfs(res)
-            console.log(jsonRes.data)
             tempArr.push({
               id:i,
               ...jsonRes.data

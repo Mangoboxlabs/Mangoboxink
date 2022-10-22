@@ -14,9 +14,8 @@ git clone git@github.com:Mangoboxlabs/Mangoboxink.git
 
 ## Project setup
 
-cd contracts/interfaces
-
 ```
+cd Frontend
 npm install
 ```
 
@@ -25,6 +24,8 @@ npm install
 ```
 npm run serve
 ```
+
+ Open http://localhost:8080 to view it in your browser. 
 
 ### Compiles and minifies for production
 
