@@ -62,7 +62,9 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.el-tooltip__popper{
+  max-width: 500px!important;
+}
 .tip{
   width: 16px;
   height: 16px;
