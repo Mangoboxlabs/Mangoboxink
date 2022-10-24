@@ -1,5 +1,5 @@
 [package]
-name = "MBTokenStore"
+name = "mbtokenstore"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -10,13 +10,13 @@ ink_metadata = { version = "3.0.0-rc3", path = "../ink/crates/metadata", default
 ink_env = { version = "3.0.0-rc3", path = "../ink/crates/env", default-features = false }
 ink_storage = { version = "3.0.0-rc3", path = "../ink/crates/storage", default-features = false }
 ink_lang = { version = "3.0.0-rc3", path = "../ink/crates/lang", default-features = false }
-MBToken = { version = "0.1.0", path = "../MBToken", default-features = false, features = ["ink-as-dependency"] }
+mbtoken = { version = "0.1.0", path = "../MBToken", default-features = false, features = ["ink-as-dependency"] }
 
 scale = { package = "parity-scale-codec", version = "2.1", default-features = false, features = ["derive"] }
 scale-info = { version = "1.0", default-features = false, features = ["derive"], optional = true }
 
 [lib]
-name = "MBTokenStore"
+name = "mbtokenstore"
 path = "lib.rs"
 crate-type = [
     "cdylib",
@@ -35,7 +35,7 @@ std = [
     "scale/std",
     "scale-info",
     "scale-info/std",
-    "MBToken/std",
+    "mbtoken/std",
 ]
 ink-as-dependency = []
 [profile.release]

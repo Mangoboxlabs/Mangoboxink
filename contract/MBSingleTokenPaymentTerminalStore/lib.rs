@@ -3,15 +3,15 @@
 extern crate alloc;
 
 use ink_lang as ink;
-pub use self::mb_SingleTokenPaymentTerminalStore::{
+pub use self::mb_singletokenpaymentterminalstore::{
     MBSingleTokenPaymentTerminalStore
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod mb_SingleTokenPaymentTerminalStore {
-    use MBFundingCycleStore::MBFundingCycleStore;
-    use MBDirectory::MBDirectory;
+mod mb_singletokenpaymentterminalstore {
+    use mb_fundingcyclestore::MBFundingCycleStore;
+    use mbdirectory::MBDirectory;
     use ink_prelude::vec::Vec;
     use alloc::string::String;
     use ink_storage::{

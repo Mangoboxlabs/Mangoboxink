@@ -1,5 +1,5 @@
 [package]
-name = "MBSingleTokenPaymentTerminalStore"
+name = "mb_singletokenpaymentterminalstore"
 version = "0.1.0"
 authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
@@ -14,10 +14,10 @@ ink_prelude = { version = "3.0.0-rc3", path = "../ink/crates/prelude", default-f
 
 scale = { package = "parity-scale-codec", version = "2.1", default-features = false, features = ["derive"] }
 scale-info = { version = "1.0", default-features = false, features = ["derive"], optional = true }
-MBFundingCycleStore = { version = "0.1.0", path = "../MBFundingCycleStore", default-features = false, features = ["ink-as-dependency"] }
-MBDirectory = { version = "0.1.0", path = "../MBDirectory", default-features = false, features = ["ink-as-dependency"] }
+mb_fundingcyclestore = { version = "0.1.0", path = "../MBFundingCycleStore", default-features = false, features = ["ink-as-dependency"] }
+mbdirectory = { version = "0.1.0", path = "../MBDirectory", default-features = false, features = ["ink-as-dependency"] }
 [lib]
-name = "MBSingleTokenPaymentTerminalStore"
+name = "mb_singletokenpaymentterminalstore"
 path = "lib.rs"
 crate-type = [
     "cdylib",
@@ -37,8 +37,8 @@ std = [
     "ink_prelude/std",
     "scale-info",
     "scale-info/std",
-    "MBFundingCycleStore/std",
-    "MBDirectory/std",
+    "mb_fundingcyclestore/std",
+    "mbdirectory/std",
 ]
 ink-as-dependency = []
 [profile.release]

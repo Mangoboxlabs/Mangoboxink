@@ -3,13 +3,13 @@
 extern crate alloc;
 
 use ink_lang as ink;
-pub use self::mbDirectory::{
+pub use self::mbdirectory::{
     MBDirectory
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod mbDirectory {
+mod mbdirectory {
     use alloc::string::String;
     use ink_prelude::vec::Vec;
     use ink_storage::{

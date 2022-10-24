@@ -1,5 +1,5 @@
 [package]
-name = "MBController"
+name = "mb_controller"
 version = "0.1.0"
 authors = ["[your_name] <[your_email]>"]
 edition = "2018"
@@ -15,12 +15,12 @@ ink_lang = { version = "3.0.0-rc5", path = "../ink/crates/lang", default-feature
 
 scale = { package = "parity-scale-codec", version = "2.1", default-features = false, features = ["derive"] }
 scale-info = { version = "1.0.0", default-features = false, features = ["derive"], optional = true }
-MBProjects = { version = "0.1.0", path = "../MBProjects", default-features = false, features = ["ink-as-dependency"] }
-MBDirectory = { version = "0.1.0", path = "../MBDirectory", default-features = false, features = ["ink-as-dependency"] }
-MBFundingCycleStore = { version = "0.1.0", path = "../MBFundingCycleStore", default-features = false, features = ["ink-as-dependency"] }
-MBTokenStore = { version = "0.1.0", path = "../MBTokenStore", default-features = false, features = ["ink-as-dependency"] }
+mb_projects = { version = "0.1.0", path = "../MBProjects", default-features = false, features = ["ink-as-dependency"] }
+mbdirectory = { version = "0.1.0", path = "../mbdirectory", default-features = false, features = ["ink-as-dependency"] }
+mb_fundingcyclestore = { version = "0.1.0", path = "../MBFundingCycleStore", default-features = false, features = ["ink-as-dependency"] }
+mbtokenstore = { version = "0.1.0", path = "../mbtokenstore", default-features = false, features = ["ink-as-dependency"] }
 [lib]
-name = "MBController"
+name = "mb_controller"
 path = "lib.rs"
 crate-type = [
 	# Used for normal contract Wasm blobs.
@@ -38,9 +38,10 @@ std = [
     "ink_prelude/std",
     "scale/std",
     "scale-info/std",
-    "MBProjects/std",
-    "MBDirectory/std",
-    "MBTokenStore/std",
+    "mb_projects/std",
+    "mbdirectory/std",
+    "mbtokenstore/std",
+    "mb_fundingcyclestore/std"
 ]
 ink-as-dependency = []
 [profile.release]

@@ -1,5 +1,5 @@
 [package]
-name = "MBToken"
+name = "mbtoken"
 version = "0.1.0"
 authors = ["[your_name] <[your_email]>"]
 edition = "2018"
@@ -16,7 +16,7 @@ scale-info = { version = "1.0", default-features = false, features = ["derive"],
 
 
 [lib]
-name = "MBToken"
+name = "mbtoken"
 path = "lib.rs"
 crate-type = ["cdylib", "rlib"]
 

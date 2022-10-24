@@ -3,13 +3,13 @@
 extern crate alloc;
 
 use ink_lang as ink;
-pub use self::mb_fundingCycleStore::{
+pub use self::mb_fundingcyclestore::{
     MBFundingCycleStore
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod mb_fundingCycleStore {
+mod mb_fundingcyclestore {
     use alloc::string::String;
     use ink_storage::{
         collections::HashMap as StorageHashMap,
