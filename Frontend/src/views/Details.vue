@@ -118,8 +118,12 @@
           <div class="mangobox-button" @click="pay" style="padding: 0 30px">
             PAY
           </div>
-        </div>
 
+        </div>
+        <div>
+          Receive
+          <strong> {{distributeAmountNumber}}/1USDT</strong>
+        </div>
         <h3 class="sub-title">
           Activity
         </h3>
@@ -307,10 +311,18 @@ export default {
       PayRecord: [],
       tokenAddress: undefined,
       myTokenBalance:0,
-      currentCycleInfo:{}
+      currentCycleInfo:{},
+      distributeAmountNumber:0
     }
   },
   methods: {
+    distributeAmount(){
+      this.$store.dispatch("MBERC20PaymentTerminal/distributeAmount",
+       this.projectId,
+      ).then((res) => {
+        this.distributeAmountNumber =res
+      })
+    },
     tokenBalanceOf(){
       this.$store.dispatch("MBToken/balanceOf", {
         coinAddr:this.tokenAddress, owner:this.$store.state.app.account
@@ -1960,6 +1972,7 @@ export default {
     this.getProjectTokenAddress()
     this.tokenOwnerOf()
     this.currentOf()
+    this.distributeAmount()
   },
   mounted() {
     // this.initChart()

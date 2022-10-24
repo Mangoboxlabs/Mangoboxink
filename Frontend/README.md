@@ -36,6 +36,7 @@ npm run build
 ### docker
 
 ```
+npm run build
 npm run docker:build
 docker run -p8080:80 mangobox/ui1:v1
 ```
@@ -44,7 +45,7 @@ docker run -p8080:80 mangobox/ui1:v1
 
 ### Config front-end
 
-Please find the correct address for `src/api/connectContract.js`, and update the correct address in `src/api/connectContract.js`. And replace `src/api/httpConfig.js connectPath` to your connect path.
+Please find the correct address for `src/api/apiMap.js`, and update the correct address in `src/api/apiMap.js`. And replace `src/api/httpConfig.js connectPath` to your connect path.
 
 it should be `ws://127.0.0.1:9900` by default.
 
@@ -60,9 +61,7 @@ it should be `ws://127.0.0.1:9900` by default.
 
 ### entrance:
 
-```
-https://www.mangobox.io/
-```
+[https://app.mangobox.xyz/](https://app.mangobox.xyz/)
 
 ### gas
 
@@ -72,5 +71,5 @@ https://www.mangobox.io/
 
 ##### Then
 
-You can use `https://www.mangobox.io/` to create token/multisign wallet. Test Protocol Management.
+You can use `https://app.mangobox.xyz/` to create token/multisign wallet. Test Protocol Management.
 
