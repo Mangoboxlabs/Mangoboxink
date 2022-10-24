@@ -62,6 +62,15 @@ export default {
 }
 </script>
 <style lang="scss">
+
+.tip{
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+}
+.tip-box{
+  max-width: 400px;
+}
 .message-box{
   position: fixed;
   right: 20px;

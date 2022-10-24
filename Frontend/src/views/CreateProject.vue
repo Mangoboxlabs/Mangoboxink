@@ -173,16 +173,18 @@
         </div>
 
 
-        <div class="slider-box">
-          <strong class="name">
-            Initial mint rate
-          </strong>
+        <div class="input-box">
+          <div class="name">
+            Weight
 
-          <el-slider
-              style="width: 500px"
-              v-model="weight"
-              show-input>
-          </el-slider>
+            <el-tooltip class="tip-box" effect="dark" content="The term weight simply means how many tokens or other assets, such as NFTs, a contributor will receive for a set amount of contribution. For instance, a contributor who puts $1000 into your project may receive a million tokens (if you so choose)." placement="bottom-start">
+              <img class="tip" src="../imgs/tip.png" alt="">
+            </el-tooltip>
+          </div>
+
+          <label>
+            <input type="text" v-model="weight"/>
+          </label>
         </div>
 
         <div class="slider-box">
@@ -285,7 +287,7 @@
           </div>
           <div class="detail-item">
             <div class="name">
-              Initial mint rate
+              weight
             </div>
             <div class="value">
               {{weight?weight:'auto'}}
