@@ -71,12 +71,12 @@
           </div>
           <input type="text" v-model="ipfsObj.discord" placeholder="project discord"/>
         </div>
-        <div class="input-box">
-          <div class="name">
-            Pay button text
-          </div>
-          <input type="text" v-model="ipfsObj.payButton" placeholder="Custom Button"/>
-        </div>
+<!--        <div class="input-box">-->
+<!--          <div class="name">-->
+<!--            Pay button text-->
+<!--          </div>-->
+<!--          <input type="text" v-model="ipfsObj.payButton" placeholder="Custom Button"/>-->
+<!--        </div>-->
         <div class="input-box">
           <div class="name">
             Pay disclosure
@@ -235,14 +235,14 @@
               {{ipfsObj.webside?ipfsObj.webside:'-'}}
             </div>
           </div>
-          <div class="detail-item">
-            <div class="name">
-              Pay button text
-            </div>
-            <div class="value">
-              {{ipfsObj.payButton?ipfsObj.payButton:'-'}}
-            </div>
-          </div>
+<!--          <div class="detail-item">-->
+<!--            <div class="name">-->
+<!--              Pay button text-->
+<!--            </div>-->
+<!--            <div class="value">-->
+<!--              {{ipfsObj.payButton?ipfsObj.payButton:'-'}}-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="detail-item">
             <div class="name">
               Twitter
