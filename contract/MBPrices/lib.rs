@@ -3,13 +3,13 @@
 extern crate alloc;
 
 use ink_lang as ink;
-pub use self::mb_Prices::{
+pub use self::mb_prices::{
     MBPrices
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod mb_Prices {
+mod mb_prices {
     use alloc::string::String;
     use ink_storage::{
         collections::HashMap as StorageHashMap,

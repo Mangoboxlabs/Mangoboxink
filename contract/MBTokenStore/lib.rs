@@ -3,15 +3,16 @@
 extern crate alloc;
 
 use ink_lang as ink;
-pub use self::mbTokenStore::{
+pub use self::mbtokenstore::{
     MBTokenStore
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(dead_code)]
 #[ink::contract]
 
-mod mbTokenStore {
-    use MBToken::MBToken;
+mod mbtokenstore {
+    use mbtoken::MBToken;
     use alloc::string::String;
     use ink_storage::{
         collections::HashMap as StorageHashMap,

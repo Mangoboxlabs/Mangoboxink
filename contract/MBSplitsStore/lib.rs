@@ -7,7 +7,7 @@ use ink_lang as ink;
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod MBSplitsStore {
+mod mbsplitsstore {
     use alloc::string::String;
     use ink_prelude::vec::Vec;
     use ink_storage::{

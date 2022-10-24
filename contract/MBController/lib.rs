@@ -9,10 +9,10 @@ use ink_lang as ink;
 #[allow(dead_code)]
 #[ink::contract]
 mod mb_controller {
-    use MBProjects::MBProjects;
-    use MBDirectory::MBDirectory;
-    use MBTokenStore::MBTokenStore;
-    use MBFundingCycleStore::MBFundingCycleStore;
+    use mb_projects::MBProjects;
+    use mbdirectory::MBDirectory;
+    use mbtokenstore::MBTokenStore;
+    use mb_fundingcyclestore::MBFundingCycleStore;
     use alloc::string::String;
     use ink_prelude::vec::Vec;
     use ink_prelude::collections::BTreeMap;

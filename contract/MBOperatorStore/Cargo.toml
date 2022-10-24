@@ -1,5 +1,5 @@
 [package]
-name = "MBOperatorStore"
+name = "mb_operatorstore"
 version = "0.1.0"
 authors = ["[your_name] <[your_email]>"]
 edition = "2018"
@@ -17,7 +17,7 @@ scale = { package = "parity-scale-codec", version = "2.1", default-features = fa
 scale-info = { version = "1.0.0", default-features = false, features = ["derive"], optional = true }
 
 [lib]
-name = "MBOperatorStore"
+name = "mb_operatorstore"
 path = "lib.rs"
 crate-type = [
 	# Used for normal contract Wasm blobs.

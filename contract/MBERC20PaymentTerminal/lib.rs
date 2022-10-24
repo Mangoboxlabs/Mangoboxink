@@ -7,12 +7,12 @@ use ink_lang as ink;
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
 #[ink::contract]
-mod MBERC20PaymentTerminal {
-    use MBSingleTokenPaymentTerminalStore::MBSingleTokenPaymentTerminalStore;
-    use MBPrices::MBPrices;
-    use MBToken::MBToken;
-    use MBTokenStore::MBTokenStore;
-    use MBProjects::MBProjects;
+mod mberc20_paymentterminal {
+    use mb_singletokenpaymentterminalstore::MBSingleTokenPaymentTerminalStore;
+    use mb_prices::MBPrices;
+    use mbtoken::MBToken;
+    use mbtokenstore::MBTokenStore;
+    use mb_projects::MBProjects;
     use ink_prelude::vec::Vec;
     use alloc::string::String;
 
