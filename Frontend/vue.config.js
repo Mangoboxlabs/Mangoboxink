@@ -8,7 +8,19 @@ module.exports = defineConfig({
     plugins: [new NodePolyfillPlugin()],
 
   },
+  devServer:{
+    proxy: {
+      '/service/rest': {
+        target: 'https://cloudflare-ipfs.com/ipfs/',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
 
+        }
+      }
+    }
+
+  }
 
 
 })
