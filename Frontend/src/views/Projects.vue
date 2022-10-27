@@ -109,8 +109,20 @@ export default {
     }
   },
   created() {
-    this.getAllProject()
-    this.getMyProject()
+    if(this.$store.state.app.isConnected){
+      this.getAllProject()
+      this.getMyProject()
+    }else{
+      this.$store.dispatch("app/getWeb3").catch(()=>{
+        this.$eventBus.$emit('message', {
+          message: "Please Connect",
+          type: "error"
+        })
+      }).then(()=>{
+        this.getAllProject()
+        this.getMyProject()
+      })
+    }
   },
   methods: {
     dealSearch(){

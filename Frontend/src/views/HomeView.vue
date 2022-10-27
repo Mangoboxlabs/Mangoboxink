@@ -87,7 +87,14 @@ export default {
     }
   },
   created() {
-    this.getData()
+    this.$store.dispatch("app/getWeb3").catch(()=>{
+      this.$eventBus.$emit('message', {
+        message: "Please Connect",
+        type: "error"
+      })
+    }).then(()=>{
+      this.getData()
+    })
     setTimeout(()=>{
       if(this.homeArr.length<=0){
         this.getData()
