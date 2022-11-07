@@ -273,31 +273,30 @@ mod mbtokenstore {
         use ink_lang as ink;
         #[ink::test]
         fn totalSupplyOf_works() {
-            let  ms = MBTokenStore::new();
+            let ms = MBTokenStore::new(AccountId::default(),Hash::from([0x99; 32]));
             assert!(ms.totalSupplyOf(1) == 0);
         }
         #[ink::test]
         fn balanceOf_works() {
-            let  ms = MBTokenStore::new();
+            let ms = MBTokenStore::new(AccountId::default(),Hash::from([0x99; 32]));
             assert!(ms.balanceOf(AccountId::default(),1) == 0);
         }
         #[ink::test]
         fn mintFor_works() {
-            let mut ms = MBTokenStore::new();
+            let mut ms = MBTokenStore::new(AccountId::default(),Hash::from([0x99; 32]));
             assert!(ms.mintFor(AccountId::default(),1,1,false) == false);
         }
         #[ink::test]
         fn claimFor_works() {
-            let mut ms = MBTokenStore::new();
+            let mut  ms = MBTokenStore::new(AccountId::default(),Hash::from([0x99; 32]));
             assert!(ms.claimFor(1,AccountId::default(),1) == false);
         }
 
         #[ink::test]
         fn burnFrom_works() {
-            let mut ms = MBTokenStore::new();
+            let mut ms = MBTokenStore::new(AccountId::default(),Hash::from([0x99; 32]));
             assert!(ms.burnFrom(AccountId::default(),1,1,false) == false);
         }
-
 
     }
 }

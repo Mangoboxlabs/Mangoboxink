@@ -193,7 +193,7 @@ mod mbsplitsstore {
         use ink_lang as ink;
         #[ink::test]
         fn set_works() {
-            let mut ms = MBSplitsStore::new();
+            let mut ms = MBSplitsStore::new(AccountId::default());
             assert!( ms.set(1,Vec::new()) == true);
         }
         #[ink::test]
@@ -208,7 +208,7 @@ mod mbsplitsstore {
                 allocator:AccountId::default()
             };
 
-            let mut ms = MBSplitsStore::new();
+            let mut ms = MBSplitsStore::new(AccountId::default());
 
             let mut vec = Vec::new();
             vec.push(_split);

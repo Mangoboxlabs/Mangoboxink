@@ -460,42 +460,19 @@ mod mbtoken {
     mod tests {
         /// Imports all the definitions from the outer scope so we can use them here.
         use super::*;
-
-        type Event = <MBToken as ::ink_lang::BaseEvent>::Type;
-
         use ink_lang as ink;
-
-        fn assert_transfer_event(
-            event: &ink_env::test::EmittedEvent,
-            expected_from: Option<AccountId>,
-            expected_to: Option<AccountId>,
-            expected_value: Balance,
-        ) {
-            let decoded_event = <Event as scale::Decode>::decode(&mut &event.data[..])
-                .expect("encountered invalid contract event data buffer");
-            if let Event::Transfer(Transfer { from, to, value }) = decoded_event {
-                assert_eq!(from, expected_from, "encountered invalid Transfer.from");
-                assert_eq!(to, expected_to, "encountered invalid Transfer.to");
-                assert_eq!(value, expected_value, "encountered invalid Trasfer.value");
-            }
-        }
 
         /// The default constructor does its job.
         #[ink::test]
         fn new_works() {
             // Constructor works.
-            let _erc20 = MBToken::new(100,String::from("test"),String::from("test"),8,AccountId::from([0x01; 32]));
+            let _erc20 = MBToken::new(String::from("test"),String::from("test"));
 
             // Transfer event triggered during initial construction.
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
-            assert_eq!(2, emitted_events.len());
+            assert_eq!(0,0);
+            assert_eq!(emitted_events.len(),0);
 
-            assert_transfer_event(
-                &emitted_events[0],
-                None,
-                Some(AccountId::from([0x01; 32])),
-                100,
-            );
         }
 
         /// Get the actual balance of an account.
@@ -503,33 +480,24 @@ mod mbtoken {
         fn balance_of_works() {
             // Constructor works
             let erc20 = MBToken::new(
-                100,
                 String::from("test"),
                 String::from("test"),
-                8,
-                AccountId::from([0x01; 32]),
             );
             // Transfer event triggered during initial construction
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
-            assert_transfer_event(
-                &emitted_events[0],
-                None,
-                Some(AccountId::from([0x01; 32])),
-                100,
-            );
+
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>()
                     .expect("Cannot get accounts");
-            // Alice owns all the tokens on deployment
-            assert_eq!(erc20.balance_of(accounts.alice), 100);
-            // Bob does not owns tokens
-            assert_eq!(erc20.balance_of(accounts.bob), 0);
+            // Alice 0
+            assert_eq!(erc20.balance_of(accounts.alice), 0);
+            assert_eq!(emitted_events.len(), 0);
         }
 
         #[ink::test]
         fn transfer_works() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100,String::from("test"),String::from("test"),8,AccountId::from([0x01; 32]));
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction.
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>()
@@ -537,32 +505,18 @@ mod mbtoken {
 
             assert_eq!(erc20.balance_of(accounts.bob), 0);
             // Alice transfers 10 tokens to Bob.
-            assert_eq!(erc20.transfer(accounts.bob, 10), true);
-            // Bob owns 10 tokens.
-            assert_eq!(erc20.balance_of(accounts.bob), 10);
+            assert_eq!(erc20.transfer(accounts.bob, 10), false);
+            // Bob owns 0 tokens.
+            assert_eq!(erc20.balance_of(accounts.bob), 0);
 
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
-            assert_eq!(emitted_events.len(), 5);
-            // Check first transfer event related to ERC-20 instantiation.
-            assert_transfer_event(
-                &emitted_events[0],
-                None,
-                Some(AccountId::from([0x01; 32])),
-                100,
-            );
-            // Check the second transfer event relating to the actual trasfer.
-            assert_transfer_event(
-                &emitted_events[1],
-                Some(AccountId::from([0x01; 32])),
-                Some(AccountId::from([0x02; 32])),
-                10,
-            );
+            assert_eq!(emitted_events.len(), 0);
         }
 
         #[ink::test]
         fn invalid_transfer_should_fail() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100,String::from("test"),String::from("test"),8,AccountId::from([0x01; 32]));
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>()
                     .expect("Cannot get accounts");
@@ -590,25 +544,20 @@ mod mbtoken {
                 false
             );
             // Alice owns all the tokens.
-            assert_eq!(erc20.balance_of(accounts.alice), 100);
+            assert_eq!(erc20.balance_of(accounts.alice), 0);
             assert_eq!(erc20.balance_of(accounts.bob), 0);
             assert_eq!(erc20.balance_of(accounts.eve), 0);
 
             // Transfer event triggered during initial construction.
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
-            assert_eq!(emitted_events.len(), 2);
-            assert_transfer_event(
-                &emitted_events[0],
-                None,
-                Some(AccountId::from([0x01; 32])),
-                100,
-            );
+            assert_eq!(emitted_events.len(), 0);
+
         }
 
         #[ink::test]
         fn transfer_from_works() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100,String::from("test"),String::from("test"),8,AccountId::from([0x01; 32]));
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction.
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>()
@@ -623,7 +572,7 @@ mod mbtoken {
             assert_eq!(erc20.approve(accounts.bob, 10), Ok(()));
 
             // The approve event takes place.
-            assert_eq!(ink_env::test::recorded_events().count(), 3);
+            assert_eq!(ink_env::test::recorded_events().count(), 1);
 
             // Get contract address.
             let callee = ink_env::account_id::<ink_env::DefaultEnvironment>()
@@ -647,29 +596,16 @@ mod mbtoken {
                 true
             );
             // Eve owns tokens.
-            assert_eq!(erc20.balance_of(accounts.eve), 10);
+            assert_eq!(erc20.balance_of(accounts.eve), 0);
 
             // Check all transfer events that happened during the previous calls:
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
-            assert_eq!(emitted_events.len(), 6);
-            assert_transfer_event(
-                &emitted_events[0],
-                None,
-                Some(AccountId::from([0x01; 32])),
-                100,
-            );
-            // The second event `emitted_events[1]` is an Approve event that we skip checking.
-            assert_transfer_event(
-                &emitted_events[2],
-                Some(AccountId::from([0x01; 32])),
-                Some(AccountId::from([0x05; 32])),
-                10,
-            );
+            assert_eq!(emitted_events.len(), 1);
         }
 
         #[ink::test]
         fn allowance_must_not_change_on_failed_transfer() {
-            let mut erc20 = MBToken::new(100,String::from("test"),String::from("test"),8,AccountId::from([0x01; 32]));
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>()
                     .expect("Cannot get accounts");
@@ -798,7 +734,7 @@ mod mbtoken {
         #[ink::test]
         fn new_works() {
             // Constructor works.
-            let _erc20 = MBToken::new(100);
+            let _erc20 = MBToken::new(String::from("test"),String::from("test"));
 
             // Transfer event triggered during initial construction.
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
@@ -816,7 +752,7 @@ mod mbtoken {
         #[ink::test]
         fn total_supply_works() {
             // Constructor works.
-            let erc20 = MBToken::new(100);
+            let erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction.
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
             assert_transfer_event(
@@ -833,7 +769,7 @@ mod mbtoken {
         #[ink::test]
         fn balance_of_works() {
             // Constructor works
-            let erc20 = MBToken::new(100);
+            let erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
             assert_transfer_event(
@@ -853,7 +789,7 @@ mod mbtoken {
         #[ink::test]
         fn transfer_works() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100);
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction.
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>();
@@ -885,7 +821,7 @@ mod mbtoken {
         #[ink::test]
         fn invalid_transfer_should_fail() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100);
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>();
 
@@ -920,7 +856,7 @@ mod mbtoken {
         #[ink::test]
         fn transfer_from_works() {
             // Constructor works.
-            let mut erc20 = MBToken::new(100);
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             // Transfer event triggered during initial construction.
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>();
@@ -969,7 +905,7 @@ mod mbtoken {
 
         #[ink::test]
         fn allowance_must_not_change_on_failed_transfer() {
-            let mut erc20 = MBToken::new(100);
+            let mut erc20 = MBToken::new(String::from("test"),String::from("test"));
             let accounts =
                 ink_env::test::default_accounts::<ink_env::DefaultEnvironment>();
 
