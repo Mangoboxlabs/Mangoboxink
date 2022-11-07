@@ -1,5 +1,13 @@
 ## Mangobox Docker
 
+#### Build
+
+```js
+docker build -t mangobox/ui1:v1 .
+```
+
+
+
 #### RUN
 
 ```
