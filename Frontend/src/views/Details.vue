@@ -122,7 +122,7 @@
         </div>
         <div>
           Receive
-          <strong> {{distributeAmountNumber}}/1USDT</strong>
+          <strong> {{distributeAmountNumber}}{{coinInfo.name}}/1USDT</strong>
         </div>
         <h3 class="sub-title">
           Activity
@@ -312,10 +312,18 @@ export default {
       tokenAddress: undefined,
       myTokenBalance:0,
       currentCycleInfo:{},
-      distributeAmountNumber:0
+      distributeAmountNumber:0,
+      coinInfo:{}
     }
   },
   methods: {
+    queryCoinInfo(){
+      this.$store.dispatch("MBToken/queryInfo",
+          this.tokenAddress,
+      ).then((res) => {
+        this.coinInfo = res
+      })
+    },
     distributeAmount(){
       this.$store.dispatch("MBERC20PaymentTerminal/distributeAmount",
        this.projectId,
@@ -354,7 +362,6 @@ export default {
     },
     currentOf(){
       this.$store.dispatch("MBFundingCycleStore/currentOf", this.projectId).then(res => {
-        console.log(res)
         this.currentCycleInfo = res
       })
     },
@@ -363,6 +370,7 @@ export default {
         this.tokenAddress = res
         if(res){
           this.tokenBalanceOf()
+          this.queryCoinInfo()
         }
       })
     },
@@ -392,7 +400,6 @@ export default {
           const timestr = item.time.replace(/,/g, '').trim()
           item.time = this.moment(new Date(parseInt(timestr))).format('MMMM Do YYYY, h:mm:ss a')
         })
-        console.log(res)
       })
     },
     getBalanceOf(id) {

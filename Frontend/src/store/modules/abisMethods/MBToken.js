@@ -21,10 +21,10 @@ const state = {
 }
 const mutations = {};
 const actions = {
-    async query_info({rootState}) {
-        await judgeContract(rootState.app.web3)
+    async queryInfo({rootState},coinaddress) {
+        await judgeContract(rootState.app.web3,coinaddress)
         const AccountId = await Accounts.accountAddress();
-        let data = await state.contract.query.query_info(AccountId, {value, queryGasLimit},)
+        let data = await state.contract.query.queryInfo(AccountId, {value, queryGasLimit},)
         data = formatResult(data);
         return data
 

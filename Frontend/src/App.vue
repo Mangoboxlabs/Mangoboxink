@@ -50,7 +50,12 @@ export default {
   },
   mounted() {
     let _this = this
-    this.$store.dispatch("app/getWeb3")
+    this.$store.dispatch("app/getWeb3").catch(()=>{
+      this.$eventBus.$emit('message', {
+        message: "Please Connect",
+        type: "error"
+      })
+    })
     this.$eventBus.$on('message', (message) => {
       _this.messageList.push(message)
       setTimeout(()=>{
@@ -62,7 +67,9 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.el-tooltip__popper{
+  max-width: 500px!important;
+}
 .tip{
   width: 16px;
   height: 16px;

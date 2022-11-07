@@ -130,6 +130,14 @@
             </el-select>
           </div>
         </div>
+        <div class="input-box" >
+          <div class="name">
+            Fundraising limits
+          </div>
+          <div class="flex-box">
+            <input type="text" v-model="distributionLimit " placeholder="distributionLimit ">
+          </div>
+        </div>
         <h2>
           Payouts
         </h2>
@@ -137,7 +145,7 @@
           Choose how you would like to configure your payouts.
         </div>
         <div>
-          <el-radio v-model="payouts" label="1">
+          <el-radio v-model="incomeType" label="1">
             <strong>Amounts</strong>
             <div class="intro">
               <p>
@@ -150,15 +158,20 @@
           </el-radio>
         </div>
         <div>
-          <el-radio v-model="payouts" label="2">Percentages
+          <el-radio v-model="incomeType" label="2">Percentages
             <div class="intro">
               <p>Distribute a percentage of all funds received to entities.</p>
               <p> Your distribution limit will be infinite.</p>
             </div>
           </el-radio>
         </div>
-        <div class="add-payout-btn">
-          Add payout
+        <div class="input-box" >
+          <div class="name">
+            Amount
+          </div>
+          <div class="flex-box">
+            <input type="text" v-model="incomeAmount " :placeholder="incomeType==2?'income percent':'income amount' ">
+          </div>
         </div>
         <h3 class="step-item-title">
           02 Project token
@@ -166,6 +179,9 @@
         <div class="input-box">
           <div class="name">
             Time interval between
+            <el-tooltip class="tip-box" effect="dark" content="Using a reconfiguration strategy is recommended. Projects with no strategy will appear risky to contributors." placement="bottom-start">
+              <img class="tip" src="../imgs/tip.png" alt="">
+            </el-tooltip>
           </div>
           <label>
             <input type="text" v-model="mustStartAtOrAfter"/>
@@ -343,7 +359,9 @@ export default {
       mustStartAtOrAfter:undefined,
       weight:0,
       discountRate:0,
-
+      distributionLimit:undefined,
+      incomeType:1,
+      incomeAmount:undefined
     }
   },
 
@@ -401,7 +419,7 @@ export default {
         _fundAccessConstraints: [{
           terminal:this.$store.state.app.account,
           token:this.$store.state.app.account,
-          distributionLimit:0,
+          distributionLimit: this.distributionLimit,
           distributionLimitCurrency:0,
           overflowAllowance:0,
           overflowAllowanceCurrency:0

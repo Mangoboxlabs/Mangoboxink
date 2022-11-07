@@ -41,6 +41,9 @@ export default {
     }
   },
   computed:{
+    isConnected(){
+      return this.$store.state.app.isConnected
+    },
     homeArr(){
       let tempArr = this.$store.state.app.homeArr
       tempArr.sort((a,b)=>{
@@ -51,6 +54,11 @@ export default {
         }
       })
       return tempArr
+    }
+  },
+  watch:{
+    isConnected(){
+      this.getData()
     }
   },
   methods: {
@@ -79,7 +87,14 @@ export default {
     }
   },
   created() {
-    this.getData()
+    this.$store.dispatch("app/getWeb3").catch(()=>{
+      this.$eventBus.$emit('message', {
+        message: "Please Connect",
+        type: "error"
+      })
+    }).then(()=>{
+      this.getData()
+    })
     setTimeout(()=>{
       if(this.homeArr.length<=0){
         this.getData()
