@@ -14,6 +14,16 @@ docker build -t mangobox/ui1:v1 .
 docker run -p8080:80 mangobox/ui1:v1
 ```
 
+
+
+#### Check
+
+```
+http://localhost:8080/
+```
+
+
+
 ### config
 
 ###### Dockerfile
