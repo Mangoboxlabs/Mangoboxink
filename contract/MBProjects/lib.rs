@@ -289,6 +289,9 @@ mod mb_projects {
                 return Err(Error::NotOwner)
             };
            // decrease_counter_of(owned_tokens_count, &caller)?;
+            let mut balance = self.owned_tokens_count.get(&caller).unwrap_or(&0).clone();
+            balance = balance - 1;
+            self.owned_tokens_count.insert(caller,balance);
             occupied.remove_entry();
             self.env().emit_event(Transfer {
                 from: Some(caller),
@@ -338,6 +341,9 @@ mod mb_projects {
                 Entry::Occupied(occupied) => occupied,
             };
             //decrease_counter_of(owned_tokens_count, from)?;
+            let mut balance = self.owned_tokens_count.get(&_from).unwrap_or(&0).clone();
+            balance = balance - 1;
+            self.owned_tokens_count.insert(*_from,balance);
             occupied.remove_entry();
             Ok(())
         }
@@ -355,6 +361,9 @@ mod mb_projects {
             if *to == AccountId::from([0x0; 32]) {
                 return Err(Error::NotAllowed)
             };
+            let mut balance = self.owned_tokens_count.get(&to).unwrap_or(&0).clone();
+            balance = balance + 1;
+            self.owned_tokens_count.insert(*to,balance);
             //let entry = owned_tokens_count.entry(*to);
             //increase_counter_of(entry);
             vacant_token_owner.insert(*to);

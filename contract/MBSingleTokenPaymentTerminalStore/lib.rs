@@ -182,7 +182,7 @@ mod mb_singletokenpaymentterminalstore {
                 metadata: 0,
             };
             let store_instance: MBFundingCycleStore = ink_env::call::FromAccountId::from_account_id(self.fundingCycleStore);
-
+            if self.fundingCycleStore == AccountId::default() {return (fundingCycle, 0, AccountId::default(), _memo);  }
             _weight = store_instance.getProjectsWeight(_projectId);
             if _amount == 0 { return (fundingCycle, 0, AccountId::default(), _memo); };
             let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
@@ -376,34 +376,34 @@ mod mb_singletokenpaymentterminalstore {
         use ink_lang as ink;
         #[ink::test]
         fn currentOverflowOf_works() {
-            let mp = MBSingleTokenPaymentTerminalStore::new();
+            let mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
             assert!(mp.currentOverflowOf(AccountId::default(),1) == 0);
         }
         #[ink::test]
         fn recordPaymentFrom_works() {
-            let mut mp = MBSingleTokenPaymentTerminalStore::new();
+            let mut mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
             let (_fundingCycle, _number, _token, _meta) = mp.recordPaymentFrom(AccountId::default(),0,1,1,AccountId::default(),String::from("test"),String::from("test"));
             assert!(_fundingCycle.number == 1);
         }
         #[ink::test]
         fn recordRedemptionFor_works() {
-            let mut mp = MBSingleTokenPaymentTerminalStore::new();
+            let mut mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
             let (_fundingCycle, _number, _token, _meta) = mp.recordRedemptionFor(AccountId::default(),1,1,String::from("test"));
             assert!(_fundingCycle.number == 1);
         }
         #[ink::test]
         fn recordDistributionFor_works() {
-            let mut mp = MBSingleTokenPaymentTerminalStore::new();
-            assert!(mp.recordDistributionFor(1,1,1) == true);
+            let mut mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
+            assert!(mp.recordDistributionFor(1,1,1) == 1);
         }
         #[ink::test]
         fn recordUsedAllowanceOf_works() {
-            let mut mp = MBSingleTokenPaymentTerminalStore::new();
-            assert!(mp.recordUsedAllowanceOf(1,1,1) == true);
+            let mut mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
+            assert!(mp.recordUsedAllowanceOf(1,1,1) == 1);
         }
         #[ink::test]
         fn recordAddedBalanceFor_works() {
-            let mut mp = MBSingleTokenPaymentTerminalStore::new();
+            let mut mp = MBSingleTokenPaymentTerminalStore::new(AccountId::default(),AccountId::default(),AccountId::default());
             assert!(mp.recordAddedBalanceFor(1,1) == true);
 
         }

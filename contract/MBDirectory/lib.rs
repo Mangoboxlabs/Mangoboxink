@@ -190,34 +190,34 @@ mod mbdirectory {
         use ink_lang as ink;
         #[ink::test]
         fn setTerminalsOf_works() {
-            let mut directory = MBDirectory::new();
+            let mut directory = MBDirectory::new(AccountId::default(),AccountId::default());
             let mut vec = Vec::new();
             vec.push(AccountId::default());
             assert!(directory.setTerminalsOf(1,vec) == true);
         }
         #[ink::test]
         fn setPrimaryTerminalOf_works() {
-            let mut directory = MBDirectory::new();
+            let mut directory = MBDirectory::new(AccountId::default(),AccountId::default());
             assert!(directory.setPrimaryTerminalOf(1,AccountId::default(),AccountId::default()) == true);
         }
         #[ink::test]
         fn setControllerOf_works() {
-            let mut directory = MBDirectory::new();
+            let mut directory = MBDirectory::new(AccountId::default(),AccountId::default());
             assert!(directory.setControllerOf(1,AccountId::default()) == true);
         }
         #[ink::test]
         fn isTerminalOf_works() {
-            let directory = MBDirectory::new();
+            let directory = MBDirectory::new(AccountId::default(),AccountId::default());
             assert!(directory.isTerminalOf(1,AccountId::default()) == false);
         }
         #[ink::test]
         fn primaryTerminalOf_works() {
-            let directory = MBDirectory::new();
+            let directory = MBDirectory::new(AccountId::default(),AccountId::default());
             assert!(directory.primaryTerminalOf(AccountId::default(),1) == AccountId::default());
         }
         #[ink::test]
         fn terminalsOf_works() {
-            let mut directory = MBDirectory::new();
+            let mut directory = MBDirectory::new(AccountId::default(),AccountId::default());
             let mut vec = Vec::new();
             vec.push(AccountId::default());
             let newVec = vec.clone();
