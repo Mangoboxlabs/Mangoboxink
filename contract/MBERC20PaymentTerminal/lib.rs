@@ -575,42 +575,98 @@ mod mberc20_paymentterminal {
         use ink_lang as ink;
         #[ink::test]
         fn currentEthOverflowOf_works() {
-            let  MT= MBERC20PaymentTerminal::new();
+            let  MT= MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             assert!(MT.currentEthOverflowOf(1) == 0);
         }
         #[ink::test]
         fn heldFeesOf_works() {
-            let MT = MBERC20PaymentTerminal::new();
+            let MT = MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             let vec:Vec<MBFee> = Vec::new();
             assert!(MT.heldFeesOf(1).len() == vec.len());
         }
         #[ink::test]
         fn pay_works() {
-            let mut MT = MBERC20PaymentTerminal::new();
+            let mut MT = MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             let  ret  = MT.pay(1,1,AccountId::default(),AccountId::default(),1,false,String::from("test"),String::from("test"));
             assert!(ret == false);
         }
         #[ink::test]
         fn redeemTokensOf_works() {
-           let mut MT = MBERC20PaymentTerminal::new();
+           let mut MT = MBERC20PaymentTerminal::new(
+               AccountId::default(),
+               AccountId::default(),
+               AccountId::default(),
+               AccountId::default(),
+               AccountId::default(),
+               AccountId::default(),
+               AccountId::default()
+           );
            let ret =  MT.redeemTokensOf(AccountId::default(),1,1,AccountId::default(),1,AccountId::default(),String::from("test"));
             assert!(ret == 0);
         }
         #[ink::test]
         fn distributePayoutsOf_works() {
-            let mut MT = MBERC20PaymentTerminal::new();
+            let mut MT = MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             let ret =  MT.distributePayoutsOf(1,1,1,AccountId::default(),1,String::from("test"));
             assert!(ret == false);
         }
         #[ink::test]
         fn useAllowanceOf_works() {
-            let mut MT = MBERC20PaymentTerminal::new();
+            let mut MT = MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             let ret =  MT.useAllowanceOf(1,1,1,AccountId::default(),1,AccountId::default(),String::from("test"));
             assert!(ret == false);
         }
         #[ink::test]
         fn addToBalanceOf_works() {
-            let mut MT = MBERC20PaymentTerminal::new();
+            let mut MT = MBERC20PaymentTerminal::new(
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default(),
+                AccountId::default()
+            );
             let ret = MT.addToBalanceOf(1,1,AccountId::default(),String::from("test"),String::from("test"));
             assert!(ret == false);
         }
