@@ -62,7 +62,7 @@ npm install -g binaryen
 ```
 
 ## Testing
-
+### Command  test
 First of all you need to clone the repository, run:
 
 ```bash
@@ -75,7 +75,9 @@ Then, You can enter any folder and enter the following command.
 ```bash
 cargo +nightly test
 ```
-
+### Test by polkadot.js apps
+visit [polkadot.js apps](https://polkadot.js.org/apps/), and connect Mangobox node(wss://rpc.mangobox.xyz/).
+then `Develpoer`->`Contract`->`upload & deploy`.Then upload your compiled `.contract` file. 
 ## Building
 
 To build the WASM of your contract and metadata, You can enter any folder and enter the following command.
