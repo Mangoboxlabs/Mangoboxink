@@ -18,7 +18,7 @@ scale-info = { version = "1.0.0", default-features = false, features = ["derive"
 mb_projects = { version = "0.1.0", path = "../MBProjects", default-features = false, features = ["ink-as-dependency"] }
 mbdirectory = { version = "0.1.0", path = "../MBDirectory", default-features = false, features = ["ink-as-dependency"] }
 mb_fundingcyclestore = { version = "0.1.0", path = "../MBFundingCycleStore", default-features = false, features = ["ink-as-dependency"] }
-mbtokenstore = { version = "0.1.0", path = "../MBTokenstore", default-features = false, features = ["ink-as-dependency"] }
+mbtokenstore = { version = "0.1.0", path = "../MBTokenStore", default-features = false, features = ["ink-as-dependency"] }
 [lib]
 name = "mb_controller"
 path = "lib.rs"
