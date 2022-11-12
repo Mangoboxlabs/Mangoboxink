@@ -77,7 +77,19 @@ cargo +nightly test
 ```
 ### Test by polkadot.js apps
 visit [polkadot.js apps](https://polkadot.js.org/apps/), and connect Mangobox node(wss://rpc.mangobox.xyz/).
-then `Develpoer`->`Contract`->`upload & deploy`.Then upload your compiled `.contract` file. 
+then `Develpoer`->`Contract`->`upload & deploy`.Then upload your compiled `.contract` file.
+
+####Contract deployment steps
+MBToken > MBProjects > MBTokenStore > MBSplitsStore > MBFundingCycleStore > MBOperatorStore >  MBPrices > MBDirectory > MBSingleTokenPaymentTerminalStore > MBERC20PaymentTerminal > MBController
+#### Parameters of deployment contract
+- MBToken : `name` is the name of the erc20 token. `symbol` is the symbol of the erc20 token.
+- MBTokenStore : `_projects` is the address of MBProjects. `_tokenHash` is the hash of the MBToken.
+- MBSplitsStore: `_projects` is the address of MBProjects.
+- MBDirectory : `_projects` is the address of MBProjects.`_fundingCycleStore` is the address of MBFundingCycleStore.
+- MBSingleTokenPaymentTerminalStore: `_prices` is the address of MBPrices. `_directory` is the address of MBDirectory. `_fundingCycleStore` is the address of MBFundingCycleStore.
+- MBERC20PaymentTerminal : `_projects` is the address of MBProjects.`_directory` is the address of MBDirectory.`_splitsStore` is the address of the MBSplitsStore.`_prices` is the address of MBPrices.`_store` is the address of MBSingleTokenPaymentTerminalStore.`_token` is the address of MBToken.`_tokenStore` is the address of the MBTokenStore.
+- MBController:`_operatorStore` is the address if MBOperatorStore.`_projects` is the address of MBProjects.`_directory` is the address of MBDirectory.`_fundingCycleStore` is the address of MBFundingCycleStore.`_tokenStore` is the address of the MBTokenStore.`_splitsStore` is the address of the MBSplitsStore.
+
 ## Building
 
 To build the WASM of your contract and metadata, You can enter any folder and enter the following command.
