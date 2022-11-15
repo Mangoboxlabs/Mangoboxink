@@ -1,5 +1,5 @@
 import {eventBus} from "./eventBus";
-
+//Processing results tool
 const formatResult =  (result) =>{
     let str;
     if (result && result.output) {

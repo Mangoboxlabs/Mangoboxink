@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <img style="margin: 10px auto" src="../imgs/no-data.png" alt="" v-show="homeArr.length==0">
+        <img style="margin: 10px auto" src="../imgs/no-data.webp" alt="" v-show="homeArr.length==0">
       </div>
 
 <!--      <div class="more mangobox-button" @click="homeArr>maxCount?maxCount+=12:''">-->

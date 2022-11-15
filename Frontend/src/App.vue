@@ -1,14 +1,17 @@
 <template>
   <div id="app">
+    <!--   Global message box -->
     <div class="message-box">
-      <div v-for="(item,index)  in messageList" :class="{'error': item.type=='error','success':item.type=='success'}" :key="index" class="message animate__animated  animate__backInRight" >
-        <img v-show="item.type=='success'" src="./imgs/success.png" alt="">
-        <img v-show="item.type=='error'" src="./imgs/error.png" alt="">
+      <div v-for="(item,index)  in messageList" :class="{'error': item.type=='error','success':item.type=='success'}"
+           :key="index" class="message animate__animated  animate__backInRight">
+        <img v-show="item.type=='success'" src="./imgs/success.webp" alt="">
+        <img v-show="item.type=='error'" src="./imgs/error.webp" alt="">
         <p>
           {{ item.message }}
         </p>
       </div>
     </div>
+    <!-- Header component   -->
     <MangoboxReader v-show="$route.path!='/Details'"></MangoboxReader>
     <div class="loading" v-show="isLoading">
       <div class="mask"></div>
@@ -26,64 +29,73 @@
         </div>
       </div>
     </div>
+    <!--  Body of page  -->
     <router-view class="main-content"/>
+    <!--  Bottom assembly  -->
     <MangoboxFooter></MangoboxFooter>
   </div>
 </template>
 <script>
 import MangoboxReader from "./components/mangobox-header"
 import MangoboxFooter from "./components/mangobox-footer"
+
 export default {
-  components:{
+  components: {
     MangoboxReader,
     MangoboxFooter
   },
-  data(){
-    return{
-      messageList:[]
+  data() {
+    return {
+      messageList: []
     }
   },
-  computed:{
-    isLoading(){
+  computed: {
+    isLoading() {
       return this.$store.state.app.isLoading
     }
   },
   mounted() {
     let _this = this
-    this.$store.dispatch("app/getWeb3").catch(()=>{
+    //Start the project to establish a connection to the wallet
+    this.$store.dispatch("app/getWeb3").catch(() => {
       this.$eventBus.$emit('message', {
         message: "Please Connect",
         type: "error"
       })
     })
+    //
     this.$eventBus.$on('message', (message) => {
       _this.messageList.push(message)
-      setTimeout(()=>{
+      setTimeout(() => {
         _this.messageList.shift()
-      },3000)
+      }, 3000)
     })
 
   }
 }
 </script>
 <style lang="scss">
-.el-tooltip__popper{
-  max-width: 500px!important;
+.el-tooltip__popper {
+  max-width: 500px !important;
 }
-.tip{
+
+.tip {
   width: 16px;
   height: 16px;
   margin-left: 10px;
 }
-.tip-box{
+
+.tip-box {
   max-width: 400px;
 }
-.message-box{
+
+.message-box {
   position: fixed;
   right: 20px;
   top: 60px;
   z-index: 10;
-  .message{
+
+  .message {
 
     width: 300px;
     padding: 10px 10px 0 40px;
@@ -95,27 +107,31 @@ export default {
     background: #fff;
     font-size: 16px;
     position: relative;
-    img{
+
+    img {
       width: 20px;
       position: absolute;
       left: 10px;
       top: 10px;
     }
-    &.error{
+
+    &.error {
       background: #f66b2f;
       color: #fff;
     }
-    &.success{
+
+    &.success {
       background: #2AAA00;
       color: #fff;
     }
   }
 }
+
 #app {
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  --primary-bg-color:linear-gradient(225deg, #54D500 0%, #2AAA00 100%);
+  --primary-bg-color: linear-gradient(225deg, #54D500 0%, #2AAA00 100%);
   --primary-light: #8abdff;
   --primary: #54D500;
   --primary-dark: #2AAA00;
@@ -127,21 +143,24 @@ export default {
   --greyDark: #9baacf;
 
 
-  ::v-deep el-radio{
-    .intro{
+  ::v-deep el-radio {
+    .intro {
       opacity: 0.5;
       margin: 10px 0;
     }
   }
 
-  .main-content{
+  .main-content {
     flex-grow: 5;
   }
-  .loading{
+
+  .loading {
     height: 100vh;
     top: 50px;
-    position: fixed;width: 100%;
-    .mask{
+    position: fixed;
+    width: 100%;
+
+    .mask {
       width: 100%;
       height: 100%;
       background: #000;
@@ -149,6 +168,7 @@ export default {
       position: absolute;
 
     }
+
     body {
       background: black;
     }
@@ -215,26 +235,38 @@ export default {
     }
 
     @keyframes loader {
-      from {transform: rotate(0deg)}
-      to {transform: rotate(360deg)}
+      from {
+        transform: rotate(0deg)
+      }
+      to {
+        transform: rotate(360deg)
+      }
     }
 
     @keyframes loader-reverse {
-      from {transform: rotate(360deg)}
-      to {transform: rotate(-360deg)}
+      from {
+        transform: rotate(360deg)
+      }
+      to {
+        transform: rotate(-360deg)
+      }
     }
   }
-  .row{
+
+  .row {
     display: flex;
   }
-  div{
+
+  div {
     box-sizing: border-box;
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
     font-size: 14px;
   }
-  .daoContentBg{
+
+  .daoContentBg {
     flex: 1;
   }
+
   .content-box {
     box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.05);
 
@@ -264,7 +296,8 @@ export default {
       }
     }
   }
-  .mangobox-button{
+
+  .mangobox-button {
     background: var(--primary-bg-color);
     border-radius: 6px;
     cursor: pointer;
@@ -278,13 +311,16 @@ export default {
     position: relative;
     background-size: 200%;
     transition: 0.3s;
-    &:active{
-      transform: translate(2px,2px);
+
+    &:active {
+      transform: translate(2px, 2px);
     }
-    &:hover{
+
+    &:hover {
       background-position: 100%;
     }
   }
+
   .switch {
     grid-column: 1/2;
     display: grid;
@@ -292,12 +328,15 @@ export default {
     grid-gap: 3rem;
     justify-self: center;
   }
+
   .switch input {
     display: none;
   }
+
   .switch__1, .switch__2 {
     width: 5rem;
   }
+
   .switch__1 label, .switch__2 label {
     display: flex;
     align-items: center;
@@ -310,10 +349,11 @@ export default {
     border-radius: 1.2rem;
   }
 
-  .flex-box{
+  .flex-box {
     display: flex;
     margin: 10px 0;
   }
+
   .switch__1 label::after, .switch__2 label::after {
     content: "";
     position: absolute;
@@ -324,6 +364,7 @@ export default {
     background: var(--greyDark);
     transition: all 0.4s ease;
   }
+
   .switch__1 label::before, .switch__2 label::before {
     content: "";
     width: 100%;
@@ -333,9 +374,11 @@ export default {
     opacity: 0;
     transition: all 0.4s ease;
   }
+
   .switch input:checked ~ label::before {
     opacity: 1;
   }
+
   .switch input:checked ~ label::after {
     left: 57%;
     background: var(--greyLight-1);

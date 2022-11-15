@@ -200,7 +200,7 @@
             Burn your Token. You won't receive USDT in return because this project has no overflow.
           </div>
           <div class="icon">
-            <img src="../imgs/caret-right.png" alt="">
+            <img src="../imgs/caret-right.webp" alt="">
           </div>
         </div>
         <div class="operate-box"  @click="isShowClaim=true">
@@ -211,7 +211,7 @@
             Move your Token from the Mangobox contract to your wallet.
           </div>
           <div class="icon">
-            <img src="../imgs/caret-right.png" alt="">
+            <img src="../imgs/caret-right.webp" alt="">
           </div>
         </div>
         <div class="operate-btns">
@@ -232,7 +232,7 @@
           <div class="mangobox-button" @click="redeemTokensOf">
             Burn
           </div>
-          <div class="mangobox-button" @click="isShowMint=false">
+          <div class="mangobox-button" @click="isShowBurn=false">
             Cancel
           </div>
         </div>

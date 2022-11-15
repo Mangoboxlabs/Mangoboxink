@@ -1,7 +1,7 @@
 <template>
   <div class="mongobox-header" :style="'height:' + headerHeight + 'px;!important'">
     <div class="nav-box">
-      <img @click="$router.push('/')" class="logo" src="../imgs/logo.png" alt=""/>
+      <img @click="$router.push('/')" class="logo" src="../imgs/logo.webp" alt=""/>
       <ul>
         <li @click="$router.push('/projects')">
           <span class="w-font">Projects</span>
@@ -12,6 +12,7 @@
           <span class="re-active">FAQ</span>
         </li>
         <li>
+          <!--     Connect the wallet wrapper component     -->
           <polkaConnect/>
         </li>
       </ul>
@@ -50,7 +51,7 @@ export default {
 
 <style lang="scss" scoped>
 .mongobox-header {
-  background: url("../imgs/header_bg.png");
+  background: url("../imgs/header_bg.webp");
   background-size: 100%;
   font-weight: bold;
   position: relative;

@@ -10,8 +10,8 @@ module.exports = defineConfig({
   },
   devServer:{
     proxy: {
-      '/service/rest': {
-        target: 'https://cloudflare-ipfs.com/ipfs/',
+      '/ipfs': {
+        target: 'https://gateway.pinata.cloud/',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

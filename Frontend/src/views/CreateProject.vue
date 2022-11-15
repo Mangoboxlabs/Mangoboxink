@@ -180,7 +180,7 @@
           <div class="name">
             Time interval between
             <el-tooltip class="tip-box" effect="dark" content="Using a reconfiguration strategy is recommended. Projects with no strategy will appear risky to contributors." placement="bottom-start">
-              <img class="tip" src="../imgs/tip.png" alt="">
+              <img class="tip" src="../imgs/tip.webp" alt="">
             </el-tooltip>
           </div>
           <label>
@@ -194,7 +194,7 @@
             Weight
 
             <el-tooltip class="tip-box" effect="dark" content="The term weight simply means how many tokens or other assets, such as NFTs, a contributor will receive for a set amount of contribution. For instance, a contributor who puts $1000 into your project may receive a million tokens (if you so choose)." placement="bottom-start">
-              <img class="tip" src="../imgs/tip.png" alt="">
+              <img class="tip" src="../imgs/tip.webp" alt="">
             </el-tooltip>
           </div>
 

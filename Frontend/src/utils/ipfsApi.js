@@ -1,6 +1,7 @@
 
 /* eslint-disable */
 import axios from "axios"
+import jsonp from "jsonp";
 const ipfsAPI = require('ipfs-api');
 const ipfs = ipfsAPI({host: 'cloudflare-ipfs.com', port: '443', protocol: 'https'});
 const FormData = require('form-data');
@@ -87,10 +88,11 @@ export async function uploadJson(jsonData){
     })
     return result
 }
-export function getFromPinata(strHash){
-    axios.get('https://gateway.pinata.cloud/ipfs/' + strHash).then(res => {
-        console.log(res)
-        return res
-    })
-
+export async  function getFromPinata(strHash) {
+    if (strHash && strHash.length > 5 && typeof strHash == "string") {
+        let result = await jsonp(`https://gateway.pinata.cloud/ipfs/${strHash}`, {})
+        return result
+    } else {
+        return false
+    }
 }
