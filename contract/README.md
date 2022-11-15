@@ -79,7 +79,7 @@ cargo +nightly test
 visit [polkadot.js apps](https://polkadot.js.org/apps/), and connect Mangobox node(wss://rpc.mangobox.xyz/).
 then `Develpoer`->`Contract`->`upload & deploy`.Then upload your compiled `.contract` file.
 
-####Contract deployment steps
+#### Contract deployment steps
 MBToken > MBProjects > MBTokenStore > MBSplitsStore > MBFundingCycleStore > MBOperatorStore >  MBPrices > MBDirectory > MBSingleTokenPaymentTerminalStore > MBERC20PaymentTerminal > MBController
 #### Parameters of deployment contract
 - MBToken : `name` is the name of the erc20 token. `symbol` is the symbol of the erc20 token.
