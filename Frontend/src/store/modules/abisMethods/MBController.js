@@ -36,6 +36,8 @@ const actions = {
         const AccountId = await Accounts.accountAddress();
         const timeMemory = new Date().getTime()
         window.messageBox.push(timeMemory)
+        /*eslint-disable*/
+        _data.weight?_data.weight = BigInt(parseInt(_data.weight) * 10**18):""
         await state.contract.tx.launchProjectFor({storageDepositLimit, gasLimit},
             //params
             _owner, _projectMetadata, _data, _metadata, _mustStartAtOrAfter, _groupedSplits, _fundAccessConstraints, _terminals, _memo

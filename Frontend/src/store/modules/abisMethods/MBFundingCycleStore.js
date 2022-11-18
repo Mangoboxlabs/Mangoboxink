@@ -52,6 +52,14 @@ const actions = {
         return data
 
     },
+    async getProjectsWeight ({rootState}, _projectId) {
+        await judgeContract(rootState.app.web3)
+        const AccountId = await Accounts.accountAddress();
+        let data = await state.contract.query.getProjectsWeight(AccountId, {value, queryGasLimit}, _projectId)
+        data = formatResult(data);
+        return data
+
+    },
     async currentBallotStateOf({rootState}, _projectId) {
         await judgeContract(rootState.app.web3)
         const AccountId = await Accounts.accountAddress();

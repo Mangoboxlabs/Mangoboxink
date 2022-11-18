@@ -409,7 +409,7 @@ export default {
         _projectMetadata:this.ipfsStr,
         _data:{
           duration: this.durationDay?(this.durationDay * 86400).toString():0,
-          weight: (this.weight * 10**18).toString(),
+          weight: this.weight,
           discountRate: 0,
           ballot:this.$store.state.app.account
         },
