@@ -262,7 +262,7 @@
 <script>
 import detailHeader from "../components/detail-header"
 import moment from "moment"
-
+import abiMap from "../api/apiMap";
 
 
 export default {
@@ -392,7 +392,7 @@ export default {
     },
     getBalanceOf(id) {
       return this.$store.dispatch("MBSingleTokenPaymentTerminalStore/getBalanceOf", {
-        _account: "5FP3znY5SuthDe6xNE7oMyV5TPXdCsV6RBCNRRdCfRFdGuuy",
+        _account: abiMap["MBERC20PaymentTerminal"].address,
         _projectId: id
       })
     },
