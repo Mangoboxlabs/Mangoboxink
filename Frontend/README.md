@@ -51,6 +51,10 @@ it should be `ws://127.0.0.1:9900` by default.
 
 
 
+#### Ipfs Config
+
+`src/utils/ipfsApi.js`  `pinataConfig`
+
 ### gas
 
 1. Open https://polkadot.js.org/apps/
