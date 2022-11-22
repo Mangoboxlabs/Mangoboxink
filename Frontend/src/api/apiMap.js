@@ -1,46 +1,46 @@
 const abiMap ={
     MBToken:{
-        address:'5FrnqmeaHvKuoiADjDCv3yG46rWvbvrWuiiq5eTTr3Kxqh2w',
+        address:'5Gms17ZLq1ZWZKTDr72JqUeGDVJZjzVzJwpnTqjmfRGJheNG',
         abi:require("../abi/MBToken.json")
     },
     MBOperatorStore: {
-        address:'5DFNPZfZFakmBZtNLaEiGrMvCQcMtJJ4ynatujPZXFKZ53dj',
+        address:'5CUSoezDXgzcMc6gNpyb3aoqHPzC1UosrYBac4Gfq8eV6zxk',
         abi:require("../abi/MBOperatorStore.json")
     },
     MBDirectory:{
-        address:'5F83WaSxEXJqDmM1KgTeHLsBJrvVvmhvo5xVRQvBUVGNfWY2',
+        address:'5FLKctPBfSpzhpDKYR4EeHN2HiKjDotNUybRHDqJxc4ooqQ1',
         abi:require('../abi/MBDirectory.json')
     },
     MBERC20PaymentTerminal:{
-        address:'5DYCJrxr1h6K9VLjaN5SqxokxHon8biY4k3aQLittLhTiZrE',
+        address:'5HX3ncUDah5pPpaTcfHhyLJAGpSVghYLAz29uAULMhD1QTNS',
         abi:require('../abi/MBERC20PaymentTerminal.json')
     },
     MBSingleTokenPaymentTerminalStore: {
-        address:'5GXWnCyo7zfdZvC7MRxhjr3pXFeg3Y9txmH9Vvd2tAivysk4',
+        address:'5ECBzRdBcYnbtcZycRY1GenNzEV9g9xPGAncDwXj2ojKZuSw',
         abi:require('../abi/MBSingleTokenPaymentTerminalStore.json')
     },
     MBSplitsStore: {
-        address:'5EhanZVL9bmiT4F44jFhFVrH6QPhGWiyhKV6t8xJ3nvYsDUk',
+        address:'5EL1hfzEt7WgopDWtH1fpY13BSZXUg3SPxfrFNCs2XoDdo3S',
         abi: require('../abi/MBSplitsStore.json')
     },
     MBPrices: {
-        address:'5HSJpZDVNVzQL5HvqGmxbeYUitQ8whKbv92bB6cr9tVVoZk2',
+        address:'5ErxfNr9SEZjXSvUuUYQVGEvyAiAfWzoGN3mzw5oyH8KfqDf',
         abi:require('../abi/MBPrices.json')
     },
     MBTokenStore: {
-        address:'5DyQtzR89WGjAchokxH5Ntc2mxC9ruaUGi4nKYZCSq6VUMg1',
+        address:'5GZ6ehcx95qMHrTCHtAAG532EGxDv7V42uWE9UgPpBR5fBvN',
         abi:require('../abi/MBTokenStore.json')
     },
     MBProjects: {
-        address:'5CLiYJnNrEeh6xdTtegSLvV3LapG91PvNoByUK946XqsChte',
+        address:'5DFNvv84mshS8z3Kgjy3wLpfysMMxD5duJAQi9CuT9R5zjrQ',
         abi:require('../abi/MBProjects.json')
     },
     MBFundingCycleStore: {
-        address:'5FMkpnBiUp3c9SQSyjGPdzWyyHNUvzMRRkJc1YTQorR7hxDJ',
+        address:'5GPPbrchR1q4wQanCmX8DFYMNbrvKrRLm9nxNAhJS24KdMCM',
         abi: require('../abi/MBFundingCycleStore.json')
     },
     MBController:{
-        address:'5CDWYZcEx6Wpu1wktaLh5mbWzNu1joaDs9cMsQ9koNsoDwE3',
+        address:'5EL5SERqvxikSg9DG4wqLMAXr3zBLSg3FxcPwAUt2qeLLZmU',
         abi:require('../abi/MBController.json')
     }
 }

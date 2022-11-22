@@ -410,7 +410,7 @@ export default {
         _data:{
           duration: this.durationDay?(this.durationDay * 86400).toString():0,
           weight: this.weight,
-          discountRate: 0,
+          discountRate:  this.discountRate,
           ballot:this.$store.state.app.account
         },
         _metadata:0,

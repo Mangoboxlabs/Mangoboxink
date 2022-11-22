@@ -90,20 +90,20 @@
               {{currentCycleInfo.duration==0?"Not set":currentCycleInfo.duration}}
             </div>
           </div>
-          <div class="row">
-            <div class="name">
-              discountRate
-            </div>
-            <div class="value">
-              {{currentCycleInfo.discountRate}}
-            </div>
-          </div>
+<!--          <div class="row">-->
+<!--            <div class="name">-->
+<!--              discountRate-->
+<!--            </div>-->
+<!--            <div class="value">-->
+<!--              {{currentCycleInfo.discountRate}}-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="row">
             <div class="name">
               weight
             </div>
             <div class="value">
-              {{currentCycleInfo.weight}}
+              {{weight}}
             </div>
           </div>
         </div>
@@ -295,6 +295,7 @@ export default {
       tokenAddress: undefined,
       myTokenBalance:0,
       currentCycleInfo:{},
+      weight:0,
       distributeAmountNumber:0,
       coinInfo:{}
     }
@@ -333,6 +334,9 @@ export default {
         _memo:this.burnMemo
       }).then(() => {
         this.isShowBurn = false
+        this.balanceOf(this.$store.state.app.account).then(res=>{
+          this.myBalance = res
+        })
       })
     },
     claimFor(){
@@ -341,11 +345,17 @@ export default {
       }).then(() => {
         this.isShowClaim = false
         this.tokenBalanceOf()
+
       })
     },
     getProjectsWeight(){
       this.$store.dispatch("MBFundingCycleStore/getProjectsWeight", this.projectId).then(res => {
-        console.log(res)
+        if(res){
+          this.weight = res.replace(/,/g,'')
+        }
+        if(this.weight > 0){
+          this.weight = parseInt(this.weight)/(10**18)
+        }
       })
     },
     currentOf(){
@@ -379,6 +389,9 @@ export default {
         _metadata: ""
       }).then(() => {
         this.getPayRecords()
+        this.balanceOf(this.$store.state.app.account).then(res=>{
+          this.myBalance = res
+        })
       })
     },
     getPayRecords() {
@@ -388,6 +401,7 @@ export default {
           const timestr = item.time.replace(/,/g, '').trim()
           item.time = this.moment(new Date(parseInt(timestr))).format('MMMM Do YYYY, h:mm:ss a')
         })
+        this.PayRecord.reverse()
       })
     },
     getBalanceOf(id) {
@@ -463,7 +477,7 @@ export default {
     this.tokenOwnerOf()
     this.currentOf()
     this.distributeAmount()
-    // this.getProjectsWeight()
+    this.getProjectsWeight()
   },
   mounted() {
     // this.initChart()
@@ -538,6 +552,21 @@ export default {
       }
 
       .paid-list {
+        max-height: 600px;
+        overflow: auto;
+        padding: 0 10px;
+        &::-webkit-scrollbar {
+          width: 10px;
+          height: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-radius: 5px;
+          -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+          background-color: #99a9bf;
+        }
+
+
         .paid-item {
           padding: 6px 0;
           color: #CCCCCC;
