@@ -1,6 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
-
+//Batch generation of interactive JS
 const buildDir = "../../src/abi/";
 
 const writeDir = "../../src/store/modules/abisMethods/"
@@ -12,12 +12,12 @@ if (!fs.existsSync(writeDir)) {
 }
 const files = fs.readdirSync(buildDir);
 
-console.log("所有合约数量：", files.length)
-//创建index.js 导出所有合约
+console.log("All Contract Quantities：", files.length)
+//Create index.js to export all contracts
 let indexStr = ``, exportStr = `export default { `;
-//处理所有合约
+//Process all contracts
 for (let i = files.length - 1; i >= 0; i--) {
-    // 获取合约 name 、 abi
+    // Obtain a contract name 、 abi
     let file = JSON.parse(fs.readFileSync(buildDir + files[i]), 'utf8');
     let name = file.contract.name;
     let abi = file.V1.spec.messages;
@@ -46,26 +46,26 @@ for (let i = files.length - 1; i >= 0; i--) {
 	`
     let actions = ` const actions = { \n`;
 
-    console.log("生成" + name + ".js")
+    console.log("generate" + name + ".js")
 
-    // 处理index.js
+    // To deal with index.js
     indexStr += `import ${name} from "@/store/modules/abisMethods/${name}";`
     exportStr += `${name},`
-    // end处理index.js
+    // end To deal with index.js
 
-    // 处理方法
+    // Treatment Method
     for (let j = 0; j < abi.length; j++) {
 
         let functionObj = abi[j];
-        //call 方法
+        //call methods
         if (functionObj.payable === false && functionObj.mutates === false) {
-            // 处理参数
+            // Processing parameters
             let params = functionObj.args;
             let tempParamStr = ``
             for (let k = 0; k < params.length; k++) {
                 tempParamStr += params[k].name + ","
             }
-            // 处理参数end
+            // Process parameter end
 
             tempParamStr = tempParamStr.substr(0, tempParamStr.length - 1)
             actions += `async ${functionObj.name[0]} ({rootState}${tempParamStr.length > 0 ? ',' : ''} ${tempParamStr}){
@@ -78,16 +78,16 @@ for (let i = files.length - 1; i >= 0; i--) {
 			},\n`
 
         }
-        //end call 方法
-        //send 方法
+        //end call methods
+        //send methods
         if (functionObj.payable == false && functionObj.mutates == true) {
-            // 处理参数
+            // Processing parameters
             let params = functionObj.args;
             let tempParamStr = ``
             for (let k = 0; k < params.length; k++) {
                 tempParamStr += params[k].name + ","
             }
-            // 处理参数end
+            // Process parameter end
 
             tempParamStr = tempParamStr.substr(0, tempParamStr.length - 1)
             actions += `async ${functionObj.name} ({rootState}${tempParamStr.length > 0 ? ',' : ''} ${tempParamStr}){
@@ -110,16 +110,16 @@ for (let i = files.length - 1; i >= 0; i--) {
 			},\n`
 
         }
-        //end send 方法
-        // send with value 方法
+        //end send methods
+        // send with value methods
         if (functionObj.type == "function" && functionObj.stateMutability == "payable") {
-            // 处理参数
+            // Processing parameters
             let params = functionObj.args;
             let tempParamStr = ``
             for (let k = 0; k < params.length; k++) {
                 tempParamStr += params[k].name + ","
             }
-            // 处理参数end
+            // Process parameter end
 
             tempParamStr = tempParamStr.substr(0, tempParamStr.length - 1)
             actions += `${functionObj.name} ({rootState}, value ${tempParamStr.length > 0 ? ',' : ''} ${tempParamStr}){
@@ -154,11 +154,11 @@ for (let i = files.length - 1; i >= 0; i--) {
 			},\n`
 
         }
-        //end send with value方法
+        //end send with value methods
     }
     actions += `}`
     tempFileStr += actions
-    // 处理方法end
+    // end Procedure
 
     tempFileStr += `
 			export default {
@@ -170,7 +170,7 @@ for (let i = files.length - 1; i >= 0; i--) {
 	`
     fs.writeFileSync(`${writeDir}${name}.js`, tempFileStr, 'utf8');
 }
-//end 处理所有合约
+//end Process all contracts
 exportStr += `}`
 indexStr += exportStr
 fs.writeFileSync(`${writeDir}index.js`, indexStr, 'utf8');

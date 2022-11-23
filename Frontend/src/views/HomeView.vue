@@ -17,7 +17,7 @@
             </div>
           </div>
         </div>
-        <img style="margin: 10px auto" src="../imgs/no-data.png" alt="" v-show="homeArr.length==0">
+        <img style="margin: 10px auto" src="../imgs/no-data.webp" alt="" v-show="homeArr.length==0">
       </div>
 
 <!--      <div class="more mangobox-button" @click="homeArr>maxCount?maxCount+=12:''">-->
@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       moment:moment,
-      maxCount:12
+      maxCount:12,
+      THomeArr:[]
     }
   },
   computed:{
@@ -45,15 +46,7 @@ export default {
       return this.$store.state.app.isConnected
     },
     homeArr(){
-      let tempArr = this.$store.state.app.homeArr
-      tempArr.sort((a,b)=>{
-        if(new Date(a.createTime).getTime() && new Date(b.createTime).getTime()){
-          return new Date(a.createTime).getTime() -  new Date(b.createTime).getTime()
-        }else{
-          return -1
-        }
-      })
-      return tempArr
+      return this.$store.state.app.homeArr
     }
   },
   watch:{
@@ -69,7 +62,6 @@ export default {
       // get IdArr => get hash => get json
       this.$store.dispatch("MBProjects/getProjectCount", this.$store.state.app.account).then(length => {
         let tempArr = []
-
         for(let i=1;i<=length;i++){
           this.getMetaContent(i).then(async res => {
             const jsonRes = await getIpfs(res)
@@ -78,7 +70,16 @@ export default {
               ...jsonRes.data
             })
             if(i >= length){
+              tempArr.sort((a,b)=>{
+                return (parseInt(b.id) - parseInt(a.id))
+              })
               this.$store.commit("app/SET_HOMEARR",tempArr)
+              setTimeout(()=>{
+                tempArr.sort((a,b)=>{
+                  return (parseInt(b.id) - parseInt(a.id))
+                })
+                this.$store.commit("app/SET_HOMEARR",tempArr)
+              },2000)
             }
           })
         }

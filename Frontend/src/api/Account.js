@@ -39,11 +39,11 @@ const accountAddress = async () =>{
     }
     const Accounts = JSON.parse(sessionStorage.getItem('account'));
     if (Accounts && Accounts.length > 0) {
-        accountAddress = Accounts[0].address;
+        accountAddress = sessionStorage.getItem('currentAccount');
     } else {
         let accounts = await accountList
         if(accounts&&accounts.allAccounts&&accounts.allAccounts.length>0){
-            accountAddress = accounts.allAccounts[0].address;
+            accountAddress = sessionStorage.getItem('currentAccount');
         }else{
             if(!showErr){
                 showErr = true
@@ -84,8 +84,7 @@ const accountInjector = async () => {
     const Accounts = JSON.parse(sessionStorage.getItem('account'));
 
     if (Accounts && Accounts.length > 0) {
-        const AccountId = Accounts[0].address;
-        console.log(AccountId)
+        const AccountId = sessionStorage.getItem('currentAccount');
         injector = await web3FromAddress(AccountId);
     }
     return injector;

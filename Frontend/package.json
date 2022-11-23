@@ -9,7 +9,6 @@
     "docker:build": "docker build -t mangobox/ui1:v1 ."
   },
   "dependencies": {
-    "@antv/g2": "^4.2.8",
     "@polkadot/api": "^9.5.1",
     "@polkadot/api-augment": "^9.5.1",
     "@polkadot/api-base": "^9.5.1",
@@ -42,6 +41,7 @@
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "ipfs-api": "^26.1.2",
+    "jsonp": "^0.2.1",
     "moment": "^2.29.4",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "vue": "^2.6.14",

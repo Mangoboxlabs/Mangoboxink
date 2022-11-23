@@ -9,7 +9,9 @@ import MBFundingCycleStore from "@/store/modules/abisMethods/MBFundingCycleStore
 import MBERC20PaymentTerminal from "@/store/modules/abisMethods/MBERC20PaymentTerminal";
 import MBDirectory from "@/store/modules/abisMethods/MBDirectory";
 import MBController from "@/store/modules/abisMethods/MBController";
-
+/*
+* js that interact with the contract
+* */
 export default {
     MBTokenStore,
     MBToken,

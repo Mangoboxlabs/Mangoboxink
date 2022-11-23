@@ -1,7 +1,7 @@
 <template>
 <div class="mangobox-footer">
   <div class="dao-footer-part3">
-    <img src="../imgs/logo.png" alt=""/>
+    <img src="../imgs/logo.webp" alt=""/>
   </div>
   <div class="dao-footer-part2 ">
 
@@ -121,6 +121,7 @@ export default {
     text-align: center;
     img{
       width: 10em;
+
     }
   }
 

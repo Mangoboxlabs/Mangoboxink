@@ -1,7 +1,7 @@
 <template>
   <div class="detail-header" :style="'height:' + headerHeight + 'px;!important'">
     <div class="nav-box">
-      <img @click="$router.push('/')" class="logo" src="../imgs/logo.png" alt=""/>
+      <img @click="$router.push('/')" class="logo" src="../imgs/logo.webp" alt=""/>
       <ul>
         <li @click="$router.push('/projects')">
           <span class="w-font">Projects</span>
@@ -33,7 +33,7 @@
             </a>
           </div>
           <div class="twitter" v-show="projectObj.twitter">
-            <a :href="projectObj.twitter" target="_blank"> <img src="../imgs/twitter.png" alt="">
+            <a :href="projectObj.twitter" target="_blank"> <img src="../imgs/twitter.webp" alt="">
             {{ projectObj.twitter ? projectObj.twitter.replace("https://twitter.com/", "") : "" }}</a>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default {
 
 <style lang="scss" scoped>
 .detail-header {
-  background: url("../imgs/detail_header_bg.png");
+  background: url("../imgs/detail_header_bg.webp");
   background-size: 100%;
   font-weight: bold;
   position: relative;

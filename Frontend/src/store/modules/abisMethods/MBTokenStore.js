@@ -1,4 +1,3 @@
-/* eslint-disable */
 import connectContract from "@/api/connectContract"
 import {formatResult} from "@/utils/formatUtils"
 import {dealResult,reportErr} from "@/utils/dealResult"
