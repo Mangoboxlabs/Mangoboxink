@@ -8,6 +8,7 @@ pub use self::mb_fundingcyclestore::{
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::new_without_default)]
 #[ink::contract]
 mod mb_fundingcyclestore {
     use alloc::string::String;
@@ -110,7 +111,7 @@ mod mb_fundingcyclestore {
             _projectId: u64,
             _configuration: u64,
         ) -> MBFundingCycle {
-            return self._getStructFor(_projectId, _configuration);
+           self._getStructFor(_projectId, _configuration)
         }
         /**
       @notice
@@ -126,7 +127,7 @@ mod mb_fundingcyclestore {
             &self,
             _projectId: u64
         ) -> (MBFundingCycle,MBBallotState) {
-            let _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let _fundingCycleConfiguration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             let fundingCycle = self._getStructFor(_projectId, _fundingCycleConfiguration);
             let ballotState = self._ballotStateOf(
                 _projectId,
@@ -134,7 +135,7 @@ mod mb_fundingcyclestore {
                 fundingCycle.start,
                 fundingCycle.basedOn
             );
-            return (fundingCycle,ballotState);
+             (fundingCycle,ballotState)
         }
         /**
           @notice
@@ -152,7 +153,7 @@ mod mb_fundingcyclestore {
             &self,
             _projectId: u64
         ) -> MBFundingCycle {
-            let _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let _fundingCycleConfiguration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             if _fundingCycleConfiguration == 0 {
                 return self._getStructFor(0, 0);
             }
@@ -176,7 +177,7 @@ mod mb_fundingcyclestore {
                     return self._getStructFor(0, 0);
                 }
             }
-            return self._getStructFor(0, 0);
+            self._getStructFor(0, 0)
         }
         /**
             @notice
@@ -194,7 +195,7 @@ mod mb_fundingcyclestore {
             &self,
             _projectId:u64,
         ) -> MBFundingCycle {
-            let mut _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let mut _fundingCycleConfiguration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             if _fundingCycleConfiguration == 0 {
                 return self._getStructFor(0, 0);
             }
@@ -205,13 +206,13 @@ mod mb_fundingcyclestore {
                     return _fundingCycle;
                 }
                 _fundingCycleConfiguration = _fundingCycle.basedOn;
-                return _fundingCycle;
+                _fundingCycle
             } else {
                 let mut _fundingCycle = self._getStructFor(_projectId, _fundingCycleConfiguration);
                 if !self._isApproved(_projectId, &_fundingCycle) || self.env().block_timestamp() < _fundingCycle.start {
                     _fundingCycleConfiguration = _fundingCycle.basedOn;
                 }
-                return _fundingCycle;
+                 _fundingCycle
             }
             // if _fundingCycleConfiguration == 0 {
             //     return self._getStructFor(0, 0);
@@ -228,7 +229,7 @@ mod mb_fundingcyclestore {
             &self,
             _projectId:u64,
         ) ->u128 {
-            self.projectsWeight.get(&_projectId).unwrap_or(&0).clone()
+            *self.projectsWeight.get(&_projectId).unwrap_or(&0)
         }
 
         /**
@@ -241,7 +242,7 @@ mod mb_fundingcyclestore {
             &self,
             _projectId:u64,
         ) ->u128 {
-            return self.getProjectsWeight(_projectId) / 1000000000000000000
+            self.getProjectsWeight(_projectId) / 1000000000000000000
         }
         /**
            @notice
@@ -256,15 +257,14 @@ mod mb_fundingcyclestore {
             &self,
             _projectId:u64,
         ) -> MBBallotState {
-            let _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let _fundingCycleConfiguration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             let _fundingCycle = self._getStructFor(_projectId, _fundingCycleConfiguration);
-            return
-               self._ballotStateOf(
-                    _projectId,
-                    _fundingCycle.configuration,
-                    _fundingCycle.start,
-                    _fundingCycle.basedOn
-                );
+           self._ballotStateOf(
+                _projectId,
+                _fundingCycle.configuration,
+                _fundingCycle.start,
+                _fundingCycle.basedOn
+            )
         }
         /**
            @notice
@@ -292,7 +292,7 @@ mod mb_fundingcyclestore {
                 _weight,
                if  _mustStartAtOrAfter > self.env().block_timestamp() {_mustStartAtOrAfter } else {self.env().block_timestamp()}
             );
-            return self._getStructFor(_projectId, _configuration);
+             self._getStructFor(_projectId, _configuration)
         }
 
         fn _configureIntrinsicPropertiesFor(
@@ -302,7 +302,7 @@ mod mb_fundingcyclestore {
             _weight:u128,
             _mustStartAtOrAfter:u64
         ){
-            let _fundingCycleConfiguration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let _fundingCycleConfiguration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             self._initFor(_projectId, _configuration,_weight, _mustStartAtOrAfter,self._getStructFor(0, 0));
         }
 
@@ -344,18 +344,18 @@ mod mb_fundingcyclestore {
             _projectId:u64,
             _fundingCycle:&MBFundingCycle
         ) -> bool {
-            return self._ballotStateOf(
+            self._ballotStateOf(
                 _projectId,
                 _fundingCycle.configuration,
                 _fundingCycle.start,
                 _fundingCycle.basedOn
-            ) == MBBallotState::Approved;
+            ) == MBBallotState::Approved
         }
         fn _standbyOf(
             &self,
             _projectId:u64,
         ) -> u64 {
-            let configuration = self.latestConfigurationOf.get(&_projectId).unwrap_or(&0).clone();
+            let configuration = *self.latestConfigurationOf.get(&_projectId).unwrap_or(&0);
             let _fundingCycle = self._getStructFor(_projectId, configuration);
             if self.env().block_timestamp() > _fundingCycle.start{
                 return 0;
@@ -367,7 +367,7 @@ mod mb_fundingcyclestore {
             if _baseFundingCycle.duration > 0 && self.env().block_timestamp() < _fundingCycle.start - _baseFundingCycle.duration {
                 return 0;
             }
-            return 0;
+            0
         }
         fn _ballotStateOf(
             &self,
@@ -381,9 +381,9 @@ mod mb_fundingcyclestore {
             }
             let _ballotFundingCycle = self._getStructFor(_projectId, _ballotFundingCycleConfiguration);
             if _ballotFundingCycle.ballot == AccountId::default() {
-                return MBBallotState::Approved;
+                MBBallotState::Approved
             } else {
-                return  MBBallotState::Active;
+                MBBallotState::Active
             }
         }
         fn _getStructFor(
@@ -406,8 +406,8 @@ mod mb_fundingcyclestore {
                 return fundingCycle;
             }
             fundingCycle.configuration = _configuration;
-            let _packedIntrinsicProperties = self._packedIntrinsicPropertiesOf.get(&(_projectId,_configuration)).unwrap_or(&0).clone();
-            let _packedUserPropertiesOf = self._packedUserPropertiesOf.get(&(_projectId,_configuration)).unwrap_or(&0).clone();
+            let _packedIntrinsicProperties = *self._packedIntrinsicPropertiesOf.get(&(_projectId,_configuration)).unwrap_or(&0);
+            let _packedUserPropertiesOf = *self._packedUserPropertiesOf.get(&(_projectId,_configuration)).unwrap_or(&0);
             fundingCycle.weight = (_packedIntrinsicProperties as u128) as u64;
             fundingCycle.basedOn = ((_packedIntrinsicProperties >> 8) as u128) as u64;
             fundingCycle.start  = ((_packedIntrinsicProperties >> 14) as u128) as u64;
@@ -415,7 +415,7 @@ mod mb_fundingcyclestore {
             fundingCycle.ballot  = AccountId::default();
             fundingCycle.duration = ((_packedUserPropertiesOf >> 16) as u128) as u64;
             fundingCycle.discountRate = ((_packedUserPropertiesOf >> 22) as u128) as u64;
-            fundingCycle.metadata = self._metadataOf.get(&(_projectId,_configuration)).unwrap_or(&0).clone();
+            fundingCycle.metadata = *self._metadataOf.get(&(_projectId,_configuration)).unwrap_or(&0);
             fundingCycle
         }
 

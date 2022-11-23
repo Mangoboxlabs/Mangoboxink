@@ -6,6 +6,7 @@ pub use self::mbtoken::{
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::comparison_chain)]
 #[ink::contract]
 mod mbtoken {
     use alloc::string::String;
@@ -125,7 +126,7 @@ mod mbtoken {
         /// Creates a new ERC-20 contract with the specified initial supply.
         #[ink(constructor)]
         pub fn new(name:String,symbol:String) -> Self {
-            let  instance = Self {
+            Self {
                 total_supply: 0,
                 balances:StorageHashMap::new(),
                 allowances: StorageHashMap::new(),
@@ -136,8 +137,7 @@ mod mbtoken {
                 check_points:StorageHashMap::new(),
                 num_check_points:StorageHashMap::new(),
                 delegates:StorageHashMap::new(),
-            };
-            instance
+            }
         }
         /// Displays the details of the token
         #[ink(message)]
@@ -243,7 +243,7 @@ mod mbtoken {
             let from_balance = self.balance_of(from);
             assert!(from_balance>=value);
             self.balances.insert(from, from_balance - value);
-            self.total_supply = self.total_supply - value;
+            self.total_supply -=  value;
             self.env().emit_event(Transfer {
                 from: Some(from),
                 to: None,
@@ -290,7 +290,7 @@ mod mbtoken {
             value: u128,
         ) -> bool {
             let caller = self.env().caller();
-            assert_eq!(caller == self.owner, true);
+            assert!(caller == self.owner, "no access");
             self._mint_token(to, value)
         }
 
@@ -300,10 +300,10 @@ mod mbtoken {
             amount: Balance,
         ) -> bool {
             let total_supply = self.total_supply();
-            assert_eq!(total_supply + amount >= total_supply, true);
+            assert!(total_supply + amount >= total_supply);
             let to_balance = self.balance_of_or_zero(&to);
-            assert_eq!(to_balance + amount >= to_balance, true);
-            self.total_supply = self.total_supply + amount;
+            assert!(to_balance + amount >= to_balance);
+            self.total_supply += amount;
             self.balances.insert(to, to_balance + amount);
             self.env().emit_event(Transfer {
                 from: None,
@@ -322,7 +322,7 @@ mod mbtoken {
         #[ink(message)]
         pub fn get_current_votes(&self,user:AccountId) -> u128 {
             let default_checkpoint = Checkpoint{from_block:0, votes:0};
-            let n_checkpoints = self.num_check_points.get(&user).unwrap_or(&0).clone();
+            let n_checkpoints = *self.num_check_points.get(&user).unwrap_or(&0);
             return if n_checkpoints > 0 {  let check_point:Checkpoint = self.check_points.get(&(user,n_checkpoints - 1)).unwrap_or(&default_checkpoint).clone();check_point.votes}  else { 0 } ;
         }
         /// Get the number of votes for a block
@@ -333,7 +333,7 @@ mod mbtoken {
         pub fn get_prior_votes(&self,account:AccountId,block_number:u32) -> u128 {
             assert!(block_number <  self.env().block_number());
             let default_checkpoint = Checkpoint{from_block:0, votes:0};
-            let n_checkpoints = self.num_check_points.get(&account).unwrap_or(&0).clone();
+            let n_checkpoints = *self.num_check_points.get(&account).unwrap_or(&0);
             if n_checkpoints == 0 {
                 return 0;
             }
@@ -360,7 +360,7 @@ mod mbtoken {
                 }
             }
             let outer_cp:Checkpoint = self.check_points.get(&(account,lower)).unwrap_or(&default_checkpoint).clone();
-            return outer_cp.votes;
+             outer_cp.votes
         }
         /// Delegate votes to others
         /// # Fields
@@ -368,7 +368,7 @@ mod mbtoken {
         #[ink(message)]
         pub fn delegate(&mut self,delegatee:AccountId) -> bool {
             let delegator = self.env().caller();
-            let current_delegate =  self.delegates.get(&delegator).copied().unwrap_or(AccountId::default());
+            let current_delegate =  self.delegates.get(&delegator).copied().unwrap_or_default();
             let delegator_balance = self.balance_of(delegator);
             self.delegates.insert(delegator,delegatee);
             Self::env().emit_event(DelegateChanged {
@@ -385,14 +385,14 @@ mod mbtoken {
        /// delegator:the address of user
         #[ink(message)]
         pub fn get_user_delegates(&self,delegator:AccountId) -> AccountId {
-            self.delegates.get(&delegator).unwrap_or(&AccountId::default()).clone()
+            *self.delegates.get(&delegator).unwrap_or(&AccountId::default())
         }
         /// Get user's points
         /// # Fields
         /// user:the address of user
         #[ink(message)]
         pub fn get_user_num_check_points(&self,user:AccountId) -> u32 {
-            self.num_check_points.get(&user).unwrap_or(&0).clone()
+            *self.num_check_points.get(&user).unwrap_or(&0)
         }
         /// Get user's check_points
         /// # Fields
@@ -407,7 +407,7 @@ mod mbtoken {
             let default_checkpoint = Checkpoint{from_block:0, votes:0};
             if src_rep != dst_rep && amount > 0 {
                 if src_rep != AccountId::default() {
-                    let src_rep_num =  self.num_check_points.get(&src_rep).unwrap_or(&0).clone();
+                    let src_rep_num =  *self.num_check_points.get(&src_rep).unwrap_or(&0);
                     let src_rep_old = if src_rep_num > 0 {
                         let check_point_src:Checkpoint = self.check_points.get(&(src_rep,src_rep_num - 1)).unwrap_or(&default_checkpoint).clone();
                         check_point_src.votes

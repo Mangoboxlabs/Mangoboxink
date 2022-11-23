@@ -6,6 +6,8 @@ use ink_lang as ink;
 
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::needless_range_loop)]
+#[allow(clippy::explicit_counter_loop)]
 #[ink::contract]
 mod mbsplitsstore {
     use alloc::string::String;
@@ -97,7 +99,7 @@ mod mbsplitsstore {
             _projectId: u64,
             _group: u64
         ) -> Vec<MBSplit> {
-            return self._getStructsFor(_projectId, _group);
+           self._getStructsFor(_projectId, _group)
         }
         /**
             @notice
@@ -141,7 +143,7 @@ mod mbsplitsstore {
             // }
             for _split in _splits.iter() {
                 assert!(_split.percent != 0);
-                _percentTotal = _percentTotal + _split.percent;
+                _percentTotal += _split.percent;
                 let mut _packedSplitParts1 = 0;
                 if _split.preferClaimed {_packedSplitParts1 = 1;}
                 if _split.preferAddToBalance{ _packedSplitParts1 |= 1 << 1;}
@@ -156,10 +158,10 @@ mod mbsplitsstore {
             _projectId: u64,
             _group: u64
         ) -> Vec<MBSplit> {
-             let _splitCount = self._splitCountOf.get(&(_projectId,_group)).unwrap_or(&0).clone();
+             let _splitCount = *self._splitCountOf.get(&(_projectId,_group)).unwrap_or(&0);
              let mut _splits = Vec::new();
              for i in 0.._splitCount{
-                let _packedSplitPart1 = self._packedSplitParts1Of.get(&(_projectId,_group,i)).unwrap_or(&0).clone();
+                let _packedSplitPart1 = *self._packedSplitParts1Of.get(&(_projectId,_group,i)).unwrap_or(&0);
                 let mut _split = MBSplit{
                     preferClaimed:false,
                     preferAddToBalance:false,
@@ -174,7 +176,7 @@ mod mbsplitsstore {
                  _split.percent = ((_packedSplitPart1 >> 2) as u32) as u64;
                  _split.projectId = 1;
                  _split.beneficiary = AccountId::default();
-                 let _packedSplitPart2 =  self._packedSplitParts2Of.get(&(_projectId,_group,i)).unwrap_or(&0).clone();
+                 let _packedSplitPart2 =  *self._packedSplitParts2Of.get(&(_projectId,_group,i)).unwrap_or(&0);
                  if _packedSplitPart2 > 0 {
                      _split.lockedUntil = (_packedSplitPart2 as u32) as u64;
                      _split.allocator = AccountId::default();

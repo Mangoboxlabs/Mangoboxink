@@ -69,11 +69,11 @@ mod mbtokenstore {
             &self,
             _projectId: u64,
         ) -> u128 {
-            let mut totalSupply = self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0).clone();
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let mut totalSupply = *self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0);
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             if _token !=  AccountId::default(){
                 let token_instance: MBToken = ink_env::call::FromAccountId::from_account_id(_token);
-                totalSupply = totalSupply +  token_instance.total_supply();
+                totalSupply += token_instance.total_supply();
             }
             totalSupply
         }
@@ -92,11 +92,11 @@ mod mbtokenstore {
             _holder: AccountId,
             _projectId: u64,
         ) -> u128 {
-            let mut balance = self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0).clone();
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let mut balance = *self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0);
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             if _token !=  AccountId::default(){
                 let token_instance: MBToken = ink_env::call::FromAccountId::from_account_id(_token);
-                balance = balance +  token_instance.balance_of(_holder);
+                balance += token_instance.balance_of(_holder);
             }
             balance
         }
@@ -120,7 +120,7 @@ mod mbtokenstore {
             _name:String,
             _symbol:String
         ) -> AccountId {
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             assert!(_token == AccountId::default(),"PROJECT_ALREADY_HAS_TOKEN");
             let salt = _projectId.to_le_bytes();
             let instance_params = MBToken::new(_name,_symbol)
@@ -145,7 +145,7 @@ mod mbtokenstore {
             &self,
             _projectId:u64
         ) ->AccountId {
-            self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone()
+            *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default())
         }
         /**
            @notice
@@ -167,19 +167,19 @@ mod mbtokenstore {
             _amount:u128,
             _preferClaimedTokens:bool,
         ) -> bool {
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             if _token == AccountId::default() {
                 return false
             }
-            let requireClaimFor = self.requireClaimFor.get(&_projectId).unwrap_or(&false).clone();
+            let requireClaimFor = *self.requireClaimFor.get(&_projectId).unwrap_or(&false);
             let _shouldClaimTokens = (requireClaimFor || _preferClaimedTokens) &&
                 _token != AccountId::default();
            if _shouldClaimTokens {
                let mut token_instance: MBToken = ink_env::call::FromAccountId::from_account_id(_token);
                token_instance.mint_token_by_owner(_holder,_amount);
            }else {
-               let balance = self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0).clone();
-               let totalSupply = self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0).clone();
+               let balance = *self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0);
+               let totalSupply = *self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0);
                self.unclaimedBalanceOf.insert((_holder,_projectId),balance + _amount);
                self.unclaimedTotalSupplyOf.insert(_projectId,totalSupply + _amount);
            }
@@ -203,13 +203,13 @@ mod mbtokenstore {
             _holder:AccountId,
             _amount:u128,
         ) -> bool {
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             if _token == AccountId::default() {
                 return false
             }
             assert!(_token != AccountId::default(),"TOKEN_NOT_FOUND");
-            let _unclaimedBalance = self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0).clone();
-            let totalSupply = self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0).clone();
+            let _unclaimedBalance = *self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0);
+            let totalSupply = *self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0);
             assert!(_unclaimedBalance >= _amount,"INSUFFICIENT_UNCLAIMED_TOKENS");
             self.unclaimedBalanceOf.insert((_holder,_projectId),_unclaimedBalance - _amount);
             self.unclaimedTotalSupplyOf.insert(_projectId,totalSupply - _amount);
@@ -234,13 +234,13 @@ mod mbtokenstore {
            _amount:u128,
            _preferClaimedTokens:bool
         )->bool{
-            let _token = self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default()).clone();
+            let _token = *self.tokenOf.get(&_projectId).unwrap_or(&AccountId::default());
             if _token == AccountId::default() {
                 return false
             }
             let mut token_instance: MBToken = ink_env::call::FromAccountId::from_account_id(_token);
-            let mut _unclaimedBalance = self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0).clone();
-            let mut _unclaimedTotalSupplyOf =   self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0).clone();
+            let mut _unclaimedBalance = *self.unclaimedBalanceOf.get(&(_holder,_projectId)).unwrap_or(&0);
+            let mut _unclaimedTotalSupplyOf =   *self.unclaimedTotalSupplyOf.get(&_projectId).unwrap_or(&0);
             let _claimedBalance = if _token == AccountId::default() { 0 } else { token_instance.balance_of(_holder) } ;
             let mut _claimedTokensToBurn = 0;
             if _claimedBalance == 0 {

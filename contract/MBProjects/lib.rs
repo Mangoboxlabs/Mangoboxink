@@ -49,9 +49,9 @@
 //! Tokens can be destroyed by burning them. Only the token owner is allowed to burn a token.
 
 #![cfg_attr(not(feature = "std"), no_std)]
-#[allow(unused_imports)]
-#[allow(non_snake_case)]
-#[allow(non_camel_case_types)]
+#![allow(unused_imports)]
+#![allow(non_snake_case)]
+#![allow(non_camel_case_types)]
 extern crate alloc;
 use ink_lang as ink;
 pub use self::mb_projects::{
@@ -289,8 +289,8 @@ mod mb_projects {
                 return Err(Error::NotOwner)
             };
            // decrease_counter_of(owned_tokens_count, &caller)?;
-            let mut balance = self.owned_tokens_count.get(&caller).unwrap_or(&0).clone();
-            balance = balance - 1;
+            let mut balance = *self.owned_tokens_count.get(&caller).unwrap_or(&0);
+            balance -= 1;
             self.owned_tokens_count.insert(caller,balance);
             occupied.remove_entry();
             self.env().emit_event(Transfer {
@@ -341,8 +341,8 @@ mod mb_projects {
                 Entry::Occupied(occupied) => occupied,
             };
             //decrease_counter_of(owned_tokens_count, from)?;
-            let mut balance = self.owned_tokens_count.get(&_from).unwrap_or(&0).clone();
-            balance = balance - 1;
+            let mut balance = *self.owned_tokens_count.get(_from).unwrap_or(&0);
+            balance -=1 ;
             self.owned_tokens_count.insert(*_from,balance);
             occupied.remove_entry();
             Ok(())
@@ -361,8 +361,8 @@ mod mb_projects {
             if *to == AccountId::from([0x0; 32]) {
                 return Err(Error::NotAllowed)
             };
-            let mut balance = self.owned_tokens_count.get(&to).unwrap_or(&0).clone();
-            balance = balance + 1;
+            let mut balance = *self.owned_tokens_count.get(to).unwrap_or(&0);
+            balance += 1;
             self.owned_tokens_count.insert(*to,balance);
             //let entry = owned_tokens_count.entry(*to);
             //increase_counter_of(entry);

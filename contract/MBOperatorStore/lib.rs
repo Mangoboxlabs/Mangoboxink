@@ -6,6 +6,7 @@ use ink_lang as ink;
 
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::new_without_default)]
 #[ink::contract]
 mod mb_operatorstore {
     use alloc::string::String;
@@ -52,8 +53,8 @@ mod mb_operatorstore {
             _permissionIndex: u64
         ) -> bool {
             assert!(_permissionIndex <= 255,"PERMISSION IS OUT");
-            let permission = self.permissionsOf.get(&(_operator,_account)).unwrap_or(&0).clone();
-            return ((permission >> _permissionIndex) & 1) == 1;
+            let permission = *self.permissionsOf.get(&(_operator,_account)).unwrap_or(&0);
+            ((permission >> _permissionIndex) & 1) == 1
         }
         /**
           @notice

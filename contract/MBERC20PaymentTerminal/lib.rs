@@ -6,6 +6,7 @@ use ink_lang as ink;
 
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::too_many_arguments)]
 #[ink::contract]
 mod mberc20_paymentterminal {
     use mb_singletokenpaymentterminalstore::MBSingleTokenPaymentTerminalStore;
@@ -142,7 +143,7 @@ mod mberc20_paymentterminal {
             let  store_instance: MBSingleTokenPaymentTerminalStore = ink_env::call::FromAccountId::from_account_id(self.store);
             let  prices_instance: MBPrices = ink_env::call::FromAccountId::from_account_id(self.prices);
             let _adjustedOverflow =  store_instance.currentOverflowOf(Self::env().account_id(), _projectId);
-            return _adjustedOverflow * 10000000000000000000 / (prices_instance.priceFor(self.currency, 18, self.decimals));
+            _adjustedOverflow * 10000000000000000000 / (prices_instance.priceFor(self.currency, 18, self.decimals))
         }
         /**
         @notice
@@ -226,15 +227,14 @@ mod mberc20_paymentterminal {
             _beneficiary:AccountId,
             _memo:String,
         ) -> u128 {
-            return
-                self._redeemTokensOf(
-                    _holder,
-                    _projectId,
-                    _tokenCount,
-                    _minReturnedTokens,
-                    _beneficiary,
-                    _memo,
-                );
+            self._redeemTokensOf(
+                _holder,
+                _projectId,
+                _tokenCount,
+                _minReturnedTokens,
+                _beneficiary,
+                _memo,
+            )
         }
         /**
         @notice
@@ -258,7 +258,7 @@ mod mberc20_paymentterminal {
              _minReturnedTokens:u128,
              _memo:String
         ) -> bool{
-            return self._distributePayoutsOf(_projectId, _amount, _currency, _minReturnedTokens, _memo);
+            self._distributePayoutsOf(_projectId, _amount, _currency, _minReturnedTokens, _memo)
         }
         /**
         @notice
@@ -285,7 +285,7 @@ mod mberc20_paymentterminal {
             _beneficiary:AccountId,
             _memo:String
         ) ->bool{
-            return self._useAllowanceOf(_projectId, _amount, _currency, _minReturnedTokens, _beneficiary, _memo);
+             self._useAllowanceOf(_projectId, _amount, _currency, _minReturnedTokens, _beneficiary, _memo)
         }
         /**
           @notice
@@ -326,7 +326,7 @@ mod mberc20_paymentterminal {
             &self,
             _projectId:u64
         )->u128{
-            return self.getPayAmount(_projectId) - self.claimAmount.get(&_projectId).unwrap_or(&0).clone()
+            self.getPayAmount(_projectId) - *self.claimAmount.get(&_projectId).unwrap_or(&0)
         }
         #[ink(message)]
         pub fn claimDistributeAmount(
@@ -335,7 +335,7 @@ mod mberc20_paymentterminal {
             _amount:u128
         )->bool{
             assert!(_amount <= self.distributeAmount(_projectId),"Not enough");
-            let mut amount = self.claimAmount.get(&_projectId).unwrap_or(&0).clone();
+            let mut amount = *self.claimAmount.get(&_projectId).unwrap_or(&0);
             amount+=_amount;
             self.claimAmount.insert(_projectId,amount);
             self._transferFrom(Self::env().account_id(),Self::env().caller(), _amount);
@@ -365,7 +365,7 @@ mod mberc20_paymentterminal {
         )->bool{
             if self.token == AccountId::default() { return false}
            self._transferFrom(Self::env().caller(), Self::env().account_id(), _amount);
-            let feed = self.isFeelessAddress.get(&Self::env().caller()).unwrap_or(&false).clone();
+            let feed = *self.isFeelessAddress.get(&Self::env().caller()).unwrap_or(&false);
            self._addToBalanceOf(_projectId, _amount, !feed, _memo, _metadata);
             true
         }
@@ -421,7 +421,7 @@ mod mberc20_paymentterminal {
             );
             let  projects_instance: MBProjects = ink_env::call::FromAccountId::from_account_id(self.projects);
             let  _projectOwner = projects_instance.owner_of(_projectId);
-            let owner = _projectOwner.unwrap_or(AccountId::default());
+            let owner =_projectOwner.unwrap_or_default();
             self._transferFrom(Self::env().account_id(), owner, _distributedAmount);
             true
         }
@@ -453,7 +453,7 @@ mod mberc20_paymentterminal {
             );
             let  projects_instance: MBProjects = ink_env::call::FromAccountId::from_account_id(self.projects);
             let  _projectOwner = projects_instance.owner_of(_projectId);
-            let owner = _projectOwner.unwrap_or(AccountId::default());
+            let owner = _projectOwner.unwrap_or_default();
             self._transferFrom(Self::env().account_id(), owner, _distributedAmount);
             true
         }
@@ -492,7 +492,7 @@ mod mberc20_paymentterminal {
                 _memo,
             );
             // self._transferFrom(Self::env().account_id(), _beneficiary, reclaimAmount);
-            return  reclaimAmount;
+            reclaimAmount
         }
         /**
         @notice

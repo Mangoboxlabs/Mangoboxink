@@ -7,6 +7,7 @@ pub use self::mb_singletokenpaymentterminalstore::{
     MBSingleTokenPaymentTerminalStore
 };
 #[allow(unused_imports)]
+#[allow(clippy::too_many_arguments)]
 #[allow(non_snake_case)]
 #[ink::contract]
 mod mb_singletokenpaymentterminalstore {
@@ -116,12 +117,11 @@ mod mb_singletokenpaymentterminalstore {
             _terminal: AccountId,
             _projectId: u64,
         ) -> u128 {
-            return
-                self._overflowDuring(
-                    _terminal,
-                    _projectId,
-                    100,
-                );
+            self._overflowDuring(
+                _terminal,
+                _projectId,
+                100,
+            )
         }
         /**
     @notice
@@ -140,7 +140,7 @@ mod mb_singletokenpaymentterminalstore {
             _decimals: u64,
             _currency: u64,
         ) -> u128 {
-            return self._currentTotalOverflowOf(_projectId, _decimals, _currency);
+            self._currentTotalOverflowOf(_projectId, _decimals, _currency)
         }
         /**
         @notice
@@ -185,10 +185,10 @@ mod mb_singletokenpaymentterminalstore {
             if self.fundingCycleStore == AccountId::default() {return (fundingCycle, 0, AccountId::default(), _memo);  }
             _weight = store_instance.getProjectsWeight(_projectId);
             if _amount == 0 { return (fundingCycle, 0, AccountId::default(), _memo); };
-            let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
-            _balanceOf = _balanceOf + _amount;
+            let mut _balanceOf = *self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0);
+            _balanceOf += _amount ;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
-            return (fundingCycle, _amount * _weight  / 1000000000000000000, AccountId::default(), _memo);
+            (fundingCycle, _amount * _weight  / 1000000000000000000, AccountId::default(), _memo)
         }
         /// @notice
         /// get the balance of the project
@@ -198,7 +198,7 @@ mod mb_singletokenpaymentterminalstore {
             _account:AccountId,
             _projectId:u64,
         ) ->u128 {
-            self.balanceOf.get(&(_account, _projectId)).unwrap_or(&0).clone()
+            *self.balanceOf.get(&(_account, _projectId)).unwrap_or(&0)
         }
         /**
     @notice
@@ -233,10 +233,10 @@ mod mb_singletokenpaymentterminalstore {
                 ballot: AccountId::default(),
                 metadata: 0,
             };
-            let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
-            _balanceOf = _balanceOf + 100;
+            let mut _balanceOf = *self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0);
+            _balanceOf += 100;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
-            return (fundingCycle, 100, AccountId::default(), _memo);
+            (fundingCycle, 100, AccountId::default(), _memo)
         }
         /**
         @notice
@@ -270,12 +270,12 @@ mod mb_singletokenpaymentterminalstore {
                 ballot: AccountId::default(),
                 metadata: 0,
             };
-            let mut _newUsedDistributionLimitOf = self.usedDistributionLimitOf.get(&(Self::env().caller(), _projectId, fundingCycle.number)).unwrap_or(&0).clone();
+            let mut _newUsedDistributionLimitOf = *self.usedDistributionLimitOf.get(&(Self::env().caller(), _projectId, fundingCycle.number)).unwrap_or(&0);
             _newUsedDistributionLimitOf += _amount;
 
             self.usedDistributionLimitOf.insert((Self::env().caller(), _projectId, fundingCycle.number), _newUsedDistributionLimitOf);
-            let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
-            _balanceOf = _balanceOf + 100;
+            let mut _balanceOf = *self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0);
+            _balanceOf += 100;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
             _newUsedDistributionLimitOf
         }
@@ -309,11 +309,11 @@ mod mb_singletokenpaymentterminalstore {
                 ballot: AccountId::default(),
                 metadata: 0,
             };
-            let mut _newUsedOverflowAllowanceOf = self.usedOverflowAllowanceOf.get(&(Self::env().caller(), _projectId, fundingCycle.configuration)).unwrap_or(&0).clone();
+            let mut _newUsedOverflowAllowanceOf = *self.usedOverflowAllowanceOf.get(&(Self::env().caller(), _projectId, fundingCycle.configuration)).unwrap_or(&0);
             _newUsedOverflowAllowanceOf+=_amount;
             self.usedOverflowAllowanceOf.insert((Self::env().caller(), _projectId, fundingCycle.configuration),_newUsedOverflowAllowanceOf);
-            let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
-            _balanceOf = _balanceOf + 100;
+            let mut _balanceOf = *self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0);
+            _balanceOf += 100;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
             _newUsedOverflowAllowanceOf
 
@@ -331,8 +331,8 @@ mod mb_singletokenpaymentterminalstore {
             _projectId:u64,
             _amount:u128
         ) ->bool {
-            let mut _balanceOf = self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0).clone();
-            _balanceOf = _balanceOf + _amount;
+            let mut _balanceOf = *self.balanceOf.get(&(Self::env().caller(), _projectId)).unwrap_or(&0);
+            _balanceOf += _amount;
             self.balanceOf.insert((Self::env().caller(), _projectId), _balanceOf);
             true
         }
@@ -343,7 +343,7 @@ mod mb_singletokenpaymentterminalstore {
             _decimals: u64,
             _currency: u64,
         ) -> u128 {
-            return 0;
+            0
         }
         fn _overflowDuring(
             &self,
@@ -351,7 +351,7 @@ mod mb_singletokenpaymentterminalstore {
             _projectId: u64,
             _balanceCurrency: u128,
         ) -> u128 {
-            let _balanceOf = self.balanceOf.get(&(_terminal, _projectId)).unwrap_or(&0).clone();
+            let _balanceOf = *self.balanceOf.get(&(_terminal, _projectId)).unwrap_or(&0);
             if _balanceOf == 0 { return 0; }
             // todo cross contract
             /*(uint256 _distributionLimit, uint256 _distributionLimitCurrency) = IJBController(
@@ -359,12 +359,12 @@ mod mb_singletokenpaymentterminalstore {
             ).distributionLimitOf(_projectId, _fundingCycle.configuration, _terminal, _terminal.token());*/
             let _distributionLimit = 100;
             let _distributionLimitCurrency = 0;
-            let _usedDistributionLimitOf = self.usedDistributionLimitOf.get(&(_terminal, _projectId, 1)).unwrap_or(&0).clone();
+            let _usedDistributionLimitOf = *self.usedDistributionLimitOf.get(&(_terminal, _projectId, 1)).unwrap_or(&0);
             let mut _distributionLimitRemaining = _distributionLimit - _usedDistributionLimitOf;
             if _distributionLimitRemaining != 0 && _distributionLimitCurrency != _balanceCurrency {
                 _distributionLimitRemaining = _distributionLimitRemaining * 10000000000000000000 / 10;
             }
-            if _balanceOf > _distributionLimitRemaining { return _balanceOf - _distributionLimitRemaining; } else { return 0; };
+            if _balanceOf > _distributionLimitRemaining {  _balanceOf - _distributionLimitRemaining } else {  0 }
         }
     }
 

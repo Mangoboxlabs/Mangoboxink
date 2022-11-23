@@ -7,6 +7,9 @@ pub use self::mb_prices::{
     MBPrices
 };
 #[allow(unused_imports)]
+#[allow(clippy::new_without_default)]
+#[allow(clippy::deref_addrof)]
+#[allow(clippy::suspicious_unary_op_formatting)]
 #[allow(non_snake_case)]
 #[ink::contract]
 mod mb_prices {
@@ -50,7 +53,7 @@ mod mb_prices {
             _decimals: u128
         ) -> u128 {
             // if _currency == _base {
-            return 10 ** &_decimals;
+            10 ** &_decimals
             // }
             // let feed = self.feedFor.get(&(_currency,_base)).unwrap_or(&AccountId::default()).clone();
             // if feed != AccountId::default() {
@@ -77,7 +80,7 @@ mod mb_prices {
             _base: u128,
             _feed: AccountId
         ) -> bool {
-            let feed = self.feedFor.get(&(_currency,_base)).unwrap_or(&AccountId::default()).clone();
+            let feed = *self.feedFor.get(&(_currency,_base)).unwrap_or(&AccountId::default());
             assert!(feed == AccountId::default(),"FEED IS EXISTS");
             self.feedFor.insert((_currency, _base),_feed);
             true

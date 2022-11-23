@@ -6,6 +6,7 @@ use ink_lang as ink;
 
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::too_many_arguments)]
 #[allow(dead_code)]
 #[ink::contract]
 mod mb_controller {
@@ -246,11 +247,11 @@ mod mb_controller {
                 _groupedSplits,
                 _fundAccessConstraints,
             );
-            if _terminals.len() > 0 { let _ret = directory.setTerminalsOf(projectId, _terminals); }
+            if !_terminals.is_empty() { let _ret = directory.setTerminalsOf(projectId, _terminals); }
             let mut ownerProjects = self.ownerProjects.get(&_owner).unwrap_or(&Vec::new()).clone();
             ownerProjects.push(projectId);
             self.ownerProjects.insert(_owner,ownerProjects);
-            return projectId;
+            projectId
         }
 
 
@@ -282,7 +283,7 @@ mod mb_controller {
             if self.tokenStore == AccountId::default() {
                 return AccountId::default()
             }
-            return tokenStore.issueFor(_projectId, _name, _symbol);
+            tokenStore.issueFor(_projectId, _name, _symbol)
         }
         /**
        @notice
@@ -311,11 +312,11 @@ mod mb_controller {
             let mut tokenStore:MBTokenStore = ink_env::call::FromAccountId::from_account_id(self.tokenStore);
             let _fundingCycle = fundingCycleStore.currentOf(_projectId);
             let beneficiaryTokenCount = _tokenCount;
-            let mut processedTokenTrackerOf = self._processedTokenTrackerOf.get(&_projectId).unwrap_or(&0).clone();
+            let mut processedTokenTrackerOf = *self._processedTokenTrackerOf.get(&_projectId).unwrap_or(&0);
             processedTokenTrackerOf += beneficiaryTokenCount;
             self._processedTokenTrackerOf.insert(_projectId, processedTokenTrackerOf);
             tokenStore.mintFor(_beneficiary, _projectId, beneficiaryTokenCount, _preferClaimedTokens);
-            return beneficiaryTokenCount;
+            beneficiaryTokenCount
         }
         /**
         @notice
@@ -339,12 +340,11 @@ mod mb_controller {
                 return false
             }
             let _fundingCycle = fundingCycleStore.currentOf(_projectId);
-            let mut processedTokenTrackerOf = self._processedTokenTrackerOf.get(&_projectId).unwrap_or(&0).clone();
+            let mut processedTokenTrackerOf = *self._processedTokenTrackerOf.get(&_projectId).unwrap_or(&0);
             processedTokenTrackerOf -= _tokenCount;
             self._processedTokenTrackerOf.insert(_projectId,processedTokenTrackerOf);
             let mut tokenStore:MBTokenStore = ink_env::call::FromAccountId::from_account_id(self.tokenStore);
-            let ret = tokenStore.burnFrom(_holder, _projectId, _tokenCount, _preferClaimedTokens);
-            ret
+            tokenStore.burnFrom(_holder, _projectId, _tokenCount, _preferClaimedTokens)
         }
         /**
           @notice
@@ -360,7 +360,7 @@ mod mb_controller {
             _projectId:u64,
             _memo:String
         )->u128{
-            return self._distributeReservedTokensOf(_projectId, _memo);
+            self._distributeReservedTokensOf(_projectId, _memo)
         }
         fn _distributeReservedTokensOf(
             &mut self,

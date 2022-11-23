@@ -8,6 +8,7 @@ pub use self::mbdirectory::{
 };
 #[allow(unused_imports)]
 #[allow(non_snake_case)]
+#[allow(clippy::too_many_arguments)]
 #[ink::contract]
 mod mbdirectory {
     use alloc::string::String;
@@ -85,12 +86,12 @@ mod mbdirectory {
             _token: AccountId,
             _projectId: u64,
         ) -> AccountId {
-            let terminal = self._primaryTerminalOf.get(&(_projectId, _token)).unwrap_or(&AccountId::default()).clone();
+            let terminal = *self._primaryTerminalOf.get(&(_projectId, _token)).unwrap_or(&AccountId::default());
             let isTerminal = self.isTerminalOf(_projectId, terminal);
             if terminal != AccountId::default() && isTerminal {
                 return terminal;
             }
-            return AccountId::default();
+            AccountId::default()
         }
             /**
             @notice
@@ -114,7 +115,7 @@ mod mbdirectory {
                         return true;
                     }
                 }
-                return false;
+                false
         }
             /**
          @notice
